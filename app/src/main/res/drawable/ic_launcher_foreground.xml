@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Outer framing circle -->
+    <path
+        android:pathData="M54,26 A28,28 0 1,0 54,82 A28,28 0 1,0 54,26 Z"
+        android:strokeWidth="1.5"
+        android:strokeColor="#66F2F0EA"
+        android:fillColor="#00000000" />
+    <!-- Center Monogram 'G' and Aperture Blades -->
+    <path
+        android:pathData="M65,41 C62,37 57,35 52,35 C42,35 36,43 36,54 C36,65 42,73 52,73 C61,73 66,66 66,57 L52,57 L52,51 L72,51 L72,60 C70,70 63,78 52,78 C38,78 30,68 30,54 C30,40 38,30 52,30 C58,30 65,33 69,38 Z"
+        android:fillColor="#F2F0EA" />
+    <path
+        android:pathData="M72,36 L76,36 L76,40 L72,40 Z"
+        android:fillColor="#C8A97E" />
+</vector>
+

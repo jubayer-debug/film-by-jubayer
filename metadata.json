@@ -1,0 +1,7 @@
+{
+  "name": "film by jubayer",
+  "description": "Cinematic editorial photography portfolio documenting landscapes, rivers, and human stories across Bangladesh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
