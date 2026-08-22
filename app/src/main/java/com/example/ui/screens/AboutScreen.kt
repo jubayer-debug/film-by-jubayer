@@ -67,7 +67,7 @@ fun AboutScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 24.dp)
+                    .padding(horizontal = 12.dp, vertical = 24.dp)
             ) {
                 Text(
                     text = "BIOGRAPHY & STATEMENT",
@@ -95,7 +95,7 @@ fun AboutScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 12.dp)
+                    .padding(horizontal = 12.dp, vertical = 12.dp)
             ) {
                 if (portraitPhoto != null) {
                     Box(
@@ -129,7 +129,7 @@ fun AboutScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
+                    .padding(horizontal = 12.dp, vertical = 16.dp)
             ) {
                 Text(
                     text = "\"I am Jubayer, a documentary photographer based in Bangladesh, working between landscape, cultural memory and everyday human observation.\n\nMy work is drawn toward quiet places—the riverbanks, roads, villages and fleeting moments that often disappear before anyone notices them.\"",
@@ -167,7 +167,7 @@ fun AboutScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 20.dp)
+                    .padding(horizontal = 12.dp, vertical = 20.dp)
             ) {
                 Text(
                     text = "SELECTED EXHIBITIONS & ARCHIVES",

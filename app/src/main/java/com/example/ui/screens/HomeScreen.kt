@@ -201,7 +201,7 @@ private fun IntroStatementSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 40.dp)
+            .padding(horizontal = 12.dp, vertical = 40.dp)
     ) {
         Text(
             text = "01 — PROLOGUE",
@@ -251,7 +251,7 @@ private fun AsymmetricGallerySection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 10.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         var index = 0
@@ -445,7 +445,7 @@ private fun PhilosophyQuoteSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 40.dp, horizontal = 24.dp)
+            .padding(vertical = 40.dp, horizontal = 12.dp)
             .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
             .background(Color(0xFFFAFAFA))
             .padding(vertical = 36.dp, horizontal = 20.dp),
@@ -493,7 +493,7 @@ private fun FeaturedProjectsPreview(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 20.dp)
+            .padding(horizontal = 10.dp, vertical = 20.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -605,7 +605,7 @@ fun FooterSection(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFFF7F7F6))
-            .padding(horizontal = 24.dp, vertical = 36.dp)
+            .padding(horizontal = 12.dp, vertical = 36.dp)
             .navigationBarsPadding()
     ) {
         Row(

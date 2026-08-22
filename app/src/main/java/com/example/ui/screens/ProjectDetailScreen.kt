@@ -74,7 +74,7 @@ fun ProjectDetailScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                    .padding(horizontal = 8.dp, vertical = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
@@ -112,7 +112,7 @@ fun ProjectDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 16.dp)
+                    .padding(horizontal = 12.dp, vertical = 16.dp)
             ) {
                 Text(
                     text = "SERIES ${project.number}",
@@ -184,7 +184,7 @@ fun ProjectDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                    .padding(horizontal = 10.dp, vertical = 12.dp)
                     .clickable { onPhotoClick(cover) }
             ) {
                 Box(
@@ -226,7 +226,7 @@ fun ProjectDetailScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 28.dp, vertical = 32.dp),
+                        .padding(horizontal = 14.dp, vertical = 32.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -247,7 +247,7 @@ fun ProjectDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
+                    .padding(horizontal = 10.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 projectPhotos.drop(1).forEach { photo ->
@@ -269,7 +269,7 @@ fun ProjectDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 36.dp)
+                    .padding(horizontal = 12.dp, vertical = 36.dp)
             ) {
                 HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
                 Spacer(modifier = Modifier.height(16.dp))

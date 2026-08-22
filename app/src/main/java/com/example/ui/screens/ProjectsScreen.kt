@@ -65,7 +65,7 @@ fun ProjectsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 24.dp)
+                    .padding(horizontal = 12.dp, vertical = 24.dp)
             ) {
                 Text(
                     text = "ESSAYS & ARCHIVES",
@@ -102,7 +102,7 @@ fun ProjectsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                    .padding(horizontal = 10.dp, vertical = 12.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
                     .background(GoblinBgSecondary)
