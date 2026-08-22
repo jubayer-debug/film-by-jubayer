@@ -38,6 +38,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,7 +56,9 @@ import com.example.data.PortfolioRepository
 import com.example.data.models.PhotoCategory
 import com.example.data.models.Photograph
 import com.example.data.models.Project
+import com.example.ui.components.HeroSection
 import com.example.ui.components.PhotographicArtwork
+import com.example.ui.components.ResponsivePhotographyGridSection
 import com.example.ui.theme.GoblinAccentWarm
 import com.example.ui.theme.GoblinBg
 import com.example.ui.theme.GoblinBgSecondary
@@ -67,21 +70,54 @@ import com.example.ui.viewmodel.NavigationSection
 import com.example.ui.viewmodel.PortfolioUiState
 import kotlinx.coroutines.launch
 
+import com.example.ui.viewmodel.PhotoSortOrder
+
 @Composable
 fun HomeScreen(
     uiState: PortfolioUiState,
     onPhotoClick: (Photograph) -> Unit,
     onProjectClick: (Project) -> Unit,
     onCategorySelect: (PhotoCategory) -> Unit,
+    onSortOrderChange: (PhotoSortOrder) -> Unit = {},
+    onSearchQueryChange: (String) -> Unit = {},
+    onResetFilters: () -> Unit = {},
     onToggleFavorite: (String) -> Unit,
     onNavigate: (NavigationSection) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    val filteredPhotos = PortfolioRepository.photographs.let { list ->
-        if (uiState.selectedCategory == PhotoCategory.ALL) list
-        else list.filter { it.category == uiState.selectedCategory }
+    
+    // Filter and sort photos based on UI state
+    val filteredPhotos = remember(uiState.selectedCategory, uiState.sortOrder, uiState.searchQuery, uiState.randomSeed) {
+        var list = PortfolioRepository.photographs
+        if (uiState.selectedCategory != PhotoCategory.ALL) {
+            list = list.filter { it.category == uiState.selectedCategory }
+        }
+        if (uiState.searchQuery.isNotBlank()) {
+            val q = uiState.searchQuery.trim().lowercase()
+            list = list.filter {
+                it.title.lowercase().contains(q) ||
+                it.bengaliTitle.contains(q) ||
+                it.location.lowercase().contains(q) ||
+                it.caption.lowercase().contains(q) ||
+                it.category.label.lowercase().contains(q) ||
+                it.exif.camera.lowercase().contains(q) ||
+                it.exif.lens.lowercase().contains(q)
+            }
+        }
+        when (uiState.sortOrder) {
+            PhotoSortOrder.CURATED -> list
+            PhotoSortOrder.RANDOM_SHUFFLE -> list.shuffled(kotlin.random.Random(uiState.randomSeed))
+            PhotoSortOrder.YEAR_DESC -> list.sortedByDescending { it.year }
+            PhotoSortOrder.YEAR_ASC -> list.sortedBy { it.year }
+            PhotoSortOrder.TITLE_AZ -> list.sortedBy { it.title }
+            PhotoSortOrder.LOCATION -> list.sortedBy { it.location }
+        }
+    }
+
+    val activeHeroPhoto = remember(filteredPhotos, uiState.randomSeed) {
+        filteredPhotos.firstOrNull() ?: PortfolioRepository.photographs.first()
     }
 
     LazyColumn(
@@ -91,10 +127,10 @@ fun HomeScreen(
             .background(GoblinBg)
             .testTag("home_lazy_column")
     ) {
-        // 1. HERO SECTION (Nearly full screen viewport)
+        // 1. HERO SECTION (Expansive viewport showcase)
         item(key = "hero_section") {
             HeroSection(
-                heroPhoto = PortfolioRepository.photographs.first(),
+                heroPhoto = activeHeroPhoto,
                 isMonochrome = uiState.isMonochromeMode,
                 showFilmGrain = uiState.isFilmGrainEnabled,
                 onScrollDown = {
@@ -102,7 +138,7 @@ fun HomeScreen(
                         listState.animateScrollToItem(1)
                     }
                 },
-                onPhotoClick = { onPhotoClick(PortfolioRepository.photographs.first()) }
+                onPhotoClick = { onPhotoClick(activeHeroPhoto) }
             )
         }
 
@@ -111,19 +147,18 @@ fun HomeScreen(
             IntroStatementSection()
         }
 
-        // 3. CATEGORY FILTER BAR
-        item(key = "category_filters") {
-            CategoryFilterBar(
-                selected = uiState.selectedCategory,
-                onSelect = onCategorySelect
-            )
-        }
-
-        // 4. ASYMMETRIC CURATED GALLERY
-        item(key = "asymmetric_gallery") {
-            AsymmetricGallerySection(
+        // 3. RESPONSIVE CURATED PHOTOGRAPHY GRID WITH THEMATIC FILTERS & SORTING
+        item(key = "responsive_gallery_grid") {
+            ResponsivePhotographyGridSection(
                 photos = filteredPhotos,
-                favoriteIds = uiState.favoritePhotoIds,
+                favoritePhotoIds = uiState.favoritePhotoIds,
+                selectedCategory = uiState.selectedCategory,
+                sortOrder = uiState.sortOrder,
+                searchQuery = uiState.searchQuery,
+                onCategorySelect = onCategorySelect,
+                onSortOrderChange = onSortOrderChange,
+                onSearchQueryChange = onSearchQueryChange,
+                onResetFilters = onResetFilters,
                 isMonochrome = uiState.isMonochromeMode,
                 showFilmGrain = uiState.isFilmGrainEnabled,
                 onPhotoClick = onPhotoClick,
@@ -131,7 +166,7 @@ fun HomeScreen(
             )
         }
 
-        // 5. PHILOSOPHY QUOTE BREAK
+        // 4. PHILOSOPHY QUOTE BREAK
         item(key = "philosophy_quote") {
             PhilosophyQuoteSection()
         }
@@ -157,128 +192,6 @@ fun HomeScreen(
                 },
                 onNavigate = onNavigate
             )
-        }
-    }
-}
-
-@Composable
-private fun HeroSection(
-    heroPhoto: Photograph,
-    isMonochrome: Boolean,
-    showFilmGrain: Boolean,
-    onScrollDown: () -> Unit,
-    onPhotoClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(580.dp)
-            .clickable { onPhotoClick() }
-            .testTag("hero_section")
-    ) {
-        // Hero Background Artwork
-        PhotographicArtwork(
-            photograph = heroPhoto,
-            isMonochrome = isMonochrome,
-            showFilmGrain = showFilmGrain,
-            modifier = Modifier.fillMaxSize()
-        )
-
-        // Dark gradient overlay to frame typography
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0x990A0A0A),
-                            Color(0x220A0A0A),
-                            Color(0x880A0A0A),
-                            GoblinBg
-                        )
-                    )
-                )
-        )
-
-        // Editorial Hero Content
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Spacer(modifier = Modifier.height(30.dp))
-
-            // Central / Upper Statement
-            Column {
-                Text(
-                    text = "PHOTOGRAPHER & DOCUMENTARIAN",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 11.sp,
-                    letterSpacing = 3.sp,
-                    color = GoblinAccentWarm
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "A visual archive\nof places, people\nand passing light.",
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Light,
-                    fontSize = 34.sp,
-                    lineHeight = 42.sp,
-                    letterSpacing = (-0.5).sp,
-                    color = GoblinTextPrimary
-                )
-            }
-
-            // Bottom Hero Metadata + Scroll Indicator
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Column {
-                    Text(
-                        text = "DHAKA, BANGLADESH",
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 10.sp,
-                        letterSpacing = 1.8.sp,
-                        color = GoblinTextSecondary
-                    )
-                    Text(
-                        text = "VOL. 2026 • 23° 48' N",
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 9.sp,
-                        letterSpacing = 1.2.sp,
-                        color = GoblinTextTertiary
-                    )
-                }
-
-                // Scroll Down Trigger
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(20.dp))
-                        .clickable { onScrollDown() }
-                        .padding(horizontal = 14.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "EXPLORE",
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 10.sp,
-                        letterSpacing = 2.sp,
-                        color = GoblinTextPrimary
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Icon(
-                        imageVector = Icons.Default.ArrowDownward,
-                        contentDescription = "Scroll down",
-                        tint = GoblinAccentWarm,
-                        modifier = Modifier.size(12.dp)
-                    )
-                }
-            }
         }
     }
 }
@@ -323,74 +236,6 @@ private fun IntroStatementSection() {
         Spacer(modifier = Modifier.height(28.dp))
 
         HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
-    }
-}
-
-@Composable
-private fun CategoryFilterBar(
-    selected: PhotoCategory,
-    onSelect: (PhotoCategory) -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 6.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "SELECTED WORK",
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                letterSpacing = 2.sp,
-                color = GoblinTextPrimary
-            )
-            Text(
-                text = "2022 — 2026",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                color = GoblinTextTertiary
-            )
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            PhotoCategory.values().forEach { category ->
-                val isSelected = selected == category
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(
-                            width = if (isSelected) 1.dp else 0.5.dp,
-                            color = if (isSelected) GoblinAccentWarm else GoblinBorderSubtle,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .background(if (isSelected) Color(0x22C8A97E) else Color(0x11FFFFFF))
-                        .clickable { onSelect(category) }
-                        .padding(horizontal = 14.dp, vertical = 7.dp)
-                        .testTag("category_filter_${category.name}")
-                ) {
-                    Text(
-                        text = category.label,
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 10.sp,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                        letterSpacing = 1.5.sp,
-                        color = if (isSelected) GoblinAccentWarm else GoblinTextSecondary
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -519,8 +364,8 @@ fun EditorialPhotoCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(aspect)
-                .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(2.dp))
-                .clip(RoundedCornerShape(2.dp))
+                .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(3.dp))
+                .clip(RoundedCornerShape(3.dp))
         ) {
             PhotographicArtwork(
                 photograph = photo,
@@ -537,12 +382,12 @@ fun EditorialPhotoCard(
                     .padding(6.dp)
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(Color(0x770A0A0A))
+                    .background(Color(0x99000000))
             ) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                     contentDescription = "Bookmark",
-                    tint = if (isFavorite) GoblinAccentWarm else GoblinTextPrimary,
+                    tint = if (isFavorite) Color(0xFFE2A860) else Color.White,
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -553,14 +398,14 @@ fun EditorialPhotoCard(
                     .align(Alignment.BottomStart)
                     .padding(8.dp)
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color(0x880A0A0A))
+                    .background(Color(0x99000000))
                     .padding(horizontal = 6.dp, vertical = 3.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Default.Visibility,
                     contentDescription = null,
-                    tint = GoblinAccentWarm,
+                    tint = Color(0xFFE2A860),
                     modifier = Modifier.size(10.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -569,7 +414,7 @@ fun EditorialPhotoCard(
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 8.5.sp,
                     letterSpacing = 1.2.sp,
-                    color = GoblinTextPrimary
+                    color = Color.White
                 )
             }
         }
@@ -600,9 +445,9 @@ private fun PhilosophyQuoteSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 50.dp, horizontal = 24.dp)
+            .padding(vertical = 40.dp, horizontal = 24.dp)
             .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-            .background(Color(0x33141414))
+            .background(Color(0xFFFAFAFA))
             .padding(vertical = 36.dp, horizontal = 20.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -627,7 +472,7 @@ private fun PhilosophyQuoteSection() {
             )
             Spacer(modifier = Modifier.height(14.dp))
             Text(
-                text = "— GOBLIN, 2026",
+                text = "— FILM BY JUBAYER, 2026",
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 10.sp,
                 letterSpacing = 2.sp,
@@ -697,7 +542,7 @@ private fun FeaturedProjectsPreview(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(4.dp))
                         .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-                        .background(GoblinBgSecondary)
+                        .background(Color(0xFFFAFAFA))
                         .clickable { onProjectClick(project) }
                         .padding(12.dp)
                         .testTag("project_card_${project.id}"),
@@ -759,7 +604,7 @@ fun FooterSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF080808))
+            .background(Color(0xFFF7F7F6))
             .padding(horizontal = 24.dp, vertical = 36.dp)
             .navigationBarsPadding()
     ) {
@@ -770,11 +615,11 @@ fun FooterSection(
         ) {
             Column {
                 Text(
-                    text = "GOBLIN",
+                    text = "FILM BY JUBAYER",
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    letterSpacing = 2.5.sp,
+                    fontSize = 15.sp,
+                    letterSpacing = 2.2.sp,
                     color = GoblinTextPrimary
                 )
                 Text(
@@ -791,6 +636,7 @@ fun FooterSection(
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
                     .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(16.dp))
+                    .background(Color.White)
                     .clickable { onBackToTop() }
                     .padding(horizontal = 12.dp, vertical = 6.dp)
                     .testTag("back_to_top_button"),
@@ -837,6 +683,14 @@ fun FooterSection(
                 modifier = Modifier.clickable { onNavigate(NavigationSection.PROJECTS) }
             )
             Text(
+                text = "JOURNAL",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                letterSpacing = 1.5.sp,
+                color = GoblinTextSecondary,
+                modifier = Modifier.clickable { onNavigate(NavigationSection.JOURNAL) }
+            )
+            Text(
                 text = "ABOUT",
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 10.sp,
@@ -861,7 +715,7 @@ fun FooterSection(
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
-            text = "© 2026 GOBLIN. ALL PHOTOGRAPHS ARCHIVED UNDER INTERNATIONAL COPYRIGHT.",
+            text = "© 2026 FILM BY JUBAYER. ALL PHOTOGRAPHS ARCHIVED UNDER INTERNATIONAL COPYRIGHT.",
             fontFamily = FontFamily.SansSerif,
             fontSize = 8.5.sp,
             letterSpacing = 1.2.sp,

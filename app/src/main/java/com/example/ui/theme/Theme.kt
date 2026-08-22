@@ -1,17 +1,17 @@
 package com.example.ui.theme
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val GoblinColorScheme = darkColorScheme(
+private val GoblinLightColorScheme = lightColorScheme(
     primary = GoblinTextPrimary,
     onPrimary = GoblinBg,
-    primaryContainer = GoblinSurfaceElevated,
+    primaryContainer = GoblinSurface,
     onPrimaryContainer = GoblinTextPrimary,
     secondary = GoblinTextSecondary,
     onSecondary = GoblinBg,
-    secondaryContainer = GoblinSurface,
+    secondaryContainer = GoblinSurfaceElevated,
     onSecondaryContainer = GoblinTextPrimary,
     tertiary = GoblinAccentWarm,
     onTertiary = GoblinBg,
@@ -27,12 +27,12 @@ private val GoblinColorScheme = darkColorScheme(
 
 @Composable
 fun MyApplicationTheme(
-    darkTheme: Boolean = true, // Default to cinematic dark aesthetic
+    darkTheme: Boolean = false, // Pure crisp gallery white theme
     dynamicColor: Boolean = false, // Keep bespoke editorial monochrome palette
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = GoblinColorScheme,
+        colorScheme = GoblinLightColorScheme,
         typography = Typography,
         content = content
     )

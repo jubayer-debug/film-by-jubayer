@@ -137,6 +137,9 @@ fun GoblinPortfolioApp(
                                         onPhotoClick = { viewModel.openLightbox(it) },
                                         onProjectClick = { viewModel.openProject(it) },
                                         onCategorySelect = { viewModel.selectCategory(it) },
+                                        onSortOrderChange = { viewModel.setSortOrder(it) },
+                                        onSearchQueryChange = { viewModel.setSearchQuery(it) },
+                                        onResetFilters = { viewModel.resetFilters() },
                                         onToggleFavorite = { viewModel.toggleFavorite(it) },
                                         onNavigate = { viewModel.navigateTo(it) }
                                     )
@@ -199,7 +202,8 @@ fun GoblinPortfolioApp(
             isOpen = uiState.isMobileMenuOpen,
             activeSection = uiState.activeSection,
             onNavigate = { viewModel.navigateTo(it) },
-            onClose = { viewModel.setMobileMenu(false) }
+            onClose = { viewModel.setMobileMenu(false) },
+            savedCount = uiState.favoritePhotoIds.size
         )
 
         // FULLSCREEN LIGHTBOX IMAGE VIEWER

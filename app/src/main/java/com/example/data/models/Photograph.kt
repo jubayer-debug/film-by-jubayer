@@ -1,12 +1,12 @@
 package com.example.data.models
 
 enum class PhotoCategory(val label: String) {
-    ALL("ALL"),
-    LANDSCAPE("LANDSCAPE"),
-    RIVER("RIVER COUNTRY"),
+    ALL("ALL THEMES"),
+    LANDSCAPE("LANDSCAPES"),
+    RIVER("RIVERS"),
+    PORTRAIT("HUMAN STORIES"),
     MONSOON("MONSOON"),
-    STREET("STREET / NIGHT"),
-    PORTRAIT("HUMAN STORIES")
+    STREET("STREET & NIGHT")
 }
 
 enum class PhotoOrientation {
@@ -51,5 +51,7 @@ data class Photograph(
     val story: String,
     val mood: VisualMood,
     val exif: CameraExif = CameraExif(),
-    val isCuratedFeatured: Boolean = false
+    val isCuratedFeatured: Boolean = false,
+    val imageUrl: String = "",
+    val thumbUrl: String = ""
 )

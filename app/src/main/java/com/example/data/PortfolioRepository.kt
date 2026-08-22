@@ -8,6 +8,7 @@ import com.example.data.models.PhotoOrientation
 import com.example.data.models.Photograph
 import com.example.data.models.Project
 import com.example.data.models.VisualMood
+import kotlin.random.Random
 
 object PortfolioRepository {
 
@@ -24,7 +25,9 @@ object PortfolioRepository {
             story = "Dawn over the lower Meghna breaks without sharp contrast—only layers of slate grey, silver mist, and the quiet rhythm of a single wooden oar touching the water. For centuries, these riverways have determined both arrival and departure.",
             mood = VisualMood.RIVER_DAWN,
             exif = CameraExif(camera = "Leica M11-P", lens = "Summilux-M 35mm f/1.4", aperture = "f/2.8", shutter = "1/250s", iso = "ISO 100", focalLength = "35mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_02",
@@ -38,7 +41,9 @@ object PortfolioRepository {
             story = "In Bengal, the monsoon is not merely weather; it is an entire spatial condition. Fields dissolve into inland seas, paths turn to currents, and sound is replaced by the relentless thrum of water on tin roofs.",
             mood = VisualMood.MONSOON_MIST,
             exif = CameraExif(camera = "Leica SL2", lens = "APO-Summicron-SL 50mm f/2", aperture = "f/2.0", shutter = "1/1000s", iso = "ISO 400", focalLength = "50mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_03",
@@ -52,7 +57,9 @@ object PortfolioRepository {
             story = "Walking the narrow alleys of Old Dhaka at blue hour reveals centuries of layered memory. The smell of mustard oil, incense, and wet clay merges with shadows cast by hand-hung incandescent lamps.",
             mood = VisualMood.OLD_DHAKA_NIGHT,
             exif = CameraExif(camera = "Leica Q3", lens = "Summilux 28mm f/1.7 ASPH", aperture = "f/1.7", shutter = "1/125s", iso = "ISO 1600", focalLength = "28mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_04",
@@ -66,7 +73,9 @@ object PortfolioRepository {
             story = "At the southern tip of the delta, the land surrenders continuously to the sea. The dead trees stand like silent sentinels, charting the slow retreat of the shoreline over decades.",
             mood = VisualMood.COASTAL_SILENCE,
             exif = CameraExif(camera = "Hasselblad 907X 50C", lens = "XCD 45mm f/4 P", aperture = "f/8.0", shutter = "1/60s", iso = "ISO 64", focalLength = "45mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_05",
@@ -80,7 +89,9 @@ object PortfolioRepository {
             story = "Before the tea pickers arrive, the stepped terraces remain immersed in silent fog. The geometric lines carved by hands over a century echo the topography of the gentle rolling ridges.",
             mood = VisualMood.TEA_HIGHLANDS,
             exif = CameraExif(camera = "Leica M11-P", lens = "APO-Summicron-M 75mm f/2", aperture = "f/4.0", shutter = "1/320s", iso = "ISO 200", focalLength = "75mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_06",
@@ -94,7 +105,9 @@ object PortfolioRepository {
             story = "His hands bear the deep grooves left by braided nylon fishing nets. He spoke of how the river changes its course every monsoon, erasing homesteads and carving new channels in the dark.",
             mood = VisualMood.PORTRAIT_LIGHT,
             exif = CameraExif(camera = "Leica M11-P", lens = "Noctilux-M 50mm f/0.95 ASPH", aperture = "f/1.4", shutter = "1/1000s", iso = "ISO 100", focalLength = "50mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_07",
@@ -108,7 +121,9 @@ object PortfolioRepository {
             story = "When the sun dips below the horizon in Chalan Beel, the distinction between water and sky dissolves completely into warm sepia and lavender tones. Only the reeds anchor the frame.",
             mood = VisualMood.MEGHNA_DUSK,
             exif = CameraExif(camera = "Hasselblad 907X 50C", lens = "XCD 28mm f/4 P", aperture = "f/5.6", shutter = "1/40s", iso = "ISO 100", focalLength = "28mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_08",
@@ -122,7 +137,9 @@ object PortfolioRepository {
             story = "The golden fiber of Bengal has clothed empires and built port cities. Seeing it rinsed in murky ditch water before glowing golden in the sunlight captures the humble poetry of labor.",
             mood = VisualMood.JUTE_HARVEST,
             exif = CameraExif(camera = "Leica M11-P", lens = "Summicron-M 35mm f/2 ASPH", aperture = "f/2.8", shutter = "1/800s", iso = "ISO 200", focalLength = "35mm"),
-            isCuratedFeatured = false
+            isCuratedFeatured = false,
+            imageUrl = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_09",
@@ -136,7 +153,9 @@ object PortfolioRepository {
             story = "The sky turns the color of bruised slate in five minutes. Fishermen race their sails toward shore while thunder rumbles deep across thirty miles of open water.",
             mood = VisualMood.RIVER_STORM,
             exif = CameraExif(camera = "Leica SL2", lens = "Vario-Elmarit-SL 24-70mm f/2.8", aperture = "f/5.6", shutter = "1/500s", iso = "ISO 400", focalLength = "24mm"),
-            isCuratedFeatured = true
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_10",
@@ -150,7 +169,9 @@ object PortfolioRepository {
             story = "The quietest moments in rural life happen between two and four in the afternoon. The birds fall silent, cattle rest in the shade, and only the light shifts across earthen floors.",
             mood = VisualMood.VILLAGE_SHADOW,
             exif = CameraExif(camera = "Leica M11-P", lens = "Summilux-M 35mm f/1.4", aperture = "f/2.0", shutter = "1/640s", iso = "ISO 100", focalLength = "35mm"),
-            isCuratedFeatured = false
+            isCuratedFeatured = false,
+            imageUrl = "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_11",
@@ -164,7 +185,9 @@ object PortfolioRepository {
             story = "Sadarghat never sleeps. Giant multi-deck river steamers depart at midnight for the southern districts, their halogen beams piercing the diesel haze and river fog.",
             mood = VisualMood.OLD_DHAKA_NIGHT,
             exif = CameraExif(camera = "Leica Q3", lens = "Summilux 28mm f/1.7 ASPH", aperture = "f/1.7", shutter = "1/60s", iso = "ISO 3200", focalLength = "28mm"),
-            isCuratedFeatured = false
+            isCuratedFeatured = false,
+            imageUrl = "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=600&q=80"
         ),
         Photograph(
             id = "photo_12",
@@ -178,9 +201,95 @@ object PortfolioRepository {
             story = "For five generations, his family has spun the heavy stone wheel using only hand momentum. In an era of plastic, each clay pot represents stubborn continuity.",
             mood = VisualMood.PORTRAIT_LIGHT,
             exif = CameraExif(camera = "Leica M11-P", lens = "APO-Summicron-M 50mm f/2", aperture = "f/2.0", shutter = "1/400s", iso = "ISO 250", focalLength = "50mm"),
-            isCuratedFeatured = false
+            isCuratedFeatured = false,
+            imageUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+        ),
+        Photograph(
+            id = "photo_13",
+            title = "Whispers of the Mangrove",
+            bengaliTitle = "সুন্দরবনের নিঃশব্দতা",
+            location = "Sundarbans Delta",
+            year = "2025",
+            category = PhotoCategory.RIVER,
+            orientation = PhotoOrientation.LANDSCAPE,
+            caption = "Tidal channels cutting through ancient roots under low mist.",
+            story = "The mangrove jungle breathes with the tides. Mud banks submerge and reappear twice a day, leaving intricate patterns in silt and roots.",
+            mood = VisualMood.COASTAL_SILENCE,
+            exif = CameraExif(camera = "Leica M11-P", lens = "Summilux-M 35mm f/1.4", aperture = "f/4.0", shutter = "1/500s", iso = "ISO 160", focalLength = "35mm"),
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80"
+        ),
+        Photograph(
+            id = "photo_14",
+            title = "Cobblestone Solitude",
+            bengaliTitle = "রাত্রির পথ",
+            location = "Armanitola, Old Town",
+            year = "2026",
+            category = PhotoCategory.STREET,
+            orientation = PhotoOrientation.PORTRAIT,
+            caption = "Solitary cyclist gliding past century-old wrought iron balconies.",
+            story = "Late night in the old quarter strips away the chaos of daytime commerce. Only the rhythmic click of bicycle pedals and amber streetlights remain.",
+            mood = VisualMood.OLD_DHAKA_NIGHT,
+            exif = CameraExif(camera = "Leica Q3", lens = "Summilux 28mm f/1.7 ASPH", aperture = "f/1.8", shutter = "1/80s", iso = "ISO 2500", focalLength = "28mm"),
+            isCuratedFeatured = false,
+            imageUrl = "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80"
+        ),
+        Photograph(
+            id = "photo_15",
+            title = "Monsoon Canopy",
+            bengaliTitle = "মেঘের ছাতা",
+            location = "Tanguar Haor, Sunamganj",
+            year = "2025",
+            category = PhotoCategory.MONSOON,
+            orientation = PhotoOrientation.PANORAMIC,
+            caption = "Infinite horizon of wetlands merging with deep monsoon indigo clouds.",
+            story = "The vast haor basin transforms into an inland sea. Wooden country boats look like tiny paper vessels resting on glassy stillness.",
+            mood = VisualMood.MONSOON_MIST,
+            exif = CameraExif(camera = "Hasselblad 907X 50C", lens = "XCD 28mm f/4 P", aperture = "f/8.0", shutter = "1/125s", iso = "ISO 100", focalLength = "28mm"),
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80"
+        ),
+        Photograph(
+            id = "photo_16",
+            title = "Gaze of the Weaver",
+            bengaliTitle = "তাঁতীর দৃষ্টি",
+            location = "Tangail",
+            year = "2025",
+            category = PhotoCategory.PORTRAIT,
+            orientation = PhotoOrientation.PORTRAIT,
+            caption = "Master weaver adjusting fine silk threads in a sunlit wooden loom workshop.",
+            story = "Decades of listening to the wooden shuttle's clack-clack rhythm have sharpened his instincts. He can detect a single broken thread by touch alone.",
+            mood = VisualMood.PORTRAIT_LIGHT,
+            exif = CameraExif(camera = "Leica M11-P", lens = "Summilux-M 50mm f/1.4", aperture = "f/1.4", shutter = "1/640s", iso = "ISO 200", focalLength = "50mm"),
+            isCuratedFeatured = false,
+            imageUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"
         )
     )
+
+    // Dynamic Random Discovery Helpers
+    fun getRandomPhotograph(excludeId: String? = null): Photograph {
+        val pool = if (excludeId != null) photographs.filter { it.id != excludeId } else photographs
+        return (pool.ifEmpty { photographs }).random()
+    }
+
+    fun getShuffledPhotographs(seed: Long = System.currentTimeMillis()): List<Photograph> {
+        val rnd = Random(seed)
+        return photographs.shuffled(rnd)
+    }
+
+    fun getRandomCuratedDiscovery(count: Int = 4): List<Photograph> {
+        return photographs.shuffled().take(count.coerceAtMost(photographs.size))
+    }
+
+    fun getRandomPhotographForCategory(category: PhotoCategory): Photograph {
+        val pool = if (category == PhotoCategory.ALL) photographs else photographs.filter { it.category == category }
+        return (pool.ifEmpty { photographs }).random()
+    }
 
     val projects: List<Project> = listOf(
         Project(
@@ -195,7 +304,7 @@ object PortfolioRepository {
             coverPhotoId = "photo_02",
             description = "A multi-year visual chronicle examining how the monsoon reorganizes geography, light, and domestic life across the delta.",
             essayText = "When the monsoon arrives, Bangladesh sheds its dry earthen skin and becomes a vast water country. The boundaries between river and field blur into translucent silver sheets. The photographs in this series do not document catastrophe; rather, they observe the quiet adaptation, resilience, and meditative stillness that settles over communities when water claims the land.",
-            photoIds = listOf("photo_02", "photo_09", "photo_01", "photo_04"),
+            photoIds = listOf("photo_02", "photo_09", "photo_01", "photo_04", "photo_15"),
             quote = "In the rain, all geography becomes memory."
         ),
         Project(
@@ -210,7 +319,7 @@ object PortfolioRepository {
             coverPhotoId = "photo_01",
             description = "Documenting the eternal relationship between deltaic communities and the shifting watercourses that give and take away.",
             essayText = "The rivers of Bengal are living creatures. They carve new channels in the dark, submerge entire villages in a single night, and birth fertile silt islands called 'chars'. Those who live on their banks know that stability is an illusion, yet their connection to the water is tender, sacred, and unbroken.",
-            photoIds = listOf("photo_01", "photo_06", "photo_07", "photo_09"),
+            photoIds = listOf("photo_01", "photo_06", "photo_07", "photo_09", "photo_13"),
             quote = "The river does not belong to us; we are simply passing through its current."
         ),
         Project(
@@ -218,130 +327,90 @@ object PortfolioRepository {
             number = "03",
             title = "AFTER RAIN",
             bengaliTitle = "বৃষ্টির পর",
-            subtitle = "The Quiet Pause When Earth Absorbs the Sky",
-            location = "Chalan Beel & Faridpur",
-            year = "2024 — 2025",
+            subtitle = "Quietude, Wet Silt & Soft Evening Horizon",
+            location = "Faridpur & Munshiganj",
+            year = "2025",
             photoCount = 12,
-            coverPhotoId = "photo_07",
-            description = "Subtle studies of light, damp surfaces, and atmospheric clearing following seasonal cloudbursts.",
-            essayText = "The moments immediately after heavy rainfall are marked by an extraordinary acoustic and visual clarity. The air is stripped of dust, leaves hold trembling droplets of light, and the horizon opens up like a freshly washed canvas.",
-            photoIds = listOf("photo_07", "photo_10", "photo_04", "photo_08"),
-            quote = "Some places are remembered not because they were extraordinary, but because the light stayed."
+            coverPhotoId = "photo_04",
+            description = "The fragile stillness that lingers in village paths immediately after hours of torrential downpour.",
+            essayText = "The moments immediately following heavy rainfall hold a peculiar tenderness. The air smells intensely of wet humus and crushed grass. Children emerge cautiously into flooded paths, and the sky mirrors itself in thousands of shallow puddles across the courtyard.",
+            photoIds = listOf("photo_04", "photo_08", "photo_10", "photo_12"),
+            quote = "Light after water is softer than any memory."
         ),
         Project(
             id = "proj_04",
             number = "04",
-            title = "CITY / NIGHT",
-            bengaliTitle = "রাত্রির নগরী",
-            subtitle = "Shadows, Lanterns and Steam Across Old Dhaka",
-            location = "Dhaka, Bangladesh",
-            year = "2025 — 2026",
-            photoCount = 16,
+            title = "OLD TOWN SHADOWS",
+            bengaliTitle = "পুরান ঢাকা",
+            subtitle = "Three Centuries of Indigo Twilight and Tungsten Glow",
+            location = "Shankhari Bazar & Sadarghat, Old Dhaka",
+            year = "2024 — 2026",
+            photoCount = 22,
             coverPhotoId = "photo_03",
-            description = "An intimate nocturnal exploration through historic neighborhoods bathed in incandescent warmth and deep shadows.",
-            essayText = "When night descends upon Old Dhaka, the chaos of daytime traffic gives way to intimate pockets of ritual: the hiss of brass samovars, the steady carving of conch shells in Shankhari Bazar, and solitary silhouettes traversing ancient brick archways.",
-            photoIds = listOf("photo_03", "photo_11", "photo_06", "photo_12"),
-            quote = "Night is when the city whispers its true history."
-        ),
-        Project(
-            id = "proj_05",
-            number = "05",
-            title = "THE QUIET VILLAGE",
-            bengaliTitle = "নিস্তব্ধ গ্রাম",
-            subtitle = "Dust Paths, Betel Groves, and Disappearing Dwellings",
-            location = "Sonargaon & Bikrampur",
-            year = "2023 — 2025",
-            photoCount = 20,
-            coverPhotoId = "photo_10",
-            description = "A preservationist visual archive capturing traditional earthen and timber architecture slowly giving way to concrete.",
-            essayText = "As rural youth migrate toward urban centers, the traditional homestead—with its open earthen courtyard, hand-woven bamboo mats, and shaded betel nut groves—is transforming. This series serves as an homage to the architecture of slowness.",
-            photoIds = listOf("photo_10", "photo_08", "photo_05", "photo_12"),
-            quote = "I photograph places that disappear slowly."
-        ),
-        Project(
-            id = "proj_06",
-            number = "06",
-            title = "TEA HIGHLANDS",
-            bengaliTitle = "চায়ের দেশ",
-            subtitle = "Mist in the Rolling Hills of Sreemangal",
-            location = "Moulvibazar, Sylhet",
-            year = "2024",
-            photoCount = 15,
-            coverPhotoId = "photo_05",
-            description = "Explorations of geometric tea garden terraces, ancient rubber estates, and the indigenous tea communities.",
-            essayText = "High above the floodplains, the tea estates of Sylhet form a quiet world of emerald green sculpted contours. The fog rolls in at dawn, wrapping the hilltops in cold solitude before the sun breaks through.",
-            photoIds = listOf("photo_05", "photo_04", "photo_02", "photo_10"),
-            quote = "In the hills, silence has weight."
+            description = "A nocturnal study of Old Dhaka's historic alleys, traditional artisans, and timeless communal architecture.",
+            essayText = "Within the tightly woven maze of Old Dhaka, time functions non-linearly. Mughal gateways stand beside colonial brickwork and buzzing neon signs. In these narrow fissures, generations of craftsmen continue their ancestral callings with quiet dignity.",
+            photoIds = listOf("photo_03", "photo_11", "photo_14", "photo_06"),
+            quote = "History here is not carved in marble, but worn into the stones by barefoot steps."
         )
     )
 
     val journalEntries: List<JournalEntry> = listOf(
         JournalEntry(
             id = "journal_01",
-            title = "The River After Rain",
-            bengaliTitle = "বৃষ্টিপরবর্তী নদী",
-            date = "AUGUST 2026",
-            location = "Meghna, Bangladesh",
+            title = "On Analog Patience: Why 35mm Still Matters",
+            bengaliTitle = "ফিল্মের ধৈর্য",
+            date = "OCTOBER 14, 2025",
             readTime = "4 MIN READ",
-            coverPhotoId = "photo_01",
-            excerpt = "Notes on the peculiar quality of light that follows three days of continuous monsoon rainfall along the Chandpur coastline.",
-            content = "For three days, the horizon was swallowed whole by grey vapor. When the rain finally ceased yesterday at 5:00 AM, the Meghna did not rush—it breathed. A low mist hovered exactly three feet above the water surface, creating the uncanny illusion that the wooden cargo boats were floating in mid-air.\n\nI sat on a bamboo mooring post for three hours with the Leica M11 and a 35mm lens. In digital photography, one is always tempted to chase sharpness, but here, the entire philosophy is about softness—how the eye perceives distant shapes through water-laden air.\n\nPhotography is less about the capture of a moment than the patience to let the landscape reveal its interior state.",
-            quote = "Water is the only mirror that never lies, yet never stays still."
+            location = "Munshiganj Field Diary",
+            excerpt = "When you only have 36 exposures on a roll of Tri-X, the shutter press ceases to be a reaction and becomes an act of deliberate listening.",
+            content = "In an age where digital sensors can capture thirty frames per second, the deliberate restriction of 36 frames per roll enforces a meditative discipline. You learn to wait for the exact moment when the light strikes the water at a forty-five-degree angle, or when the subject's posture relaxes into authentic presence.\n\nIn the river delta, where weather and geography shift by the hour, film captures not just photons, but the tangible density of air, humidity, and time itself. The organic grain structure of silver gelatin emulsions possesses a warmth and emotional resonance that synthetic pixels struggle to emulate.",
+            coverPhotoId = "photo_02"
         ),
         JournalEntry(
             id = "journal_02",
-            title = "Monsoon as a State of Mind",
-            bengaliTitle = "বর্ষা এক অনুভূতির নাম",
-            date = "JUNE 2026",
-            location = "Munshiganj",
+            title = "The Architecture of River Mist",
+            bengaliTitle = "নদীর কুয়াশা",
+            date = "NOVEMBER 28, 2025",
             readTime = "6 MIN READ",
-            coverPhotoId = "photo_02",
-            excerpt = "How the rhythm of endless rainfall alters human perception of time, distance, and solitude.",
-            content = "In the West, rain is often framed as an interruption—a delay in productivity. In Bengal, rain is the fundamental rhythm of life. Everything slows down. Conversations on tin-roofed verandas stretch for hours. People walk with deliberate care, holding black umbrellas against the sky.\n\nTo photograph in the monsoon requires protecting your camera with wax canvas and accepting that your lenses will fog. But the reward is a tonal spectrum you cannot find anywhere else on earth: deep olive greens, silver reflections, and skin tones illuminated by soft diffused daylight.",
-            quote = "The sound of rain on tin is the oldest lullaby of the delta."
+            location = "Chandpur Meghna Confluence",
+            excerpt = "Mist is not an obstruction of vision; it is a simplifier of space. It strips the world down to essential silhouettes and soft tonal gradients.",
+            content = "Standing on the boat deck at 5:30 AM where the Padma, Meghna, and Dakatia rivers converge, the horizon disappears. There is no top, no bottom, only a uniform silver dome.\n\nPhotographing in thick river fog requires abandoning traditional composition rules based on leading lines and focal points. Instead, you compose with tonal mass and spatial breathing room. A solitary wooden mast sixty yards away becomes a profound philosophical statement about human fragility in vast nature.",
+            coverPhotoId = "photo_01"
         ),
         JournalEntry(
             id = "journal_03",
-            title = "The Architecture of Passing Light",
-            bengaliTitle = "ক্ষণস্থায়ী আলোর স্থাপত্য",
-            date = "APRIL 2026",
-            location = "Old Dhaka",
+            title = "Tungsten and Memory in Shankhari Bazar",
+            bengaliTitle = "শাঁখারীবাজারের স্মৃতি",
+            date = "JANUARY 08, 2026",
             readTime = "5 MIN READ",
-            coverPhotoId = "photo_03",
-            excerpt = "Observing how narrow three-foot alleyways funnel direct sunlight for only seven minutes each afternoon.",
-            content = "In Shankhari Bazar, the buildings stand so tall and close together that the street below feels like a canyon. Direct sunlight reaches the cobblestones for only a fleeting window around 1:45 PM. During those seven minutes, particles of dust, spice powder, and incense glow like constellations.\n\nI have stood in the same corner for weeks waiting for that precise angle of illumination. When it arrives, the geometry of Old Dhaka transforms from cramped urban density into an open cathedral of light.",
-            quote = "Light does not reveal space; light creates space."
+            location = "Old Dhaka Alleyways",
+            excerpt = "The 2700 Kelvin glow of incandescent bulbs preserves a visual warmth that modern cool LEDs have erased from contemporary cities.",
+            content = "Old Dhaka at 8 PM is an alchemy of sound, aroma, and warm tungsten light. Walking with a 28mm lens close to the chest, you encounter artisans carving conch shells by the light of a single bare bulb.\n\nThe shadows here are deep and velvety. By exposing for the highlights on their weathered hands, the background naturally recedes into cinematic darkness, turning an everyday alley into an intimate stage of living heritage.",
+            coverPhotoId = "photo_03"
         )
     )
 
     val exhibitions: List<Exhibition> = listOf(
         Exhibition(
             year = "2026",
-            title = "Places That Disappear Slowly",
-            venue = "Drik Gallery, Dhaka",
+            title = "SILVER WATER & SILENT DELTA",
+            venue = "Bengal Foundation Gallery",
             location = "Dhaka, Bangladesh",
             type = "Solo Exhibition"
         ),
         Exhibition(
             year = "2025",
-            title = "Deltaic Memories: South Asian Photography Survey",
-            venue = "Bengal Foundation / Chobi Mela",
-            location = "Dhaka, Bangladesh",
-            type = "Group Exhibition"
+            title = "CHOBI MELA XII: RESILIENCE & TIDE",
+            venue = "Shilpakala Academy",
+            location = "Dhaka",
+            type = "Featured Artist"
         ),
         Exhibition(
             year = "2024",
-            title = "The Quiet River: Contemporary Documentary Archives",
-            venue = "National Museum of Art",
-            location = "Kolkata, India",
-            type = "Featured Archive"
-        ),
-        Exhibition(
-            year = "2023",
-            title = "Passing Light: Monochromatic Studies",
-            venue = "Alliance Française de Dhaka",
-            location = "Dhaka, Bangladesh",
-            type = "Solo Exhibition"
+            title = "SOUTH ASIAN VISUAL FORUM",
+            venue = "India International Centre",
+            location = "New Delhi",
+            type = "Group Exhibition"
         )
     )
 

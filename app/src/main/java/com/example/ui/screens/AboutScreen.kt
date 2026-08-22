@@ -97,8 +97,8 @@ fun AboutScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.2f)
-                        .clip(RoundedCornerShape(2.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(2.dp))
+                        .clip(RoundedCornerShape(4.dp))
+                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
                 ) {
                     PhotographicArtwork(
                         photograph = portraitPhoto,
@@ -109,8 +109,8 @@ fun AboutScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "GOBLIN (b. 1994) • DHAKA, BANGLADESH",
-                    fontFamily = FontFamily.SansSerif,
+                    text = "FILM BY JUBAYER • DHAKA, BANGLADESH",
+                    fontFamily = FontFamily.Monospace,
                     fontSize = 9.5.sp,
                     letterSpacing = 1.8.sp,
                     color = GoblinTextTertiary
@@ -126,7 +126,7 @@ fun AboutScreen(
                     .padding(horizontal = 24.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = "\"I am a photographer based in Bangladesh, working between landscape, documentary and everyday observation.\n\nMy work is drawn toward quiet places—the riverbanks, roads, villages and fleeting moments that often disappear before anyone notices them.\"",
+                    text = "\"I am Jubayer, a documentary photographer based in Bangladesh, working between landscape, cultural memory and everyday human observation.\n\nMy work is drawn toward quiet places—the riverbanks, roads, villages and fleeting moments that often disappear before anyone notices them.\"",
                     fontFamily = FontFamily.Serif,
                     fontSize = 16.sp,
                     lineHeight = 26.sp,

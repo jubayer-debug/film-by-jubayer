@@ -158,7 +158,7 @@ fun ContactScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Thank you for reaching out. We will review your project details and respond via email within 24 hours.",
+                                text = "Thank you for reaching out. Jubayer will review your project details and respond via email within 24 hours.",
                                 fontFamily = FontFamily.SansSerif,
                                 fontSize = 12.5.sp,
                                 lineHeight = 18.sp,
@@ -213,7 +213,7 @@ fun ContactScreen(
                                         color = if (isSelected) GoblinAccentWarm else GoblinBorderSubtle,
                                         shape = RoundedCornerShape(14.dp)
                                     )
-                                    .background(if (isSelected) Color(0x22C8A97E) else Color(0x11FFFFFF))
+                                    .background(if (isSelected) Color(0x15967246) else Color(0xFFF7F7F6))
                                     .clickable { onProjectTypeChange(type) }
                                     .padding(horizontal = 12.dp, vertical = 6.dp)
                             ) {
@@ -248,7 +248,7 @@ fun ContactScreen(
                             .testTag("contact_name_input")
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
 
                     // Email Field
                     OutlinedTextField(
@@ -269,13 +269,13 @@ fun ContactScreen(
                             .testTag("contact_email_input")
                     )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
 
                     // Message Field
                     OutlinedTextField(
                         value = formState.message,
                         onValueChange = onMessageChange,
-                        label = { Text("Project Details & Timeline", fontSize = 12.sp, color = GoblinTextTertiary) },
+                        label = { Text("Message & Project Description", fontSize = 12.sp, color = GoblinTextTertiary) },
                         minLines = 4,
                         maxLines = 6,
                         colors = OutlinedTextFieldDefaults.colors(
@@ -295,8 +295,8 @@ fun ContactScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = formState.errorMessage,
-                            color = Color(0xFFEF5350),
-                            fontSize = 11.5.sp
+                            color = Color(0xFFCC3333),
+                            fontSize = 11.sp
                         )
                     }
 
@@ -308,7 +308,7 @@ fun ContactScreen(
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(4.dp))
                             .border(1.dp, GoblinBorderFocused, RoundedCornerShape(4.dp))
-                            .background(Color(0xFF161616))
+                            .background(Color(0xFF141414))
                             .clickable(enabled = !formState.isSubmitting) { onSubmit() }
                             .padding(vertical = 14.dp)
                             .testTag("contact_submit_button"),
@@ -317,7 +317,7 @@ fun ContactScreen(
                         if (formState.isSubmitting) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(18.dp),
-                                color = GoblinAccentWarm,
+                                color = Color.White,
                                 strokeWidth = 2.dp
                             )
                         } else {
@@ -327,7 +327,7 @@ fun ContactScreen(
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 letterSpacing = 2.sp,
-                                color = GoblinTextPrimary
+                                color = Color.White
                             )
                         }
                     }
@@ -365,7 +365,7 @@ fun ContactScreen(
                     Spacer(modifier = Modifier.width(10.dp))
                     Column {
                         Text(text = "EMAIL", fontSize = 9.sp, letterSpacing = 1.2.sp, color = GoblinTextTertiary)
-                        Text(text = "hello@goblinphoto.com", fontSize = 13.sp, color = GoblinTextPrimary)
+                        Text(text = "hello@filmbyjubayer.com", fontSize = 13.sp, color = GoblinTextPrimary)
                     }
                 }
 
@@ -389,7 +389,7 @@ fun ContactScreen(
 
                 Column {
                     Text(text = "SOCIAL / INSTAGRAM", fontSize = 9.sp, letterSpacing = 1.2.sp, color = GoblinTextTertiary)
-                    Text(text = "@goblin.archive", fontSize = 13.sp, color = GoblinTextPrimary)
+                    Text(text = "@filmbyjubayer", fontSize = 13.sp, color = GoblinTextPrimary)
                 }
             }
         }

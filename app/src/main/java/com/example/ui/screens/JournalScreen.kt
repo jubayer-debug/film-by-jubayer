@@ -231,7 +231,8 @@ fun JournalDetailScreen(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(Color(0x88111111))
+                        .background(Color(0xFFF4F4F3))
+                        .border(0.5.dp, GoblinBorderSubtle, CircleShape)
                         .testTag("journal_detail_back_button")
                 ) {
                     Icon(

@@ -175,7 +175,7 @@ fun ImageLightbox(
                 .padding(start = 12.dp)
                 .size(44.dp)
                 .clip(CircleShape)
-                .background(Color(0x990D0D0D))
+                .background(Color(0xDDFFFFFF))
                 .border(0.5.dp, GoblinBorderSubtle, CircleShape)
                 .testTag("lightbox_prev_button")
         ) {
@@ -200,7 +200,7 @@ fun ImageLightbox(
                 .padding(end = 12.dp)
                 .size(44.dp)
                 .clip(CircleShape)
-                .background(Color(0x990D0D0D))
+                .background(Color(0xDDFFFFFF))
                 .border(0.5.dp, GoblinBorderSubtle, CircleShape)
                 .testTag("lightbox_next_button")
         ) {
@@ -219,7 +219,7 @@ fun ImageLightbox(
                 .align(Alignment.TopCenter)
                 .background(
                     Brush.verticalGradient(
-                        colors = listOf(GoblinBg.copy(alpha = 0.92f), Color.Transparent)
+                        colors = listOf(GoblinBg.copy(alpha = 0.96f), Color.Transparent)
                     )
                 )
                 .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -232,7 +232,8 @@ fun ImageLightbox(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(Color(0x88111111))
+                    .background(Color(0xEEFFFFFF))
+                    .border(0.5.dp, GoblinBorderSubtle, CircleShape)
                     .testTag("close_lightbox_button")
             ) {
                 Icon(
@@ -262,7 +263,8 @@ fun ImageLightbox(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(Color(0x88111111))
+                        .background(Color(0xEEFFFFFF))
+                        .border(0.5.dp, GoblinBorderSubtle, CircleShape)
                         .testTag("lightbox_bookmark_button")
                 ) {
                     Icon(
@@ -280,13 +282,14 @@ fun ImageLightbox(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(if (isExifOpen) GoblinAccentWarm else Color(0x88111111))
+                        .background(if (isExifOpen) GoblinAccentWarm else Color(0xEEFFFFFF))
+                        .border(0.5.dp, GoblinBorderSubtle, CircleShape)
                         .testTag("lightbox_exif_toggle_button")
                 ) {
                     Icon(
                         imageVector = if (isExifOpen) Icons.Filled.Info else Icons.Outlined.Info,
                         contentDescription = "Technical EXIF",
-                        tint = if (isExifOpen) Color.Black else GoblinTextPrimary,
+                        tint = if (isExifOpen) Color.White else GoblinTextPrimary,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -383,7 +386,7 @@ fun ImageLightbox(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                     .border(1.dp, GoblinBorderSubtle, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                    .background(Color(0xF5141414))
+                    .background(Color(0xFFFFFFFF))
                     .padding(24.dp)
                     .verticalScroll(rememberScrollState())
             ) {

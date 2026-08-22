@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.models.Photograph
+import com.example.ui.components.ResponsivePhotographyGridSection
 import com.example.ui.theme.GoblinAccentWarm
 import com.example.ui.theme.GoblinBg
 import com.example.ui.theme.GoblinBorderSubtle
@@ -108,24 +109,14 @@ fun CurationScreen(
             }
         } else {
             item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
-                ) {
-                    savedPhotos.forEach { photo ->
-                        EditorialPhotoCard(
-                            photo = photo,
-                            isFavorite = true,
-                            isMonochrome = uiState.isMonochromeMode,
-                            showFilmGrain = uiState.isFilmGrainEnabled,
-                            aspect = 1.4f,
-                            onClick = { onPhotoClick(photo) },
-                            onToggleFavorite = { onToggleFavorite(photo.id) }
-                        )
-                    }
-                }
+                ResponsivePhotographyGridSection(
+                    photos = savedPhotos,
+                    favoritePhotoIds = uiState.favoritePhotoIds,
+                    isMonochrome = uiState.isMonochromeMode,
+                    showFilmGrain = uiState.isFilmGrainEnabled,
+                    onPhotoClick = onPhotoClick,
+                    onToggleFavorite = onToggleFavorite
+                )
             }
         }
 

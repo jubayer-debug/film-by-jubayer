@@ -23,6 +23,15 @@ enum class NavigationSection(val label: String, val routeKey: String) {
     CURATION("SAVED", "curation")
 }
 
+enum class PhotoSortOrder(val label: String, val shortLabel: String) {
+    CURATED("Curated Selection", "Curated"),
+    RANDOM_SHUFFLE("Random Serendipity", "Random"),
+    YEAR_DESC("Year: 2026 → 2024", "Latest"),
+    YEAR_ASC("Year: 2024 → 2026", "Oldest"),
+    TITLE_AZ("Title: A to Z", "Title"),
+    LOCATION("Location: A to Z", "Location")
+}
+
 data class ContactFormState(
     val name: String = "",
     val email: String = "",
@@ -36,6 +45,9 @@ data class ContactFormState(
 data class PortfolioUiState(
     val activeSection: NavigationSection = NavigationSection.WORK,
     val selectedCategory: PhotoCategory = PhotoCategory.ALL,
+    val sortOrder: PhotoSortOrder = PhotoSortOrder.CURATED,
+    val randomSeed: Long = System.currentTimeMillis(),
+    val searchQuery: String = "",
     val selectedProject: Project? = null,
     val selectedJournal: JournalEntry? = null,
     val lightboxPhoto: Photograph? = null,
@@ -150,6 +162,45 @@ class PortfolioViewModel : ViewModel() {
         _uiState.update { it.copy(selectedCategory = category) }
     }
 
+    fun setSortOrder(order: PhotoSortOrder) {
+        _uiState.update { it.copy(sortOrder = order) }
+    }
+
+    fun reshuffleRandom() {
+        _uiState.update {
+            it.copy(
+                sortOrder = PhotoSortOrder.RANDOM_SHUFFLE,
+                randomSeed = System.currentTimeMillis()
+            )
+        }
+    }
+
+    fun pickRandomPhotograph() {
+        val currentId = _uiState.value.lightboxPhoto?.id
+        val randomPhoto = PortfolioRepository.getRandomPhotograph(excludeId = currentId)
+        openLightbox(randomPhoto)
+    }
+
+    fun pickRandomTheme() {
+        val nonAllCategories = PhotoCategory.values().filter { it != PhotoCategory.ALL }
+        val randomCategory = nonAllCategories.random()
+        selectCategory(randomCategory)
+    }
+
+    fun setSearchQuery(query: String) {
+        _uiState.update { it.copy(searchQuery = query) }
+    }
+
+    fun resetFilters() {
+        _uiState.update {
+            it.copy(
+                selectedCategory = PhotoCategory.ALL,
+                sortOrder = PhotoSortOrder.CURATED,
+                searchQuery = ""
+            )
+        }
+    }
+
     fun toggleMobileMenu() {
         _uiState.update { it.copy(isMobileMenuOpen = !it.isMobileMenuOpen) }
     }
@@ -171,11 +222,36 @@ class PortfolioViewModel : ViewModel() {
     }
 
     fun getFilteredPhotos(): List<Photograph> {
-        val cat = _uiState.value.selectedCategory
-        return if (cat == PhotoCategory.ALL) {
-            PortfolioRepository.photographs
-        } else {
-            PortfolioRepository.photographs.filter { it.category == cat }
+        val state = _uiState.value
+        var list = PortfolioRepository.photographs
+
+        // Filter by Theme / Category
+        if (state.selectedCategory != PhotoCategory.ALL) {
+            list = list.filter { it.category == state.selectedCategory }
+        }
+
+        // Filter by Search Query
+        if (state.searchQuery.isNotBlank()) {
+            val q = state.searchQuery.trim().lowercase()
+            list = list.filter {
+                it.title.lowercase().contains(q) ||
+                it.bengaliTitle.contains(q) ||
+                it.location.lowercase().contains(q) ||
+                it.caption.lowercase().contains(q) ||
+                it.category.label.lowercase().contains(q) ||
+                it.exif.camera.lowercase().contains(q) ||
+                it.exif.lens.lowercase().contains(q)
+            }
+        }
+
+        // Apply Sorting
+        return when (state.sortOrder) {
+            PhotoSortOrder.CURATED -> list
+            PhotoSortOrder.RANDOM_SHUFFLE -> list.shuffled(kotlin.random.Random(state.randomSeed))
+            PhotoSortOrder.YEAR_DESC -> list.sortedByDescending { it.year }
+            PhotoSortOrder.YEAR_ASC -> list.sortedBy { it.year }
+            PhotoSortOrder.TITLE_AZ -> list.sortedBy { it.title }
+            PhotoSortOrder.LOCATION -> list.sortedBy { it.location }
         }
     }
 

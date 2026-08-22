@@ -17,9 +17,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.example.data.models.Photograph
 import com.example.data.models.VisualMood
 import kotlin.math.cos
@@ -44,25 +50,38 @@ fun PhotographicArtwork(
         label = "drift"
     )
 
-    Box(modifier = modifier.background(Color(0xFF0D0D0D))) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            when (photograph.mood) {
-                VisualMood.RIVER_DAWN -> drawRiverDawn(this, driftAnim, isMonochrome)
-                VisualMood.MONSOON_MIST -> drawMonsoonMist(this, driftAnim, isMonochrome)
-                VisualMood.OLD_DHAKA_NIGHT -> drawOldDhakaNight(this, driftAnim, isMonochrome)
-                VisualMood.COASTAL_SILENCE -> drawCoastalSilence(this, driftAnim, isMonochrome)
-                VisualMood.TEA_HIGHLANDS -> drawTeaHighlands(this, driftAnim, isMonochrome)
-                VisualMood.PORTRAIT_LIGHT -> drawPortraitLight(this, driftAnim, isMonochrome)
-                VisualMood.MEGHNA_DUSK -> drawMeghnaDusk(this, driftAnim, isMonochrome)
-                VisualMood.JUTE_HARVEST -> drawJuteHarvest(this, driftAnim, isMonochrome)
-                VisualMood.RIVER_STORM -> drawRiverStorm(this, driftAnim, isMonochrome)
-                VisualMood.VILLAGE_SHADOW -> drawVillageShadow(this, driftAnim, isMonochrome)
-            }
+    val colorFilter = if (isMonochrome) {
+        ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
+    } else null
 
-            // Cinematic photographic vignette
+    Box(modifier = modifier.background(Color(0xFF0D0D0D))) {
+        // Base: Render Coil Real Photography if URL is available, or Fallback Canvas
+        if (photograph.imageUrl.isNotBlank()) {
+            SubcomposeAsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(photograph.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = photograph.title,
+                contentScale = ContentScale.Crop,
+                colorFilter = colorFilter,
+                modifier = Modifier.fillMaxSize(),
+                loading = {
+                    AtmosphericCanvasArt(photograph = photograph, driftAnim = driftAnim, isMonochrome = isMonochrome)
+                },
+                error = {
+                    AtmosphericCanvasArt(photograph = photograph, driftAnim = driftAnim, isMonochrome = isMonochrome)
+                }
+            )
+        } else {
+            AtmosphericCanvasArt(photograph = photograph, driftAnim = driftAnim, isMonochrome = isMonochrome)
+        }
+
+        // Overlay: Cinematic photographic vignette and film grain
+        Canvas(modifier = Modifier.fillMaxSize()) {
             drawRect(
                 brush = Brush.radialGradient(
-                    colors = listOf(Color.Transparent, Color(0x66000000), Color(0xCC000000)),
+                    colors = listOf(Color.Transparent, Color(0x55000000), Color(0xBB000000)),
                     center = Offset(size.width / 2f, size.height / 2f),
                     radius = size.width.coerceAtLeast(size.height) * 0.75f
                 )
@@ -72,6 +91,28 @@ fun PhotographicArtwork(
             if (showFilmGrain) {
                 drawFilmGrainTexture(this, driftAnim)
             }
+        }
+    }
+}
+
+@Composable
+private fun AtmosphericCanvasArt(
+    photograph: Photograph,
+    driftAnim: Float,
+    isMonochrome: Boolean
+) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        when (photograph.mood) {
+            VisualMood.RIVER_DAWN -> drawRiverDawn(this, driftAnim, isMonochrome)
+            VisualMood.MONSOON_MIST -> drawMonsoonMist(this, driftAnim, isMonochrome)
+            VisualMood.OLD_DHAKA_NIGHT -> drawOldDhakaNight(this, driftAnim, isMonochrome)
+            VisualMood.COASTAL_SILENCE -> drawCoastalSilence(this, driftAnim, isMonochrome)
+            VisualMood.TEA_HIGHLANDS -> drawTeaHighlands(this, driftAnim, isMonochrome)
+            VisualMood.PORTRAIT_LIGHT -> drawPortraitLight(this, driftAnim, isMonochrome)
+            VisualMood.MEGHNA_DUSK -> drawMeghnaDusk(this, driftAnim, isMonochrome)
+            VisualMood.JUTE_HARVEST -> drawJuteHarvest(this, driftAnim, isMonochrome)
+            VisualMood.RIVER_STORM -> drawRiverStorm(this, driftAnim, isMonochrome)
+            VisualMood.VILLAGE_SHADOW -> drawVillageShadow(this, driftAnim, isMonochrome)
         }
     }
 }
