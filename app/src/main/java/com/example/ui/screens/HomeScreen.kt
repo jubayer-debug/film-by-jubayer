@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -661,60 +662,41 @@ fun FooterSection(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Social / Channels
+        // Navigation Links with responsive scroll & 44dp touch targets
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "WORK",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                color = GoblinTextSecondary,
-                modifier = Modifier.clickable { onNavigate(NavigationSection.WORK) }
+            val footerNavs = listOf(
+                NavigationSection.WORK to "WORK",
+                NavigationSection.PROJECTS to "PROJECTS",
+                NavigationSection.JOURNAL to "JOURNAL",
+                NavigationSection.ABOUT to "ABOUT",
+                NavigationSection.CONTACT to "CONTACT",
+                NavigationSection.ADMIN to "ADMIN CMS"
             )
-            Text(
-                text = "PROJECTS",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                color = GoblinTextSecondary,
-                modifier = Modifier.clickable { onNavigate(NavigationSection.PROJECTS) }
-            )
-            Text(
-                text = "JOURNAL",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                color = GoblinTextSecondary,
-                modifier = Modifier.clickable { onNavigate(NavigationSection.JOURNAL) }
-            )
-            Text(
-                text = "ABOUT",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                color = GoblinTextSecondary,
-                modifier = Modifier.clickable { onNavigate(NavigationSection.ABOUT) }
-            )
-            Text(
-                text = "CONTACT",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                color = GoblinTextSecondary,
-                modifier = Modifier.clickable { onNavigate(NavigationSection.CONTACT) }
-            )
-            Text(
-                text = "ADMIN CMS",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.sp,
-                letterSpacing = 1.5.sp,
-                fontWeight = FontWeight.Bold,
-                color = GoblinAccentWarm,
-                modifier = Modifier.clickable { onNavigate(NavigationSection.ADMIN) }.testTag("footer_admin_link")
-            )
+
+            footerNavs.forEach { (section, label) ->
+                Box(
+                    modifier = Modifier
+                        .heightIn(min = 44.dp)
+                        .clickable { onNavigate(section) }
+                        .padding(vertical = 12.dp, horizontal = 4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = label,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 10.5.sp,
+                        letterSpacing = 1.6.sp,
+                        fontWeight = if (section == NavigationSection.ADMIN) FontWeight.Bold else FontWeight.Normal,
+                        color = if (section == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextSecondary
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(18.dp))

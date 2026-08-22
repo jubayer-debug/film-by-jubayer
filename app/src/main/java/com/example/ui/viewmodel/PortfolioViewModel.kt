@@ -788,4 +788,23 @@ class PortfolioViewModel : ViewModel() {
     fun resetContactSuccess() {
         _uiState.update { it.copy(contactForm = it.contactForm.copy(isSuccess = false)) }
     }
+
+    fun applyBudgetEstimateToContactForm(inquiryType: String, budgetText: String, scopeDescription: String) {
+        _uiState.update {
+            val currentMsg = it.contactForm.message
+            val formattedAddition = "Selected Scope: $inquiryType\nEstimated Investment: $budgetText\nSpecifications: $scopeDescription"
+            val updatedMsg = if (currentMsg.isBlank()) {
+                formattedAddition
+            } else {
+                "$currentMsg\n\n[$formattedAddition]"
+            }
+            it.copy(
+                contactForm = it.contactForm.copy(
+                    projectType = inquiryType,
+                    message = updatedMsg,
+                    errorMessage = null
+                )
+            )
+        }
+    }
 }

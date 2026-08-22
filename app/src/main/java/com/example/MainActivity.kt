@@ -176,6 +176,9 @@ fun GoblinPortfolioApp(
                                         onEmailChange = { viewModel.updateContactEmail(it) },
                                         onProjectTypeChange = { viewModel.updateContactProjectType(it) },
                                         onMessageChange = { viewModel.updateContactMessage(it) },
+                                        onApplyBudget = { type, budget, scope ->
+                                            viewModel.applyBudgetEstimateToContactForm(type, budget, scope)
+                                        },
                                         onSubmit = { viewModel.submitContactForm() },
                                         onResetSuccess = { viewModel.resetContactSuccess() },
                                         onNavigate = { viewModel.navigateTo(it) }

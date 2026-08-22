@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -184,19 +185,21 @@ private fun DesktopNavigationRow(
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
                     modifier = Modifier
+                        .heightIn(min = 44.dp)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) { onNavigate(section) }
-                        .padding(vertical = 4.dp, horizontal = 2.dp)
+                        .padding(vertical = 4.dp, horizontal = 4.dp)
                         .testTag("nav_link_${section.routeKey}")
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = section.label,
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 11.sp,
+                            fontSize = 11.5.sp,
                             fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
                             letterSpacing = 2.0.sp,
                             color = targetColor
@@ -263,14 +266,14 @@ private fun DesktopNavigationRow(
             IconButton(
                 onClick = onToggleAmbient,
                 modifier = Modifier
-                    .size(32.dp)
+                    .size(40.dp)
                     .testTag("desktop_audio_toggle")
             ) {
                 Icon(
                     imageVector = if (uiState.isAmbientSoundActive) Icons.Outlined.GraphicEq else Icons.Outlined.VolumeMute,
                     contentDescription = "Toggle Ambience",
                     tint = if (uiState.isAmbientSoundActive) GoblinAccentWarm else GoblinTextTertiary,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(17.dp)
                 )
             }
         }
@@ -298,47 +301,23 @@ private fun MobileNavigationRow(
             onClick = { onNavigate(NavigationSection.WORK) }
         )
 
-        // Center: Active Section Pill Indicator
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(12.dp))
-                .background(Color(0xFFF4F4F3))
-                .padding(horizontal = 10.dp, vertical = 4.dp)
+        // Right: Atmosphere + Saved + Admin + Hamburger Toggle (All with responsive 44dp touch targets)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(4.dp)
-                        .clip(CircleShape)
-                        .background(if (uiState.isMonochromeMode) GoblinTextPrimary else GoblinAccentWarm)
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = uiState.activeSection.label,
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 9.sp,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 1.5.sp,
-                    color = GoblinTextSecondary
-                )
-            }
-        }
-
-        // Right: Atmosphere + Saved + Hamburger Toggle
-        Row(verticalAlignment = Alignment.CenterVertically) {
             // Atmosphere Toggle Button
             IconButton(
                 onClick = onToggleAtmosphereMenu,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(44.dp)
                     .testTag("atmosphere_button")
             ) {
                 Icon(
                     imageVector = if (uiState.isMonochromeMode) Icons.Outlined.Contrast else Icons.Default.FilterVintage,
                     contentDescription = "Atmospheric modes",
                     tint = if (uiState.isMonochromeMode || uiState.isAmbientSoundActive) GoblinTextPrimary else GoblinTextTertiary,
-                    modifier = Modifier.size(17.dp)
+                    modifier = Modifier.size(19.dp)
                 )
             }
 
@@ -346,7 +325,7 @@ private fun MobileNavigationRow(
             IconButton(
                 onClick = { onNavigate(NavigationSection.CURATION) },
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(44.dp)
                     .testTag("saved_curation_button")
             ) {
                 Box(contentAlignment = Alignment.TopEnd) {
@@ -354,19 +333,19 @@ private fun MobileNavigationRow(
                         imageVector = if (uiState.favoritePhotoIds.isNotEmpty()) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                         contentDescription = "Saved Exhibition",
                         tint = if (uiState.activeSection == NavigationSection.CURATION) GoblinTextPrimary else GoblinTextTertiary,
-                        modifier = Modifier.size(17.dp)
+                        modifier = Modifier.size(19.dp)
                     )
                     if (uiState.favoritePhotoIds.isNotEmpty()) {
                         Box(
                             modifier = Modifier
-                                .size(11.dp)
+                                .size(12.dp)
                                 .clip(CircleShape)
                                 .background(GoblinTextPrimary),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = "${uiState.favoritePhotoIds.size}",
-                                fontSize = 7.sp,
+                                fontSize = 7.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )
@@ -379,14 +358,14 @@ private fun MobileNavigationRow(
             IconButton(
                 onClick = { onNavigate(NavigationSection.ADMIN) },
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(44.dp)
                     .testTag("admin_nav_button")
             ) {
                 Icon(
                     imageVector = Icons.Default.Tune,
                     contentDescription = "Admin CMS",
                     tint = if (uiState.activeSection == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextTertiary,
-                    modifier = Modifier.size(17.dp)
+                    modifier = Modifier.size(19.dp)
                 )
             }
 
@@ -394,14 +373,14 @@ private fun MobileNavigationRow(
             IconButton(
                 onClick = onToggleMobileMenu,
                 modifier = Modifier
-                    .size(36.dp)
+                    .size(44.dp)
                     .testTag("menu_toggle_button")
             ) {
                 Icon(
                     imageVector = if (uiState.isMobileMenuOpen) Icons.Default.Close else Icons.Default.Menu,
                     contentDescription = "Menu Overlay",
                     tint = GoblinTextPrimary,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(22.dp)
                 )
             }
         }
@@ -473,24 +452,25 @@ private fun MonochromeQuickButton(
 ) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(3.dp))
+            .heightIn(min = 34.dp)
+            .clip(RoundedCornerShape(4.dp))
             .border(
                 width = 0.5.dp,
                 color = if (isActive) GoblinTextPrimary else GoblinBorderSubtle,
-                shape = RoundedCornerShape(3.dp)
+                shape = RoundedCornerShape(4.dp)
             )
             .background(if (isActive) Color(0xFF141414) else Color(0xFFF6F6F5))
             .clickable { onClick() }
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .padding(horizontal = 10.dp, vertical = 6.dp)
             .testTag(testTag),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = label,
             fontFamily = FontFamily.Monospace,
-            fontSize = 9.sp,
+            fontSize = 9.5.sp,
             fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
-            letterSpacing = 1.0.sp,
+            letterSpacing = 1.2.sp,
             color = if (isActive) Color.White else GoblinTextSecondary
         )
     }
@@ -509,7 +489,7 @@ private fun AtmosphereDropdownCard(
 ) {
     Column(
         modifier = Modifier
-            .width(230.dp)
+            .width(240.dp)
             .clip(RoundedCornerShape(6.dp))
             .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
             .background(Color(0xFFFFFFFF))
@@ -523,44 +503,45 @@ private fun AtmosphereDropdownCard(
             Text(
                 text = "DARKROOM ATMOSPHERE",
                 fontFamily = FontFamily.SansSerif,
-                fontSize = 8.5.sp,
+                fontSize = 9.sp,
                 fontWeight = FontWeight.SemiBold,
                 letterSpacing = 1.5.sp,
                 color = GoblinTextTertiary
             )
             IconButton(
                 onClick = onDismiss,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(28.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Close dropdown",
                     tint = GoblinTextTertiary,
-                    modifier = Modifier.size(12.dp)
+                    modifier = Modifier.size(14.dp)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // Monochrome Toggle
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = 40.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .clickable { onToggleMonochrome() }
-                .padding(vertical = 6.dp, horizontal = 4.dp),
+                .padding(vertical = 8.dp, horizontal = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Monochrome (B&W)",
-                fontSize = 11.5.sp,
+                fontSize = 12.sp,
                 color = if (uiState.isMonochromeMode) GoblinTextPrimary else GoblinTextSecondary
             )
             Text(
                 text = if (uiState.isMonochromeMode) "ON" else "OFF",
-                fontSize = 9.5.sp,
+                fontSize = 10.sp,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.SemiBold,
                 color = if (uiState.isMonochromeMode) GoblinAccentWarm else GoblinTextTertiary
@@ -571,20 +552,21 @@ private fun AtmosphereDropdownCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = 40.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .clickable { onToggleFilmGrain() }
-                .padding(vertical = 6.dp, horizontal = 4.dp),
+                .padding(vertical = 8.dp, horizontal = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "35mm Film Grain",
-                fontSize = 11.5.sp,
+                fontSize = 12.sp,
                 color = if (uiState.isFilmGrainEnabled) GoblinTextPrimary else GoblinTextSecondary
             )
             Text(
                 text = if (uiState.isFilmGrainEnabled) "ON" else "OFF",
-                fontSize = 9.5.sp,
+                fontSize = 10.sp,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.SemiBold,
                 color = if (uiState.isFilmGrainEnabled) GoblinAccentWarm else GoblinTextTertiary
@@ -595,20 +577,21 @@ private fun AtmosphereDropdownCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = 40.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .clickable { onToggleAmbient() }
-                .padding(vertical = 6.dp, horizontal = 4.dp),
+                .padding(vertical = 8.dp, horizontal = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = "Monsoon Rainscape",
-                fontSize = 11.5.sp,
+                fontSize = 12.sp,
                 color = if (uiState.isAmbientSoundActive) GoblinTextPrimary else GoblinTextSecondary
             )
             Text(
                 text = if (uiState.isAmbientSoundActive) "PLAY" else "MUTE",
-                fontSize = 9.5.sp,
+                fontSize = 10.sp,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.SemiBold,
                 color = if (uiState.isAmbientSoundActive) GoblinAccentWarm else GoblinTextTertiary
