@@ -137,7 +137,7 @@ fun HeroSection(
                 style = SpanStyle(
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 22.sp,
+                    fontSize = 28.sp,
                     color = Color.Black,
                     textDecoration = TextDecoration.Underline
                 )
@@ -224,9 +224,9 @@ fun HeroSection(
                         style = TextStyle(
                             fontFamily = FontFamily.Serif,
                             fontWeight = FontWeight.Light,
-                            fontSize = 22.sp,
-                            lineHeight = 30.sp,
-                            letterSpacing = (-0.2).sp,
+                            fontSize = 28.sp,
+                            lineHeight = 36.sp,
+                            letterSpacing = (-0.3).sp,
                             color = Color.Black
                         ),
                         modifier = Modifier.testTag("hero_heading_text"),
@@ -242,9 +242,9 @@ fun HeroSection(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // 3. DESCRIPTIONS (Primary & Small Sub-description)
+                // 3. DESCRIPTIONS (Organized in two clean lines with site's primary serif font)
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -252,24 +252,24 @@ fun HeroSection(
                         .alpha(descAlpha.value),
                     verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    // Primary focus areas in pure black
+                    // Line 1
                     Text(
-                        text = "Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh.",
+                        text = "Landscapes, documentary, rural, wildlife, nature, and visual storytelling photography based in Habiganj, Bangladesh.",
                         fontFamily = FontFamily.Serif,
-                        fontSize = 13.sp,
-                        lineHeight = 18.sp,
+                        fontSize = 14.5.sp,
+                        lineHeight = 20.sp,
                         fontWeight = FontWeight.Normal,
                         color = Color.Black
                     )
 
-                    // Small description in dark charcoal/black
+                    // Line 2
                     Text(
-                        text = "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 10.5.sp,
-                        lineHeight = 15.sp,
-                        letterSpacing = 0.2.sp,
-                        color = Color(0xFF333333)
+                        text = "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving.",
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 14.5.sp,
+                        lineHeight = 20.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color(0xFF2B2B2B)
                     )
                 }
 
