@@ -16,19 +16,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 enum class NavigationSection(val label: String, val routeKey: String) {
-    PHOTOS("Photos", "photos"),
-    ALBUMS("Albums", "albums"),
-    TOP10("#TOP 10", "top10"),
-    JOURNAL("Journal", "journal"),
-    ABOUT("About", "about"),
-    CONTACT("Contact", "contact"),
-    CURATION("Saved", "curation"),
-    ADMIN("Admin", "admin");
-
-    companion object {
-        val WORK = PHOTOS
-        val PROJECTS = ALBUMS
-    }
+    WORK("WORK", "work"),
+    PROJECTS("PROJECTS", "projects"),
+    JOURNAL("JOURNAL", "journal"),
+    ABOUT("ABOUT", "about"),
+    CONTACT("CONTACT", "contact"),
+    CURATION("SAVED", "curation"),
+    ADMIN("ADMIN", "admin")
 }
 
 enum class AdminTab(val label: String, val iconLabel: String) {

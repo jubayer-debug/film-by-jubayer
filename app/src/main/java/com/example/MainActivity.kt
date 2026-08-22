@@ -138,7 +138,7 @@ fun GoblinPortfolioApp(
                         // Primary Section Views
                         else -> {
                             when (uiState.activeSection) {
-                                NavigationSection.PHOTOS, NavigationSection.WORK -> {
+                                NavigationSection.WORK -> {
                                     HomeScreen(
                                         uiState = uiState,
                                         onPhotoClick = { viewModel.openLightbox(it) },
@@ -152,21 +152,7 @@ fun GoblinPortfolioApp(
                                     )
                                 }
 
-                                NavigationSection.TOP10 -> {
-                                    HomeScreen(
-                                        uiState = uiState.copy(selectedCategory = com.example.data.models.PhotoCategory.ALL),
-                                        onPhotoClick = { viewModel.openLightbox(it) },
-                                        onProjectClick = { viewModel.openProject(it) },
-                                        onCategorySelect = { viewModel.selectCategory(it) },
-                                        onSortOrderChange = { viewModel.setSortOrder(it) },
-                                        onSearchQueryChange = { viewModel.setSearchQuery(it) },
-                                        onResetFilters = { viewModel.resetFilters() },
-                                        onToggleFavorite = { viewModel.toggleFavorite(it) },
-                                        onNavigate = { viewModel.navigateTo(it) }
-                                    )
-                                }
-
-                                NavigationSection.ALBUMS, NavigationSection.PROJECTS -> {
+                                NavigationSection.PROJECTS -> {
                                     ProjectsScreen(
                                         uiState = uiState,
                                         onProjectClick = { viewModel.openProject(it) },

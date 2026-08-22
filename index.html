@@ -156,30 +156,19 @@
       </a>
 
       <!-- Right Header Section: Nav Menu + Social Line Icons + Utilities -->
-      <div class="flex items-center gap-3 sm:gap-4 md:gap-6 ml-auto">
+      <div class="flex items-center gap-4 md:gap-6 lg:gap-8 ml-auto">
         
-        <!-- Desktop Nav Links (Visually Quiet, Small Typography with Generous Letter Spacing & Tiny Line Animation) -->
-        <nav class="hidden md:flex items-center gap-6 lg:gap-8 text-[11px] font-medium tracking-[0.22em] uppercase text-gallery-500">
-          <a href="#work" onclick="navigateTo('photos')" class="nav-link relative py-1.5 hover:text-gallery-950 transition-all duration-200 group active" data-section="photos">
-            <span>Photos</span>
-            <span class="nav-line absolute bottom-0 left-0 w-0 h-[1.5px] bg-gallery-900 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
+        <!-- Desktop Nav Links (Right-Aligned) -->
+        <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-xs font-medium tracking-[0.18em] uppercase text-gallery-600">
+          <a href="#work" onclick="navigateTo('work')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="work">Work</a>
+          <a href="#projects" onclick="navigateTo('projects')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="projects">Projects</a>
+          <a href="#journal" onclick="navigateTo('journal')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="journal">Journal</a>
+          <a href="#curation" onclick="navigateTo('curation')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent flex items-center gap-1.5" data-section="curation">
+            <span>Saved</span>
+            <span id="saved-badge" class="hidden px-1.5 py-0.2 bg-gallery-900 text-white text-[9px] rounded-full font-mono">0</span>
           </a>
-          <a href="#projects" onclick="navigateTo('albums')" class="nav-link relative py-1.5 hover:text-gallery-950 transition-all duration-200 group" data-section="albums">
-            <span>Albums</span>
-            <span class="nav-line absolute bottom-0 left-0 w-0 h-[1.5px] bg-gallery-900 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
-          </a>
-          <a href="#work" onclick="navigateTo('top10')" class="nav-link relative py-1.5 hover:text-gallery-950 transition-all duration-200 group" data-section="top10">
-            <span>#TOP 10</span>
-            <span class="nav-line absolute bottom-0 left-0 w-0 h-[1.5px] bg-gallery-900 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
-          </a>
-          <a href="#journal" onclick="navigateTo('journal')" class="nav-link relative py-1.5 hover:text-gallery-950 transition-all duration-200 group" data-section="journal">
-            <span>Journal</span>
-            <span class="nav-line absolute bottom-0 left-0 w-0 h-[1.5px] bg-gallery-900 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
-          </a>
-          <a href="#about" onclick="navigateTo('about')" class="nav-link relative py-1.5 hover:text-gallery-950 transition-all duration-200 group" data-section="about">
-            <span>About</span>
-            <span class="nav-line absolute bottom-0 left-0 w-0 h-[1.5px] bg-gallery-900 transition-all duration-300 group-hover:w-full group-[.active]:w-full"></span>
-          </a>
+          <a href="#about" onclick="navigateTo('about')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="about">About</a>
+          <a href="#contact" onclick="navigateTo('contact')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="contact">Contact</a>
         </nav>
 
         <!-- Social Icons (Line Version with active links beside menu) -->
@@ -219,132 +208,107 @@
 
         <!-- Utility Actions (Atmosphere, Audio, Admin, Mobile Toggle) -->
         <div class="flex items-center gap-1 sm:gap-2 border-l border-gallery-200/90 pl-3">
-          <!-- Atmosphere Controls Dropdown -->
-          <div class="relative hidden sm:block">
-            <button id="atmosphere-btn" onclick="toggleDropdown('atmosphere-dropdown')" class="p-2 sm:px-3 sm:py-1.5 rounded border border-gallery-300/80 bg-white/80 hover:bg-white text-gallery-700 text-xs flex items-center gap-1.5 transition-all shadow-sm" title="Atmospheric Darkroom Settings">
-              <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
-              <span class="hidden sm:inline font-mono text-[10px] tracking-wider uppercase">Darkroom</span>
+        <!-- Atmosphere Controls Dropdown -->
+        <div class="relative">
+          <button id="atmosphere-btn" onclick="toggleDropdown('atmosphere-dropdown')" class="p-2 sm:px-3 sm:py-1.5 rounded border border-gallery-300/80 bg-white/80 hover:bg-white text-gallery-700 text-xs flex items-center gap-1.5 transition-all shadow-sm" title="Atmospheric Darkroom Settings">
+            <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline font-mono text-[10px] tracking-wider uppercase">Darkroom</span>
+          </button>
+
+          <!-- Atmosphere Dropdown Menu -->
+          <div id="atmosphere-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gallery-200 p-3 z-50 font-sans text-xs">
+            <div class="text-[10px] font-mono text-gallery-400 uppercase tracking-widest mb-2 pb-1 border-b border-gallery-100">
+              Atmospheric Mode
+            </div>
+            
+            <!-- Monochrome Toggle -->
+            <button onclick="toggleMonochrome()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
+              <div class="flex items-center gap-2">
+                <i data-lucide="sun-medium" class="w-3.5 h-3.5 text-gallery-500"></i>
+                <span>Monochrome (B&W)</span>
+              </div>
+              <span id="mono-status" class="font-mono text-[10px] text-gallery-400">OFF</span>
             </button>
 
-            <!-- Atmosphere Dropdown Menu -->
-            <div id="atmosphere-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gallery-200 p-3 z-50 font-sans text-xs">
-              <div class="text-[10px] font-mono text-gallery-400 uppercase tracking-widest mb-2 pb-1 border-b border-gallery-100">
-                Atmospheric Mode
+            <!-- Film Grain Toggle -->
+            <button onclick="toggleGrain()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
+              <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-gallery-500"></i>
+                <span>35mm Film Grain</span>
               </div>
-              
-              <!-- Monochrome Toggle -->
-              <button onclick="toggleMonochrome()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="sun-medium" class="w-3.5 h-3.5 text-gallery-500"></i>
-                  <span>Monochrome (B&W)</span>
-                </div>
-                <span id="mono-status" class="font-mono text-[10px] text-gallery-400">OFF</span>
-              </button>
+              <span id="grain-status" class="font-mono text-[10px] text-accent-warm font-semibold">ON</span>
+            </button>
 
-              <!-- Film Grain Toggle -->
-              <button onclick="toggleGrain()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-gallery-500"></i>
-                  <span>35mm Film Grain</span>
-                </div>
-                <span id="grain-status" class="font-mono text-[10px] text-accent-warm font-semibold">ON</span>
-              </button>
-
-              <!-- Monsoon Ambience Audio Toggle -->
-              <button onclick="toggleAudio()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
-                <div class="flex items-center gap-2">
-                  <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gallery-500"></i>
-                  <span>Monsoon Soundscape</span>
-                </div>
-                <span id="audio-status" class="font-mono text-[10px] text-gallery-400">MUTED</span>
-              </button>
-            </div>
+            <!-- Monsoon Ambience Audio Toggle -->
+            <button onclick="toggleAudio()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
+              <div class="flex items-center gap-2">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gallery-500"></i>
+                <span>Monsoon Soundscape</span>
+              </div>
+              <span id="audio-status" class="font-mono text-[10px] text-gallery-400">MUTED</span>
+            </button>
           </div>
-
-          <!-- Mobile [MENU] Button -->
-          <button onclick="toggleMobileMenu()" class="md:hidden flex items-center gap-1.5 px-3 py-1.5 rounded border border-gallery-300/80 bg-white/80 hover:bg-white text-gallery-900 text-[11px] font-sans font-semibold tracking-widest uppercase transition-all shadow-sm">
-            <span>MENU</span>
-            <i data-lucide="menu" class="w-3.5 h-3.5"></i>
-          </button>
         </div>
 
+        <!-- Admin CMS Link -->
+        <a href="#admin" onclick="navigateTo('admin')" class="p-2 rounded hover:bg-gallery-200/60 text-gallery-600 hover:text-accent-warm transition-colors" title="Admin Studio">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded hover:bg-gallery-200 text-gallery-900">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
       </div>
 
     </div>
 
-    <!-- Mobile Drawer Overlay: Full-Screen Dark Overlay -->
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-[#0E0D0C] text-[#FAF7F0] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-gallery-800/80 pb-4">
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-[#FAF9F6] p-6 flex flex-col justify-between">
+      <div class="flex items-center justify-between border-b border-gallery-200 pb-4">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded border border-gallery-700/80 bg-gallery-900 text-white font-serif font-bold flex items-center justify-center text-sm">K</div>
-          <div>
-            <div class="font-serif font-bold text-base tracking-widest text-[#FAF7F0]">KHONCHITRO</div>
-            <div class="text-[8px] font-sans tracking-[0.2em] text-gallery-400 uppercase">Archive • Dhaka</div>
-          </div>
+          <div class="w-8 h-8 rounded bg-gallery-900 text-white font-serif font-bold flex items-center justify-center">K</div>
+          <div class="font-serif font-bold text-lg">KHONCHITRO</div>
         </div>
-        <button onclick="toggleMobileMenu()" class="flex items-center gap-1.5 px-3 py-1.5 rounded border border-gallery-800 bg-[#181715] text-[#FAF7F0] text-[10px] font-sans font-semibold tracking-widest uppercase hover:bg-gallery-900 transition-colors">
-          <span>CLOSE</span>
-          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        <button onclick="toggleMobileMenu()" class="p-2 text-gallery-600 hover:text-gallery-900">
+          <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
 
-      <!-- Large, Elegant, Vertically Spaced Menu Items -->
-      <nav class="flex flex-col gap-6 sm:gap-7 text-2xl sm:text-3xl font-serif tracking-wider py-8">
-        <a href="#work" onclick="navigateTo('photos'); toggleMobileMenu()" class="flex items-baseline gap-4 hover:text-white transition-colors group">
-          <span class="font-mono text-xs tracking-widest text-gallery-600 group-hover:text-gallery-400">01</span>
-          <span class="text-[#FAF7F0] group-hover:translate-x-1 transition-transform">Photos</span>
-        </a>
-        <a href="#projects" onclick="navigateTo('albums'); toggleMobileMenu()" class="flex items-baseline gap-4 hover:text-white transition-colors group">
-          <span class="font-mono text-xs tracking-widest text-gallery-600 group-hover:text-gallery-400">02</span>
-          <span class="text-gallery-300 group-hover:text-[#FAF7F0] group-hover:translate-x-1 transition-transform">Albums</span>
-        </a>
-        <a href="#work" onclick="navigateTo('top10'); toggleMobileMenu()" class="flex items-baseline gap-4 hover:text-white transition-colors group">
-          <span class="font-mono text-xs tracking-widest text-gallery-600 group-hover:text-gallery-400">03</span>
-          <span class="text-gallery-300 group-hover:text-[#FAF7F0] group-hover:translate-x-1 transition-transform">#TOP 10</span>
-        </a>
-        <a href="#journal" onclick="navigateTo('journal'); toggleMobileMenu()" class="flex items-baseline gap-4 hover:text-white transition-colors group">
-          <span class="font-mono text-xs tracking-widest text-gallery-600 group-hover:text-gallery-400">04</span>
-          <span class="text-gallery-300 group-hover:text-[#FAF7F0] group-hover:translate-x-1 transition-transform">Journal</span>
-        </a>
-        <a href="#about" onclick="navigateTo('about'); toggleMobileMenu()" class="flex items-baseline gap-4 hover:text-white transition-colors group">
-          <span class="font-mono text-xs tracking-widest text-gallery-600 group-hover:text-gallery-400">05</span>
-          <span class="text-gallery-300 group-hover:text-[#FAF7F0] group-hover:translate-x-1 transition-transform">About</span>
-        </a>
-
-        <!-- Secondary Quiet Links -->
-        <div class="pt-4 flex items-center gap-4 text-xs font-sans tracking-widest uppercase text-gallery-500 border-t border-gallery-800/60 mt-2">
-          <a href="#curation" onclick="navigateTo('curation'); toggleMobileMenu()" class="hover:text-white transition-colors">Saved</a>
-          <span>•</span>
-          <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu()" class="hover:text-white transition-colors">Contact</a>
-          <span>•</span>
-          <a href="#admin" onclick="navigateTo('admin'); toggleMobileMenu()" class="hover:text-white transition-colors text-accent-warm">Studio CMS</a>
-        </div>
+      <nav class="flex flex-col gap-6 text-xl font-serif tracking-wide py-8">
+        <a href="#work" onclick="navigateTo('work'); toggleMobileMenu()" class="hover:text-accent-warm">Work</a>
+        <a href="#projects" onclick="navigateTo('projects'); toggleMobileMenu()" class="hover:text-accent-warm">Project Series</a>
+        <a href="#journal" onclick="navigateTo('journal'); toggleMobileMenu()" class="hover:text-accent-warm">Field Journal</a>
+        <a href="#curation" onclick="navigateTo('curation'); toggleMobileMenu()" class="hover:text-accent-warm">Saved Curation</a>
+        <a href="#about" onclick="navigateTo('about'); toggleMobileMenu()" class="hover:text-accent-warm">About & Exhibitions</a>
+        <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu()" class="hover:text-accent-warm">Contact & Budget Estimator</a>
+        <a href="#admin" onclick="navigateTo('admin'); toggleMobileMenu()" class="text-accent-warm font-mono text-sm uppercase tracking-widest pt-4">Admin CMS</a>
       </nav>
 
       <!-- Mobile Social Icons & Location Specs -->
-      <div class="border-t border-gallery-800/80 pt-4 flex flex-col gap-3">
-        <div class="flex items-center justify-between text-gallery-400">
-          <span class="text-[10px] font-mono uppercase tracking-widest text-gallery-500">Connect</span>
+      <div class="border-t border-gallery-200 pt-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between text-gallery-500">
+          <span class="text-[10px] font-mono uppercase tracking-widest text-gallery-400">Social Channels</span>
           <div class="flex items-center gap-3">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-white transition-colors" title="Facebook" aria-label="Facebook">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-900 transition-colors" title="Facebook" aria-label="Facebook">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
               </svg>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-white transition-colors" title="Instagram" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-900 transition-colors" title="Instagram" aria-label="Instagram">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
               </svg>
             </a>
-            <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-white transition-colors" title="Pexels Photography" aria-label="Pexels">
+            <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-900 transition-colors" title="Pexels Photography" aria-label="Pexels">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="18" height="18" x="3" y="3" rx="3.5"/>
                 <path d="M9 8.5h4.5a2.5 2.5 0 0 1 0 5H9v4.5"/>
               </svg>
             </a>
-            <a href="mailto:ijubayer1071@gmail.com" class="p-1.5 hover:text-white transition-colors" title="Email" aria-label="Email">
+            <a href="mailto:ijubayer1071@gmail.com" class="p-1.5 hover:text-gallery-900 transition-colors" title="Email" aria-label="Email">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="16" x="2" y="4" rx="2.5"/>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -352,8 +316,8 @@
             </a>
           </div>
         </div>
-        <div class="text-[10px] font-mono text-gallery-500 uppercase tracking-wider">
-          DHAKA, BANGLADESH • 23.8° N • 35MM ARCHIVE
+        <div class="text-[10px] font-mono text-gallery-400 uppercase tracking-wider">
+          DHAKA, BANGLADESH • 35MM MONOCHROME & COLOR ARCHIVE
         </div>
       </div>
     </div>

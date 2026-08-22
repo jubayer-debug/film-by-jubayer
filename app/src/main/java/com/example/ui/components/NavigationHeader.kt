@@ -171,33 +171,30 @@ private fun DesktopNavigationRow(
 
         // Right Container: Horizontal Nav Links (Right-Aligned) + Social Line Icons + Darkroom Controls
         Row(
-            horizontalArrangement = Arrangement.spacedBy(18.dp),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Horizontal Navigation Links (Visually Quiet, Small Typography with Generous Letter Spacing)
+            // Horizontal Navigation Links
             Row(
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(22.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                val primarySections = listOf(
-                    NavigationSection.PHOTOS to "Photos",
-                    NavigationSection.ALBUMS to "Albums",
-                    NavigationSection.TOP10 to "#TOP 10",
-                    NavigationSection.JOURNAL to "Journal",
-                    NavigationSection.ABOUT to "About"
+                val sections = listOf(
+                    NavigationSection.WORK,
+                    NavigationSection.PROJECTS,
+                    NavigationSection.JOURNAL,
+                    NavigationSection.ABOUT,
+                    NavigationSection.CONTACT,
+                    NavigationSection.CURATION,
+                    NavigationSection.ADMIN
                 )
 
-                primarySections.forEach { (section, displayLabel) ->
+                sections.forEach { section ->
                     val isActive = uiState.activeSection == section
                     val targetColor by animateColorAsState(
-                        targetValue = if (isActive) GoblinTextPrimary else GoblinTextTertiary.copy(alpha = 0.85f),
-                        animationSpec = tween(220),
+                        targetValue = if (isActive) GoblinTextPrimary else GoblinTextTertiary,
+                        animationSpec = tween(200),
                         label = "nav_color_${section.name}"
-                    )
-                    val underlineWidth by androidx.compose.animation.core.animateDpAsState(
-                        targetValue = if (isActive) 14.dp else 0.dp,
-                        animationSpec = tween(240),
-                        label = "nav_line_${section.name}"
                     )
 
                     Column(
@@ -212,20 +209,31 @@ private fun DesktopNavigationRow(
                             .padding(vertical = 4.dp, horizontal = 4.dp)
                             .testTag("nav_link_${section.routeKey}")
                     ) {
-                        Text(
-                            text = displayLabel,
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 11.5.sp,
-                            fontWeight = if (isActive) FontWeight.Medium else FontWeight.Normal,
-                            letterSpacing = 2.4.sp,
-                            color = targetColor
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = section.label,
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 11.5.sp,
+                                fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
+                                letterSpacing = 2.0.sp,
+                                color = targetColor
+                            )
+                            if (section == NavigationSection.CURATION && uiState.favoritePhotoIds.isNotEmpty()) {
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Text(
+                                    text = "[${uiState.favoritePhotoIds.size}]",
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (isActive) GoblinAccentWarm else GoblinTextTertiary
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
                         Box(
                             modifier = Modifier
-                                .width(underlineWidth)
-                                .height(1.dp)
-                                .background(GoblinTextPrimary.copy(alpha = 0.9f))
+                                .width(if (isActive) 16.dp else 0.dp)
+                                .height(1.5.dp)
+                                .background(GoblinTextPrimary)
                         )
                     }
                 }
@@ -235,7 +243,7 @@ private fun DesktopNavigationRow(
             Box(
                 modifier = Modifier
                     .width(1.dp)
-                    .height(14.dp)
+                    .height(16.dp)
                     .background(GoblinBorderSubtle)
             )
 
@@ -346,7 +354,7 @@ private fun DesktopNavigationRow(
 }
 
 /**
- * Mobile Compact Navigation Bar: [MONOGRAM] [MENU]
+ * Mobile Compact Navigation Bar
  */
 @Composable
 private fun MobileNavigationRow(
@@ -361,44 +369,91 @@ private fun MobileNavigationRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left: [MONOGRAM]
+        // Left: Khonchitro Monogram & Brand
         KhonchitroBrandLogo(
-            onClick = { onNavigate(NavigationSection.PHOTOS) }
+            onClick = { onNavigate(NavigationSection.WORK) }
         )
 
-        // Right: [MENU] Button
-        Box(
-            modifier = Modifier
-                .heightIn(min = 48.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) { onToggleMobileMenu() }
-                .padding(horizontal = 4.dp, vertical = 6.dp)
-                .testTag("menu_toggle_button"),
-            contentAlignment = Alignment.Center
+        // Right: Atmosphere + Saved + Admin + Hamburger Toggle (All with responsive 44dp touch targets)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            // Atmosphere Toggle Button
+            IconButton(
+                onClick = onToggleAtmosphereMenu,
                 modifier = Modifier
-                    .border(0.75.dp, GoblinBorderSubtle, RoundedCornerShape(3.dp))
-                    .background(Color.White.copy(alpha = 0.8f), RoundedCornerShape(3.dp))
-                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                    .size(44.dp)
+                    .testTag("atmosphere_button")
             ) {
-                Text(
-                    text = "MENU",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 10.5.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = 2.0.sp,
-                    color = GoblinTextPrimary
+                Icon(
+                    imageVector = if (uiState.isMonochromeMode) Icons.Outlined.Contrast else Icons.Default.FilterVintage,
+                    contentDescription = "Atmospheric modes",
+                    tint = if (uiState.isMonochromeMode || uiState.isAmbientSoundActive) GoblinTextPrimary else GoblinTextTertiary,
+                    modifier = Modifier.size(19.dp)
                 )
+            }
+
+            // Saved Exhibition Curation Button
+            IconButton(
+                onClick = { onNavigate(NavigationSection.CURATION) },
+                modifier = Modifier
+                    .size(44.dp)
+                    .testTag("saved_curation_button")
+            ) {
+                Box(contentAlignment = Alignment.TopEnd) {
+                    Icon(
+                        imageVector = if (uiState.favoritePhotoIds.isNotEmpty()) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                        contentDescription = "Saved Exhibition",
+                        tint = if (uiState.activeSection == NavigationSection.CURATION) GoblinTextPrimary else GoblinTextTertiary,
+                        modifier = Modifier.size(19.dp)
+                    )
+                    if (uiState.favoritePhotoIds.isNotEmpty()) {
+                        Box(
+                            modifier = Modifier
+                                .size(12.dp)
+                                .clip(CircleShape)
+                                .background(GoblinTextPrimary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "${uiState.favoritePhotoIds.size}",
+                                fontSize = 7.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Admin CMS Button
+            IconButton(
+                onClick = { onNavigate(NavigationSection.ADMIN) },
+                modifier = Modifier
+                    .size(44.dp)
+                    .testTag("admin_nav_button")
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Tune,
+                    contentDescription = "Admin CMS",
+                    tint = if (uiState.activeSection == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextTertiary,
+                    modifier = Modifier.size(19.dp)
+                )
+            }
+
+            // Full-Screen Mobile Menu Overlay Toggle
+            IconButton(
+                onClick = onToggleMobileMenu,
+                modifier = Modifier
+                    .size(44.dp)
+                    .testTag("menu_toggle_button")
+            ) {
                 Icon(
                     imageVector = if (uiState.isMobileMenuOpen) Icons.Default.Close else Icons.Default.Menu,
                     contentDescription = "Menu Overlay",
                     tint = GoblinTextPrimary,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(22.dp)
                 )
             }
         }
