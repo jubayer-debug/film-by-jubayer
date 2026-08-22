@@ -12,10 +12,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,35 +41,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.GoblinAccentWarm
-import com.example.ui.theme.GoblinBg
-import com.example.ui.theme.GoblinBgSecondary
-import com.example.ui.theme.GoblinBorderSubtle
-import com.example.ui.theme.GoblinTextPrimary
-import com.example.ui.theme.GoblinTextSecondary
-import com.example.ui.theme.GoblinTextTertiary
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Editorial Hero Section for Jubayer Ahmed's Visual Photography Archive
+ * Editorial Hero Section with White Background and All Black Typography
  *
  * Displays:
- * - Headline: "Here we go... With the clicks of Jubayer Ahmed." (with "Jubayer Ahmed" linked to About page)
+ * - Headline: "Here we go... With the clicks of Jubayer Ahmed." (with "Jubayer Ahmed" in cursive/display font with increased size, linked to About page)
  * - Description: "Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh."
  * - Description (small): "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving"
  */
@@ -137,16 +128,19 @@ fun HeroSection(
         label = "bounce"
     )
 
-    // Build the hero title with clickable "Jubayer Ahmed"
+    // Build the hero title with distinct font & increased size for clickable "Jubayer Ahmed"
     val annotatedHeading = remember {
         buildAnnotatedString {
             append("Here we go... With the clicks of ")
             pushStringAnnotation(tag = "ABOUT_LINK", annotation = "about")
             withStyle(
                 style = SpanStyle(
-                    color = GoblinAccentWarm,
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Normal
+                    fontFamily = FontFamily.Cursive,
+                    fontStyle = FontStyle.Italic,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 38.sp,
+                    color = Color.Black,
+                    textDecoration = TextDecoration.Underline
                 )
             ) {
                 append("Jubayer Ahmed")
@@ -157,7 +151,7 @@ fun HeroSection(
     }
 
     Surface(
-        color = GoblinBg,
+        color = Color.White,
         modifier = modifier
             .fillMaxWidth()
             .testTag("hero_section")
@@ -165,15 +159,7 @@ fun HeroSection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xFF141312),
-                            GoblinBg,
-                            Color(0xFF0F0E0D)
-                        )
-                    )
-                )
+                .background(Color.White)
                 .statusBarsPadding()
                 .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
@@ -194,32 +180,33 @@ fun HeroSection(
                             modifier = Modifier
                                 .size(7.dp)
                                 .clip(CircleShape)
-                                .background(GoblinAccentWarm)
+                                .background(Color.Black)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "HABIGANJ, BANGLADESH • VISUAL ARCHIVE",
                             fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.Medium,
+                            fontWeight = FontWeight.SemiBold,
                             fontSize = 10.sp,
                             letterSpacing = 2.4.sp,
-                            color = GoblinAccentWarm
+                            color = Color.Black
                         )
                     }
 
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
-                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-                            .background(GoblinBgSecondary)
+                            .border(1.dp, Color(0xFFE5E5E5), RoundedCornerShape(4.dp))
+                            .background(Color(0xFFF9F9F9))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(
                             text = "EST. 2024",
                             fontFamily = FontFamily.Monospace,
+                            fontWeight = FontWeight.Medium,
                             fontSize = 8.5.sp,
                             letterSpacing = 1.4.sp,
-                            color = GoblinTextTertiary
+                            color = Color.Black
                         )
                     }
                 }
@@ -237,11 +224,11 @@ fun HeroSection(
                         text = annotatedHeading,
                         style = TextStyle(
                             fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Light,
-                            fontSize = 32.sp,
-                            lineHeight = 42.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 30.sp,
+                            lineHeight = 44.sp,
                             letterSpacing = (-0.5).sp,
-                            color = GoblinTextPrimary
+                            color = Color.Black
                         ),
                         modifier = Modifier.testTag("hero_heading_text"),
                         onClick = { offset ->
@@ -266,29 +253,30 @@ fun HeroSection(
                         .alpha(descAlpha.value),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    // Primary focus areas
+                    // Primary focus areas in pure black
                     Text(
                         text = "Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh.",
                         fontFamily = FontFamily.Serif,
                         fontSize = 15.sp,
                         lineHeight = 22.sp,
-                        color = GoblinTextSecondary
+                        fontWeight = FontWeight.Normal,
+                        color = Color.Black
                     )
 
-                    // Small description
+                    // Small description in dark charcoal/black
                     Text(
                         text = "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving",
                         fontFamily = FontFamily.Monospace,
                         fontSize = 11.5.sp,
                         lineHeight = 17.sp,
                         letterSpacing = 0.4.sp,
-                        color = GoblinTextTertiary
+                        color = Color(0xFF2B2B2B)
                     )
                 }
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // 4. ACTION BUTTONS & EXPLORE TRIGGER
+                // 4. ACTION BUTTONS
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -297,11 +285,11 @@ fun HeroSection(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Explore Archive button
+                    // Explore Archive button (Black filled with white text)
                     Row(
                         modifier = Modifier
                             .clip(RoundedCornerShape(6.dp))
-                            .background(GoblinTextPrimary)
+                            .background(Color.Black)
                             .clickable { onScrollDown() }
                             .padding(horizontal = 18.dp, vertical = 12.dp)
                             .testTag("explore_archive_btn"),
@@ -313,25 +301,25 @@ fun HeroSection(
                             fontSize = 10.5.sp,
                             fontWeight = FontWeight.SemiBold,
                             letterSpacing = 1.8.sp,
-                            color = GoblinBg
+                            color = Color.White
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
                             imageVector = Icons.Default.ArrowDownward,
                             contentDescription = "Scroll to gallery",
-                            tint = GoblinBg,
+                            tint = Color.White,
                             modifier = Modifier
                                 .size(13.dp)
                                 .offset(y = bounceOffset.dp)
                         )
                     }
 
-                    // About Jubayer button
+                    // About Jubayer button (Black border & black text)
                     Row(
                         modifier = Modifier
                             .clip(RoundedCornerShape(6.dp))
-                            .border(1.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
-                            .background(GoblinBgSecondary)
+                            .border(1.dp, Color(0xFFCCCCCC), RoundedCornerShape(6.dp))
+                            .background(Color(0xFFFAFAFA))
                             .clickable { onNavigateToAbout() }
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                             .testTag("about_jubayer_hero_btn"),
@@ -343,13 +331,13 @@ fun HeroSection(
                             fontSize = 10.5.sp,
                             fontWeight = FontWeight.Medium,
                             letterSpacing = 1.6.sp,
-                            color = GoblinTextSecondary
+                            color = Color.Black
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = "Go to About page",
-                            tint = GoblinAccentWarm,
+                            tint = Color.Black,
                             modifier = Modifier.size(12.dp)
                         )
                     }
