@@ -28,6 +28,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -35,11 +37,18 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -70,6 +79,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -123,73 +137,92 @@ fun AdminScreen(
             .statusBarsPadding()
             .testTag("admin_screen_root")
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            // 1. ADMIN HEADER BAR
-            AdminHeaderBar(
-                onExitAdmin = { onNavigate(NavigationSection.WORK) }
+        if (!uiState.isAdminAuthenticated) {
+            // ADMIN AUTHENTICATION GATE
+            AdminLoginGate(
+                defaultEmail = uiState.adminEmail,
+                errorMessage = uiState.adminAuthError,
+                onLogin = { email, pass -> viewModel.loginAdmin(email, pass) },
+                onClearError = { viewModel.clearAdminAuthError() },
+                onExit = { onNavigate(NavigationSection.WORK) }
             )
+        } else {
+            Column(modifier = Modifier.fillMaxSize()) {
 
-            // 2. ADMIN TABS BAR
-            AdminTabsBar(
-                currentTab = uiState.adminTab,
-                onSelectTab = { viewModel.selectAdminTab(it) },
-                photoCount = photographs.size,
-                projectCount = projects.size,
-                journalCount = journalEntries.size
-            )
+                // 1. ADMIN HEADER BAR
+                AdminHeaderBar(
+                    adminEmail = uiState.adminEmail,
+                    onLockSession = { viewModel.lockAdminSession() },
+                    onExitAdmin = { onNavigate(NavigationSection.WORK) }
+                )
 
-            // 3. TAB CONTENT
-            Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
-                when (uiState.adminTab) {
-                    AdminTab.PHOTOS -> {
-                        AdminPhotosTab(
-                            photographs = photographs,
-                            searchQuery = adminSearchQuery,
-                            selectedCategory = adminCategoryFilter,
-                            onSearchChange = { adminSearchQuery = it },
-                            onCategoryChange = { adminCategoryFilter = it },
-                            onAddPhoto = { viewModel.startAddPhoto() },
-                            onEditPhoto = { viewModel.startEditPhoto(it) },
-                            onDeletePhoto = { photoPendingDeleteId = it.id },
-                            onViewPhoto = {
-                                viewModel.openLightbox(it)
-                            }
-                        )
-                    }
-                    AdminTab.PROJECTS -> {
-                        AdminProjectsTab(
-                            projects = projects,
-                            onAddProject = { viewModel.startAddProject() },
-                            onEditProject = { viewModel.startEditProject(it) },
-                            onDeleteProject = { projectPendingDeleteId = it.id }
-                        )
-                    }
-                    AdminTab.JOURNAL -> {
-                        AdminJournalTab(
-                            journalEntries = journalEntries,
-                            onAddJournal = { viewModel.startAddJournal() },
-                            onEditJournal = { viewModel.startEditJournal(it) },
-                            onDeleteJournal = { journalPendingDeleteId = it.id }
-                        )
-                    }
-                    AdminTab.EXHIBITIONS -> {
-                        AdminExhibitionsTab(
-                            exhibitions = exhibitions,
-                            onAddExhibition = { viewModel.startAddExhibition() },
-                            onEditExhibition = { index, ex -> viewModel.startEditExhibition(index, ex) },
-                            onDeleteExhibition = { viewModel.deleteExhibition(it) }
-                        )
-                    }
-                    AdminTab.TOOLS -> {
-                        AdminToolsTab(
-                            photoCount = photographs.size,
-                            projectCount = projects.size,
-                            journalCount = journalEntries.size,
-                            exhibitionCount = exhibitions.size,
-                            onResetArchive = { showResetConfirmDialog = true },
-                            onAddSamplePhoto = { viewModel.appendEditorialPresets() }
-                        )
+                // 2. ADMIN TABS BAR
+                AdminTabsBar(
+                    currentTab = uiState.adminTab,
+                    onSelectTab = { viewModel.selectAdminTab(it) },
+                    photoCount = photographs.size,
+                    projectCount = projects.size,
+                    journalCount = journalEntries.size
+                )
+
+                // 3. TAB CONTENT
+                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    when (uiState.adminTab) {
+                        AdminTab.PHOTOS -> {
+                            AdminPhotosTab(
+                                photographs = photographs,
+                                searchQuery = adminSearchQuery,
+                                selectedCategory = adminCategoryFilter,
+                                onSearchChange = { adminSearchQuery = it },
+                                onCategoryChange = { adminCategoryFilter = it },
+                                onAddPhoto = { viewModel.startAddPhoto() },
+                                onEditPhoto = { viewModel.startEditPhoto(it) },
+                                onDeletePhoto = { photoPendingDeleteId = it.id },
+                                onViewPhoto = {
+                                    viewModel.openLightbox(it)
+                                }
+                            )
+                        }
+                        AdminTab.PROJECTS -> {
+                            AdminProjectsTab(
+                                projects = projects,
+                                onAddProject = { viewModel.startAddProject() },
+                                onEditProject = { viewModel.startEditProject(it) },
+                                onDeleteProject = { projectPendingDeleteId = it.id }
+                            )
+                        }
+                        AdminTab.JOURNAL -> {
+                            AdminJournalTab(
+                                journalEntries = journalEntries,
+                                onAddJournal = { viewModel.startAddJournal() },
+                                onEditJournal = { viewModel.startEditJournal(it) },
+                                onDeleteJournal = { journalPendingDeleteId = it.id }
+                            )
+                        }
+                        AdminTab.EXHIBITIONS -> {
+                            AdminExhibitionsTab(
+                                exhibitions = exhibitions,
+                                onAddExhibition = { viewModel.startAddExhibition() },
+                                onEditExhibition = { index, ex -> viewModel.startEditExhibition(index, ex) },
+                                onDeleteExhibition = { viewModel.deleteExhibition(it) }
+                            )
+                        }
+                        AdminTab.TOOLS -> {
+                            AdminToolsTab(
+                                adminEmail = uiState.adminEmail,
+                                photoCount = photographs.size,
+                                projectCount = projects.size,
+                                journalCount = journalEntries.size,
+                                exhibitionCount = exhibitions.size,
+                                onUpdateCredentials = { newEmail, curPass, newPass ->
+                                    viewModel.updateAdminCredentials(newEmail, curPass, newPass)
+                                },
+                                onResetCredentials = { viewModel.resetAdminCredentialsToDefault() },
+                                onLockSession = { viewModel.lockAdminSession() },
+                                onResetArchive = { showResetConfirmDialog = true },
+                                onAddSamplePhoto = { viewModel.appendEditorialPresets() }
+                            )
+                        }
                     }
                 }
             }
@@ -371,23 +404,28 @@ fun AdminScreen(
 // -------------------------------------------------------------
 @Composable
 private fun AdminHeaderBar(
+    adminEmail: String,
+    onLockSession: () -> Unit,
     onExitAdmin: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color(0xFF121212))
-            .padding(horizontal = 20.dp, vertical = 14.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f, fill = false)
+            ) {
                 Box(
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(34.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(GoblinAccentWarm),
                     contentAlignment = Alignment.Center
@@ -396,11 +434,11 @@ private fun AdminHeaderBar(
                         imageVector = Icons.Default.Tune,
                         contentDescription = "Admin CMS",
                         tint = Color.White,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -408,19 +446,19 @@ private fun AdminHeaderBar(
                             text = "CONTENT STUDIO",
                             fontFamily = FontFamily.Serif,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 15.sp,
-                            letterSpacing = 2.sp,
+                            fontSize = 14.sp,
+                            letterSpacing = 1.5.sp,
                             color = Color.White
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(4.dp))
                                 .background(Color(0xFF2E7D32))
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
+                                .padding(horizontal = 5.dp, vertical = 2.dp)
                         ) {
                             Text(
-                                text = "ADMIN LIVE",
+                                text = "AUTH",
                                 fontFamily = FontFamily.SansSerif,
                                 fontSize = 8.sp,
                                 fontWeight = FontWeight.Bold,
@@ -429,41 +467,66 @@ private fun AdminHeaderBar(
                         }
                     }
                     Text(
-                        text = "FILM BY JUBAYER • ARCHIVE CURATION CMS",
-                        fontFamily = FontFamily.SansSerif,
+                        text = adminEmail,
+                        fontFamily = FontFamily.Monospace,
                         fontSize = 9.5.sp,
-                        letterSpacing = 1.2.sp,
-                        color = Color(0xFFAAAAAA)
+                        letterSpacing = 0.5.sp,
+                        color = Color(0xFFAAAAAA),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
 
-            // Exit Button
-            Row(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(18.dp))
-                    .border(0.5.dp, Color(0xFF444444), RoundedCornerShape(18.dp))
-                    .background(Color(0xFF222222))
-                    .clickable { onExitAdmin() }
-                    .padding(horizontal = 14.dp, vertical = 6.dp)
-                    .testTag("admin_exit_button"),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(14.dp)
-                )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // Actions: Lock & Exit
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(
+                    onClick = onLockSession,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF222222))
+                        .border(0.5.dp, Color(0xFF444444), CircleShape)
+                        .testTag("admin_lock_session_btn")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = "Lock Session",
+                        tint = Color(0xFFFFB74D),
+                        modifier = Modifier.size(15.dp)
+                    )
+                }
+
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = "VIEW PORTFOLIO",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 10.sp,
-                    letterSpacing = 1.5.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White
-                )
+
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(0.5.dp, Color(0xFF444444), RoundedCornerShape(16.dp))
+                        .background(Color(0xFF222222))
+                        .clickable { onExitAdmin() }
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                        .testTag("admin_exit_button"),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(13.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "GALLERY",
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 9.5.sp,
+                        letterSpacing = 1.2.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
+                }
             }
         }
     }
@@ -1218,13 +1281,25 @@ private fun AdminExhibitionsTab(
 // -------------------------------------------------------------
 @Composable
 private fun AdminToolsTab(
+    adminEmail: String,
     photoCount: Int,
     projectCount: Int,
     journalCount: Int,
     exhibitionCount: Int,
+    onUpdateCredentials: (String, String, String) -> Boolean,
+    onResetCredentials: () -> Unit,
+    onLockSession: () -> Unit,
     onResetArchive: () -> Unit,
     onAddSamplePhoto: () -> Unit
 ) {
+    var editCredentialsOpen by remember { mutableStateOf(false) }
+    var inputEmail by remember(adminEmail) { mutableStateOf(adminEmail) }
+    var currentPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var credentialFormError by remember { mutableStateOf<String?>(null) }
+    var isNewPasswordVisible by remember { mutableStateOf(false) }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -1234,7 +1309,7 @@ private fun AdminToolsTab(
         item {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "ARCHIVE STATISTICS & PRESETS",
+                text = "ARCHIVE STATISTICS & ACCESS",
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold,
                 fontSize = 11.sp,
@@ -1261,6 +1336,311 @@ private fun AdminToolsTab(
                 AdminStatCard(title = "SERIES", count = projectCount.toString(), modifier = Modifier.weight(1f))
                 AdminStatCard(title = "ESSAYS", count = journalCount.toString(), modifier = Modifier.weight(1f))
                 AdminStatCard(title = "EXHIBITS", count = exhibitionCount.toString(), modifier = Modifier.weight(1f))
+            }
+        }
+
+        // 1. CURATOR CREDENTIALS & SECURITY CARD
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("admin_security_card"),
+                shape = RoundedCornerShape(8.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                border = CardDefaults.outlinedCardBorder().copy(width = 0.5.dp)
+            ) {
+                Column(modifier = Modifier.padding(18.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                                    .background(GoblinAccentWarm.copy(alpha = 0.15f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Security,
+                                    contentDescription = null,
+                                    tint = GoblinAccentWarm,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = "ADMIN SECURITY & ACCESS",
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp,
+                                    letterSpacing = 1.2.sp,
+                                    color = GoblinTextPrimary
+                                )
+                                Text(
+                                    text = "Master credentials for Film by Jubayer Studio",
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 10.sp,
+                                    color = GoblinTextTertiary
+                                )
+                            }
+                        }
+
+                        IconButton(
+                            onClick = onLockSession,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFF5F5F3))
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Lock,
+                                contentDescription = "Lock Session",
+                                tint = GoblinAccentWarm,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+                    HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    // Current Admin Account display
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Color(0xFFF9F9F8))
+                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Column {
+                            Text(
+                                text = "CURRENT CURATOR EMAIL",
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 9.sp,
+                                letterSpacing = 1.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = GoblinTextTertiary
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = adminEmail,
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = GoblinTextPrimary
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(Color(0xFF2E7D32).copy(alpha = 0.12f))
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Text(
+                                text = "ACTIVE",
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF2E7D32)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Toggle Update Credentials Form
+                    if (!editCredentialsOpen) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Button(
+                                onClick = {
+                                    editCredentialsOpen = true
+                                    inputEmail = adminEmail
+                                    currentPassword = ""
+                                    newPassword = ""
+                                    confirmPassword = ""
+                                    credentialFormError = null
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = GoblinAccentWarm),
+                                shape = RoundedCornerShape(6.dp),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .testTag("admin_change_credentials_btn")
+                            ) {
+                                Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(14.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(text = "CHANGE EMAIL / PASSWORD", fontSize = 10.5.sp, letterSpacing = 0.8.sp)
+                            }
+
+                            OutlinedButton(
+                                onClick = onResetCredentials,
+                                shape = RoundedCornerShape(6.dp)
+                            ) {
+                                Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(14.dp))
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(text = "RESET DEFAULT", fontSize = 10.5.sp)
+                            }
+                        }
+                    } else {
+                        // Editable Form
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(Color(0xFFFAFAFA))
+                                .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
+                                .padding(14.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            Text(
+                                text = "UPDATE ADMIN CREDENTIALS",
+                                fontFamily = FontFamily.SansSerif,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 10.5.sp,
+                                letterSpacing = 1.sp,
+                                color = GoblinTextPrimary
+                            )
+
+                            if (credentialFormError != null) {
+                                Text(
+                                    text = credentialFormError ?: "",
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 11.sp,
+                                    color = Color(0xFFC62828)
+                                )
+                            }
+
+                            OutlinedTextField(
+                                value = inputEmail,
+                                onValueChange = {
+                                    inputEmail = it
+                                    credentialFormError = null
+                                },
+                                label = { Text("Admin Email Address", fontSize = 11.sp) },
+                                leadingIcon = { Icon(Icons.Default.Email, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth().testTag("admin_change_email_field"),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = GoblinAccentWarm,
+                                    unfocusedBorderColor = GoblinBorderSubtle
+                                )
+                            )
+
+                            OutlinedTextField(
+                                value = currentPassword,
+                                onValueChange = {
+                                    currentPassword = it
+                                    credentialFormError = null
+                                },
+                                label = { Text("Current Password", fontSize = 11.sp) },
+                                leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                                visualTransformation = PasswordVisualTransformation(),
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth().testTag("admin_current_pass_field"),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = GoblinAccentWarm,
+                                    unfocusedBorderColor = GoblinBorderSubtle
+                                )
+                            )
+
+                            OutlinedTextField(
+                                value = newPassword,
+                                onValueChange = {
+                                    newPassword = it
+                                    credentialFormError = null
+                                },
+                                label = { Text("New Password (min 6 characters)", fontSize = 11.sp) },
+                                leadingIcon = { Icon(Icons.Default.Key, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                                trailingIcon = {
+                                    IconButton(onClick = { isNewPasswordVisible = !isNewPasswordVisible }) {
+                                        Icon(
+                                            imageVector = if (isNewPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                            contentDescription = "Toggle Visibility",
+                                            modifier = Modifier.size(16.dp)
+                                        )
+                                    }
+                                },
+                                visualTransformation = if (isNewPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth().testTag("admin_new_pass_field"),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = GoblinAccentWarm,
+                                    unfocusedBorderColor = GoblinBorderSubtle
+                                )
+                            )
+
+                            OutlinedTextField(
+                                value = confirmPassword,
+                                onValueChange = {
+                                    confirmPassword = it
+                                    credentialFormError = null
+                                },
+                                label = { Text("Confirm New Password", fontSize = 11.sp) },
+                                leadingIcon = { Icon(Icons.Default.Key, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                                visualTransformation = if (isNewPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                singleLine = true,
+                                modifier = Modifier.fillMaxWidth().testTag("admin_confirm_pass_field"),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = GoblinAccentWarm,
+                                    unfocusedBorderColor = GoblinBorderSubtle
+                                )
+                            )
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                TextButton(onClick = { editCredentialsOpen = false }) {
+                                    Text("Cancel", color = GoblinTextSecondary)
+                                }
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Button(
+                                    onClick = {
+                                        if (currentPassword.isBlank()) {
+                                            credentialFormError = "Please enter your current password."
+                                            return@Button
+                                        }
+                                        if (inputEmail.isBlank() || !inputEmail.contains("@")) {
+                                            credentialFormError = "Please enter a valid email address."
+                                            return@Button
+                                        }
+                                        if (newPassword.length < 6) {
+                                            credentialFormError = "New password must be at least 6 characters."
+                                            return@Button
+                                        }
+                                        if (newPassword != confirmPassword) {
+                                            credentialFormError = "New password confirmation does not match."
+                                            return@Button
+                                        }
+
+                                        val success = onUpdateCredentials(inputEmail, currentPassword, newPassword)
+                                        if (success) {
+                                            editCredentialsOpen = false
+                                        } else {
+                                            credentialFormError = "Current password was incorrect."
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = GoblinAccentWarm),
+                                    shape = RoundedCornerShape(6.dp),
+                                    modifier = Modifier.testTag("admin_save_credentials_btn")
+                                ) {
+                                    Text("SAVE CREDENTIALS", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -2216,3 +2596,346 @@ private fun ExhibitionEditorDialog(
         }
     )
 }
+
+// -------------------------------------------------------------
+// 12. ADMIN LOGIN GATE
+// -------------------------------------------------------------
+@Composable
+private fun AdminLoginGate(
+    defaultEmail: String,
+    errorMessage: String?,
+    onLogin: (String, String) -> Unit,
+    onClearError: () -> Unit,
+    onExit: () -> Unit
+) {
+    var email by remember(defaultEmail) { mutableStateOf(defaultEmail) }
+    var password by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF0F0F0E))
+            .testTag("admin_login_gate_root"),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Security / Lock Emblem
+            Box(
+                modifier = Modifier
+                    .size(68.dp)
+                    .clip(CircleShape)
+                    .background(Brush.radialGradient(listOf(GoblinAccentWarm.copy(alpha = 0.25f), Color(0xFF1E1E1C))))
+                    .border(1.dp, GoblinAccentWarm.copy(alpha = 0.4f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = "Admin Lock",
+                    tint = GoblinAccentWarm,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Title & Subtitle
+            Text(
+                text = "FILM BY JUBAYER",
+                fontFamily = FontFamily.Monospace,
+                fontSize = 11.sp,
+                letterSpacing = 3.sp,
+                fontWeight = FontWeight.Bold,
+                color = GoblinAccentWarm
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "CURATOR CMS STUDIO",
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Light,
+                fontSize = 22.sp,
+                letterSpacing = 1.5.sp,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "এডমিন কন্ট্রোল প্যানেল • Restricted Access",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 11.5.sp,
+                letterSpacing = 0.8.sp,
+                color = Color(0xFFAAAAAA)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Login Card
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("admin_login_card"),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF181816)),
+                border = CardDefaults.outlinedCardBorder().copy(width = 0.5.dp, brush = Brush.verticalGradient(listOf(Color(0xFF333330), Color(0xFF20201E))))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(22.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    Text(
+                        text = "MASTER AUTHENTICATION",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 10.5.sp,
+                        letterSpacing = 1.5.sp,
+                        color = GoblinAccentWarm
+                    )
+
+                    // Error Message Display
+                    if (errorMessage != null) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(Color(0xFF3E1414))
+                                .border(0.5.dp, Color(0xFFC62828), RoundedCornerShape(6.dp))
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                        ) {
+                            Text(
+                                text = errorMessage,
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 11.sp,
+                                color = Color(0xFFFF8A80)
+                            )
+                        }
+                    }
+
+                    // Email Field
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = {
+                            email = it
+                            onClearError()
+                        },
+                        label = { Text("Admin Email", color = Color(0xFF888888), fontSize = 11.sp) },
+                        placeholder = { Text("ijubayer1071@gmail.com", color = Color(0xFF555555), fontSize = 12.sp) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Email,
+                                contentDescription = null,
+                                tint = GoblinAccentWarm,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            if (email.isNotEmpty()) {
+                                IconButton(onClick = { email = "" }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Close,
+                                        contentDescription = "Clear",
+                                        tint = Color(0xFF666666),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+                            }
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("admin_login_email_field"),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color(0xFFEEEEEE),
+                            focusedContainerColor = Color(0xFF10100F),
+                            unfocusedContainerColor = Color(0xFF10100F),
+                            focusedBorderColor = GoblinAccentWarm,
+                            unfocusedBorderColor = Color(0xFF333330)
+                        )
+                    )
+
+                    // Password Field
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = {
+                            password = it
+                            onClearError()
+                        },
+                        label = { Text("Master Password", color = Color(0xFF888888), fontSize = 11.sp) },
+                        placeholder = { Text("Enter password", color = Color(0xFF555555), fontSize = 12.sp) },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Lock,
+                                contentDescription = null,
+                                tint = GoblinAccentWarm,
+                                modifier = Modifier.size(18.dp)
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                                Icon(
+                                    imageVector = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    contentDescription = "Toggle password visibility",
+                                    tint = Color(0xFF888888),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        },
+                        singleLine = true,
+                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                if (email.isNotBlank() && password.isNotBlank()) {
+                                    onLogin(email, password)
+                                }
+                            }
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("admin_login_password_field"),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color(0xFFEEEEEE),
+                            focusedContainerColor = Color(0xFF10100F),
+                            unfocusedContainerColor = Color(0xFF10100F),
+                            focusedBorderColor = GoblinAccentWarm,
+                            unfocusedBorderColor = Color(0xFF333330)
+                        )
+                    )
+
+                    // Quick-Fill / Curator Credential Hint Pill
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(Color(0xFF1F1F1D))
+                            .border(0.5.dp, Color(0xFF383834), RoundedCornerShape(8.dp))
+                            .padding(10.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "CURATOR ACCOUNT",
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 8.5.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    letterSpacing = 1.sp,
+                                    color = GoblinAccentWarm
+                                )
+                                Text(
+                                    text = "ijubayer1071@gmail.com",
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize = 10.sp,
+                                    color = Color(0xFFCCCCCC)
+                                )
+                                Text(
+                                    text = "Default Key: jubayer2026",
+                                    fontFamily = FontFamily.Monospace,
+                                    fontSize = 9.sp,
+                                    color = Color(0xFF888888)
+                                )
+                            }
+
+                            Button(
+                                onClick = {
+                                    email = "ijubayer1071@gmail.com"
+                                    password = "jubayer2026"
+                                    onClearError()
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2A2A26)),
+                                shape = RoundedCornerShape(6.dp),
+                                modifier = Modifier.testTag("admin_autofill_credentials_btn")
+                            ) {
+                                Text(
+                                    text = "AUTO-FILL",
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 9.5.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    letterSpacing = 1.sp,
+                                    color = GoblinAccentWarm
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // Submit Sign In Button
+                    Button(
+                        onClick = {
+                            if (email.isNotBlank() && password.isNotBlank()) {
+                                onLogin(email, password)
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = GoblinAccentWarm),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(46.dp)
+                            .testTag("admin_login_submit_btn")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LockOpen,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "UNLOCK CONTENT STUDIO",
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 11.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.5.sp,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Exit Back to Portfolio
+            TextButton(
+                onClick = onExit,
+                modifier = Modifier.testTag("admin_login_exit_btn")
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                    tint = Color(0xFFAAAAAA),
+                    modifier = Modifier.size(14.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "RETURN TO PORTFOLIO",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 10.5.sp,
+                    letterSpacing = 1.5.sp,
+                    color = Color(0xFFAAAAAA)
+                )
+            }
+        }
+    }
+}
+

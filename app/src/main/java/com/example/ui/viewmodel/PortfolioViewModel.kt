@@ -68,7 +68,11 @@ data class PortfolioUiState(
     val isAmbientSoundActive: Boolean = false,
     val favoritePhotoIds: Set<String> = emptySet(),
     val contactForm: ContactFormState = ContactFormState(),
-    // Admin CMS state
+    // Admin CMS state & Authentication
+    val isAdminAuthenticated: Boolean = false,
+    val adminEmail: String = "ijubayer1071@gmail.com",
+    val adminPassword: String = "jubayer2026",
+    val adminAuthError: String? = null,
     val adminTab: AdminTab = AdminTab.PHOTOS,
     val adminEditingPhoto: Photograph? = null,
     val isAddingPhoto: Boolean = false,
@@ -99,7 +103,98 @@ class PortfolioViewModel : ViewModel() {
         }
     }
 
-    // --- Admin CMS Methods ---
+    // --- Admin CMS & Authentication Methods ---
+    fun loginAdmin(email: String, pass: String): Boolean {
+        val currentEmail = _uiState.value.adminEmail.trim().lowercase()
+        val currentPass = _uiState.value.adminPassword
+        val inputEmail = email.trim().lowercase()
+
+        if (inputEmail == currentEmail && pass == currentPass) {
+            _uiState.update {
+                it.copy(
+                    isAdminAuthenticated = true,
+                    adminAuthError = null
+                )
+            }
+            showAdminSnackbar("Welcome back to Studio, Jubayer")
+            return true
+        } else {
+            val errorMsg = when {
+                inputEmail != currentEmail -> "Unrecognized curator email: $email"
+                else -> "Incorrect administrative password."
+            }
+            _uiState.update {
+                it.copy(
+                    isAdminAuthenticated = false,
+                    adminAuthError = errorMsg
+                )
+            }
+            return false
+        }
+    }
+
+    fun logoutAdmin() {
+        _uiState.update {
+            it.copy(
+                isAdminAuthenticated = false,
+                adminAuthError = null,
+                activeSection = NavigationSection.WORK
+            )
+        }
+        showAdminSnackbar("Logged out from Content Studio")
+    }
+
+    fun lockAdminSession() {
+        _uiState.update {
+            it.copy(
+                isAdminAuthenticated = false,
+                adminAuthError = null
+            )
+        }
+        showAdminSnackbar("Content Studio locked")
+    }
+
+    fun clearAdminAuthError() {
+        _uiState.update { it.copy(adminAuthError = null) }
+    }
+
+    fun updateAdminCredentials(newEmail: String, currentPass: String, newPass: String): Boolean {
+        val currentSavedPass = _uiState.value.adminPassword
+        if (currentPass != currentSavedPass) {
+            showAdminSnackbar("Current password does not match.")
+            return false
+        }
+        if (newEmail.isBlank() || !newEmail.contains("@")) {
+            showAdminSnackbar("Please provide a valid admin email address.")
+            return false
+        }
+        if (newPass.length < 6) {
+            showAdminSnackbar("New password must be at least 6 characters.")
+            return false
+        }
+
+        _uiState.update {
+            it.copy(
+                adminEmail = newEmail.trim(),
+                adminPassword = newPass,
+                adminAuthError = null
+            )
+        }
+        showAdminSnackbar("Admin credentials updated successfully.")
+        return true
+    }
+
+    fun resetAdminCredentialsToDefault() {
+        _uiState.update {
+            it.copy(
+                adminEmail = "ijubayer1071@gmail.com",
+                adminPassword = "jubayer2026",
+                adminAuthError = null
+            )
+        }
+        showAdminSnackbar("Admin credentials reset to ijubayer1071@gmail.com")
+    }
+
     fun selectAdminTab(tab: AdminTab) {
         _uiState.update { it.copy(adminTab = tab) }
     }
