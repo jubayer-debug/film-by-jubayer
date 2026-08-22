@@ -128,17 +128,16 @@ fun HeroSection(
         label = "bounce"
     )
 
-    // Build the hero title with distinct font & increased size for clickable "Jubayer Ahmed"
+    // Build the hero title with site's primary serif font and underlined clickable "Jubayer Ahmed"
     val annotatedHeading = remember {
         buildAnnotatedString {
             append("Here we go... With the clicks of ")
             pushStringAnnotation(tag = "ABOUT_LINK", annotation = "about")
             withStyle(
                 style = SpanStyle(
-                    fontFamily = FontFamily.Cursive,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 38.sp,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 22.sp,
                     color = Color.Black,
                     textDecoration = TextDecoration.Underline
                 )
@@ -161,7 +160,7 @@ fun HeroSection(
                 .fillMaxWidth()
                 .background(Color.White)
                 .statusBarsPadding()
-                .padding(horizontal = 24.dp, vertical = 32.dp)
+                .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -178,40 +177,40 @@ fun HeroSection(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
                             modifier = Modifier
-                                .size(7.dp)
+                                .size(6.dp)
                                 .clip(CircleShape)
                                 .background(Color.Black)
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "HABIGANJ, BANGLADESH • VISUAL ARCHIVE",
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 10.sp,
-                            letterSpacing = 2.4.sp,
+                            fontSize = 9.sp,
+                            letterSpacing = 1.8.sp,
                             color = Color.Black
                         )
                     }
 
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
-                            .border(1.dp, Color(0xFFE5E5E5), RoundedCornerShape(4.dp))
-                            .background(Color(0xFFF9F9F9))
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .clip(RoundedCornerShape(3.dp))
+                            .border(1.dp, Color(0xFFE5E5E5), RoundedCornerShape(3.dp))
+                            .background(Color.White)
+                            .padding(horizontal = 6.dp, vertical = 2.5.dp)
                     ) {
                         Text(
                             text = "EST. 2024",
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 8.5.sp,
-                            letterSpacing = 1.4.sp,
+                            fontSize = 8.sp,
+                            letterSpacing = 1.2.sp,
                             color = Color.Black
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 // 2. HERO HEADING WITH CLICKABLE "JUBAYER AHMED"
                 Box(
@@ -224,10 +223,10 @@ fun HeroSection(
                         text = annotatedHeading,
                         style = TextStyle(
                             fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 30.sp,
-                            lineHeight = 44.sp,
-                            letterSpacing = (-0.5).sp,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 22.sp,
+                            lineHeight = 30.sp,
+                            letterSpacing = (-0.2).sp,
                             color = Color.Black
                         ),
                         modifier = Modifier.testTag("hero_heading_text"),
@@ -243,7 +242,7 @@ fun HeroSection(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // 3. DESCRIPTIONS (Primary & Small Sub-description)
                 Column(
@@ -251,14 +250,14 @@ fun HeroSection(
                         .fillMaxWidth()
                         .offset { IntOffset(0, descOffsetY.value.roundToInt()) }
                         .alpha(descAlpha.value),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     // Primary focus areas in pure black
                     Text(
                         text = "Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh.",
                         fontFamily = FontFamily.Serif,
-                        fontSize = 15.sp,
-                        lineHeight = 22.sp,
+                        fontSize = 13.sp,
+                        lineHeight = 18.sp,
                         fontWeight = FontWeight.Normal,
                         color = Color.Black
                     )
@@ -267,14 +266,14 @@ fun HeroSection(
                     Text(
                         text = "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving",
                         fontFamily = FontFamily.Monospace,
-                        fontSize = 11.5.sp,
-                        lineHeight = 17.sp,
-                        letterSpacing = 0.4.sp,
-                        color = Color(0xFF2B2B2B)
+                        fontSize = 10.5.sp,
+                        lineHeight = 15.sp,
+                        letterSpacing = 0.2.sp,
+                        color = Color(0xFF333333)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 // 4. ACTION BUTTONS
                 Row(
@@ -282,34 +281,34 @@ fun HeroSection(
                         .fillMaxWidth()
                         .offset { IntOffset(0, footerOffsetY.value.roundToInt()) }
                         .alpha(footerAlpha.value),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Explore Archive button (Black filled with white text)
                     Row(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
+                            .clip(RoundedCornerShape(4.dp))
                             .background(Color.Black)
                             .clickable { onScrollDown() }
-                            .padding(horizontal = 18.dp, vertical = 12.dp)
+                            .padding(horizontal = 14.dp, vertical = 9.dp)
                             .testTag("explore_archive_btn"),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = "EXPLORE ARCHIVE",
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 10.5.sp,
+                            fontSize = 9.5.sp,
                             fontWeight = FontWeight.SemiBold,
-                            letterSpacing = 1.8.sp,
+                            letterSpacing = 1.4.sp,
                             color = Color.White
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Icon(
                             imageVector = Icons.Default.ArrowDownward,
                             contentDescription = "Scroll to gallery",
                             tint = Color.White,
                             modifier = Modifier
-                                .size(13.dp)
+                                .size(11.dp)
                                 .offset(y = bounceOffset.dp)
                         )
                     }
@@ -317,28 +316,28 @@ fun HeroSection(
                     // About Jubayer button (Black border & black text)
                     Row(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .border(1.dp, Color(0xFFCCCCCC), RoundedCornerShape(6.dp))
-                            .background(Color(0xFFFAFAFA))
+                            .clip(RoundedCornerShape(4.dp))
+                            .border(1.dp, Color(0xFFCCCCCC), RoundedCornerShape(4.dp))
+                            .background(Color.White)
                             .clickable { onNavigateToAbout() }
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .padding(horizontal = 12.dp, vertical = 9.dp)
                             .testTag("about_jubayer_hero_btn"),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = "ABOUT JUBAYER",
                             fontFamily = FontFamily.SansSerif,
-                            fontSize = 10.5.sp,
+                            fontSize = 9.5.sp,
                             fontWeight = FontWeight.Medium,
-                            letterSpacing = 1.6.sp,
+                            letterSpacing = 1.4.sp,
                             color = Color.Black
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = "Go to About page",
                             tint = Color.Black,
-                            modifier = Modifier.size(12.dp)
+                            modifier = Modifier.size(11.dp)
                         )
                     }
                 }

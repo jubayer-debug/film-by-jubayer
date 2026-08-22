@@ -74,14 +74,14 @@
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #F4F2EE;
+      background: #FFFFFF;
     }
     ::-webkit-scrollbar-thumb {
-      background: #D5D0C7;
+      background: #CCCCCC;
       border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #A8A296;
+      background: #999999;
     }
 
     /* 1-Second Opening Loading Screen Styles */
@@ -106,7 +106,7 @@
   </style>
 </head>
 
-<body class="bg-[#FAF9F6] text-gallery-900 font-sans antialiased selection:bg-gallery-900 selection:text-white relative min-h-screen flex flex-col">
+<body class="bg-white text-black font-sans antialiased selection:bg-black selection:text-white relative min-h-screen flex flex-col">
 
   <!-- 1-SECOND OPENING LOADING SCREEN (PLAIN WHITE BACKGROUND + CENTERED LOGO + ANIMATED LINE + ISO 1..100) -->
   <div id="site-loader" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 select-none">
@@ -114,24 +114,24 @@
       
       <!-- Center Monogram & Brand Logo -->
       <div class="flex items-center gap-3.5 mb-8">
-        <div class="w-10 h-10 rounded border border-gallery-900 bg-gallery-900 flex items-center justify-center text-white font-serif font-bold text-lg tracking-wider shadow-sm">
+        <div class="w-10 h-10 rounded border border-black bg-black flex items-center justify-center text-white font-serif font-bold text-lg tracking-wider shadow-sm">
           K
         </div>
         <div class="text-left">
-          <div class="font-serif font-bold text-xl tracking-wider text-gallery-900 leading-tight">KHONCHITRO</div>
-          <div class="text-[9px] font-sans font-medium tracking-[0.22em] text-gallery-500 uppercase">ক্ষণচিত্র • PHOTOGRAPHY ARCHIVE</div>
+          <div class="font-serif font-bold text-xl tracking-wider text-black leading-tight">KHONCHITRO</div>
+          <div class="text-[9px] font-sans font-medium tracking-[0.22em] text-neutral-600 uppercase">ক্ষণচিত্র • PHOTOGRAPHY ARCHIVE</div>
         </div>
       </div>
 
       <!-- Animated Progress Track & Line -->
-      <div class="w-64 max-w-full h-[2.5px] bg-[#EAE8E4] rounded-full overflow-hidden relative mb-4">
-        <div id="loader-progress-bar" class="h-full bg-gallery-900 rounded-full w-0 transition-none"></div>
+      <div class="w-64 max-w-full h-[2.5px] bg-neutral-200 rounded-full overflow-hidden relative mb-4">
+        <div id="loader-progress-bar" class="h-full bg-black rounded-full w-0 transition-none"></div>
       </div>
 
       <!-- Live Dynamic ISO Counter & Calibration Meta -->
-      <div class="w-64 max-w-full flex items-center justify-between font-mono text-[10px] text-gallery-500 tracking-wider">
-        <span class="uppercase tracking-widest text-[9px] text-gallery-400">CALIBRATING FILM</span>
-        <span id="loader-iso-value" class="font-semibold text-gallery-900">ISO 1</span>
+      <div class="w-64 max-w-full flex items-center justify-between font-mono text-[10px] text-neutral-600 tracking-wider">
+        <span class="uppercase tracking-widest text-[9px] text-neutral-500">CALIBRATING FILM</span>
+        <span id="loader-iso-value" class="font-semibold text-black">ISO 1</span>
       </div>
 
     </div>
@@ -141,17 +141,17 @@
   <div id="grain-layer" class="pointer-events-none fixed inset-0 z-50 film-grain opacity-60"></div>
 
   <!-- TOP NAVIGATION BAR -->
-  <header class="sticky top-0 z-40 bg-[#FAF9F6]/90 backdrop-blur-md border-b border-gallery-200/80 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
       
       <!-- Brand Logo -->
       <a href="#work" onclick="navigateTo('work')" class="flex items-center gap-3 group">
-        <div class="w-8 h-8 rounded border border-gallery-800 bg-gallery-900 flex items-center justify-center text-white font-serif font-bold text-sm tracking-wider group-hover:scale-105 transition-transform">
+        <div class="w-8 h-8 rounded border border-black bg-black flex items-center justify-center text-white font-serif font-bold text-sm tracking-wider group-hover:scale-105 transition-transform">
           K
         </div>
         <div>
-          <div class="font-serif font-bold text-base sm:text-lg tracking-wider text-gallery-900 leading-none">KHONCHITRO</div>
-          <div class="text-[9px] font-sans font-medium tracking-[0.2em] text-gallery-500 uppercase mt-0.5">ক্ষণচিত্র • Archive</div>
+          <div class="font-serif font-bold text-base sm:text-lg tracking-wider text-black leading-none">KHONCHITRO</div>
+          <div class="text-[9px] font-sans font-medium tracking-[0.2em] text-neutral-500 uppercase mt-0.5">ক্ষণচিত্র • Archive</div>
         </div>
       </a>
 
@@ -159,29 +159,29 @@
       <div class="flex items-center gap-4 md:gap-6 lg:gap-8 ml-auto">
         
         <!-- Desktop Nav Links (Right-Aligned) -->
-        <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-xs font-medium tracking-[0.18em] uppercase text-gallery-600">
-          <a href="#work" onclick="navigateTo('work')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="work">Work</a>
-          <a href="#projects" onclick="navigateTo('projects')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="projects">Projects</a>
-          <a href="#journal" onclick="navigateTo('journal')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="journal">Journal</a>
-          <a href="#curation" onclick="navigateTo('curation')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent flex items-center gap-1.5" data-section="curation">
+        <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-xs font-medium tracking-[0.18em] uppercase text-neutral-700">
+          <a href="#work" onclick="navigateTo('work')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="work">Work</a>
+          <a href="#projects" onclick="navigateTo('projects')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="projects">Projects</a>
+          <a href="#journal" onclick="navigateTo('journal')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="journal">Journal</a>
+          <a href="#curation" onclick="navigateTo('curation')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent flex items-center gap-1.5" data-section="curation">
             <span>Saved</span>
-            <span id="saved-badge" class="hidden px-1.5 py-0.2 bg-gallery-900 text-white text-[9px] rounded-full font-mono">0</span>
+            <span id="saved-badge" class="hidden px-1.5 py-0.2 bg-black text-white text-[9px] rounded-full font-mono">0</span>
           </a>
-          <a href="#about" onclick="navigateTo('about')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="about">About</a>
-          <a href="#contact" onclick="navigateTo('contact')" class="nav-link hover:text-gallery-950 transition-colors py-2 border-b-2 border-transparent" data-section="contact">Contact</a>
+          <a href="#about" onclick="navigateTo('about')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="about">About</a>
+          <a href="#contact" onclick="navigateTo('contact')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="contact">Contact</a>
         </nav>
 
         <!-- Social Icons (Line Version with active links beside menu) -->
-        <div class="hidden sm:flex items-center gap-1.5 md:gap-2 border-l border-gallery-200/90 pl-3 md:pl-4 text-gallery-500">
+        <div class="hidden sm:flex items-center gap-1.5 md:gap-2 border-l border-neutral-200 pl-3 md:pl-4 text-neutral-600">
           <!-- Facebook Line Icon -->
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-950 hover:bg-gallery-100 rounded-full transition-all duration-200" title="Facebook" aria-label="Facebook">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-black hover:bg-neutral-100 rounded-full transition-all duration-200" title="Facebook" aria-label="Facebook">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
             </svg>
           </a>
 
           <!-- Instagram Line Icon -->
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-950 hover:bg-gallery-100 rounded-full transition-all duration-200" title="Instagram" aria-label="Instagram">
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-black hover:bg-neutral-100 rounded-full transition-all duration-200" title="Instagram" aria-label="Instagram">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
@@ -190,7 +190,7 @@
           </a>
 
           <!-- Pexels Line Icon -->
-          <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-950 hover:bg-gallery-100 rounded-full transition-all duration-200" title="Pexels Photography" aria-label="Pexels">
+          <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-black hover:bg-neutral-100 rounded-full transition-all duration-200" title="Pexels Photography" aria-label="Pexels">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect width="18" height="18" x="3" y="3" rx="3.5"/>
               <path d="M9 8.5h4.5a2.5 2.5 0 0 1 0 5H9v4.5"/>
@@ -198,7 +198,7 @@
           </a>
 
           <!-- Mail Line Icon -->
-          <a href="mailto:ijubayer1071@gmail.com" class="p-1.5 hover:text-gallery-950 hover:bg-gallery-100 rounded-full transition-all duration-200" title="Direct Email (ijubayer1071@gmail.com)" aria-label="Email">
+          <a href="mailto:ijubayer1071@gmail.com" class="p-1.5 hover:text-black hover:bg-neutral-100 rounded-full transition-all duration-200" title="Direct Email (ijubayer1071@gmail.com)" aria-label="Email">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect width="20" height="16" x="2" y="4" rx="2.5"/>
               <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -207,56 +207,56 @@
         </div>
 
         <!-- Utility Actions (Atmosphere, Audio, Admin, Mobile Toggle) -->
-        <div class="flex items-center gap-1 sm:gap-2 border-l border-gallery-200/90 pl-3">
+        <div class="flex items-center gap-1 sm:gap-2 border-l border-neutral-200 pl-3">
         <!-- Atmosphere Controls Dropdown -->
         <div class="relative">
-          <button id="atmosphere-btn" onclick="toggleDropdown('atmosphere-dropdown')" class="p-2 sm:px-3 sm:py-1.5 rounded border border-gallery-300/80 bg-white/80 hover:bg-white text-gallery-700 text-xs flex items-center gap-1.5 transition-all shadow-sm" title="Atmospheric Darkroom Settings">
+          <button id="atmosphere-btn" onclick="toggleDropdown('atmosphere-dropdown')" class="p-1.5 sm:px-2.5 sm:py-1 rounded border border-neutral-300 bg-white hover:bg-neutral-50 text-neutral-800 text-xs flex items-center gap-1.5 transition-all shadow-sm" title="Atmospheric Darkroom Settings">
             <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline font-mono text-[10px] tracking-wider uppercase">Darkroom</span>
           </button>
 
           <!-- Atmosphere Dropdown Menu -->
-          <div id="atmosphere-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gallery-200 p-3 z-50 font-sans text-xs">
-            <div class="text-[10px] font-mono text-gallery-400 uppercase tracking-widest mb-2 pb-1 border-b border-gallery-100">
+          <div id="atmosphere-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-neutral-200 p-3 z-50 font-sans text-xs">
+            <div class="text-[10px] font-mono text-neutral-500 uppercase tracking-widest mb-2 pb-1 border-b border-neutral-200">
               Atmospheric Mode
             </div>
             
             <!-- Monochrome Toggle -->
-            <button onclick="toggleMonochrome()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
+            <button onclick="toggleMonochrome()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-neutral-50 rounded transition-colors text-left">
               <div class="flex items-center gap-2">
-                <i data-lucide="sun-medium" class="w-3.5 h-3.5 text-gallery-500"></i>
+                <i data-lucide="sun-medium" class="w-3.5 h-3.5 text-neutral-600"></i>
                 <span>Monochrome (B&W)</span>
               </div>
-              <span id="mono-status" class="font-mono text-[10px] text-gallery-400">OFF</span>
+              <span id="mono-status" class="font-mono text-[10px] text-neutral-500">OFF</span>
             </button>
 
             <!-- Film Grain Toggle -->
-            <button onclick="toggleGrain()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
+            <button onclick="toggleGrain()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-neutral-50 rounded transition-colors text-left">
               <div class="flex items-center gap-2">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-gallery-500"></i>
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-neutral-600"></i>
                 <span>35mm Film Grain</span>
               </div>
-              <span id="grain-status" class="font-mono text-[10px] text-accent-warm font-semibold">ON</span>
+              <span id="grain-status" class="font-mono text-[10px] text-black font-semibold">ON</span>
             </button>
 
             <!-- Monsoon Ambience Audio Toggle -->
-            <button onclick="toggleAudio()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-gallery-50 rounded transition-colors text-left">
+            <button onclick="toggleAudio()" class="w-full flex items-center justify-between py-2 px-2 hover:bg-neutral-50 rounded transition-colors text-left">
               <div class="flex items-center gap-2">
-                <i data-lucide="volume-2" class="w-3.5 h-3.5 text-gallery-500"></i>
+                <i data-lucide="volume-2" class="w-3.5 h-3.5 text-neutral-600"></i>
                 <span>Monsoon Soundscape</span>
               </div>
-              <span id="audio-status" class="font-mono text-[10px] text-gallery-400">MUTED</span>
+              <span id="audio-status" class="font-mono text-[10px] text-neutral-500">MUTED</span>
             </button>
           </div>
         </div>
 
         <!-- Admin CMS Link -->
-        <a href="#admin" onclick="navigateTo('admin')" class="p-2 rounded hover:bg-gallery-200/60 text-gallery-600 hover:text-accent-warm transition-colors" title="Admin Studio">
+        <a href="#admin" onclick="navigateTo('admin')" class="p-1.5 rounded hover:bg-neutral-100 text-neutral-700 hover:text-black transition-colors" title="Admin Studio">
           <i data-lucide="lock" class="w-4 h-4"></i>
         </a>
 
         <!-- Mobile Menu Toggle Button -->
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded hover:bg-gallery-200 text-gallery-900">
+        <button onclick="toggleMobileMenu()" class="md:hidden p-1.5 rounded hover:bg-neutral-100 text-black">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
       </div>
@@ -264,51 +264,51 @@
     </div>
 
     <!-- Mobile Drawer Overlay -->
-    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-[#FAF9F6] p-6 flex flex-col justify-between">
-      <div class="flex items-center justify-between border-b border-gallery-200 pb-4">
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-0 z-50 bg-white p-6 flex flex-col justify-between">
+      <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded bg-gallery-900 text-white font-serif font-bold flex items-center justify-center">K</div>
-          <div class="font-serif font-bold text-lg">KHONCHITRO</div>
+          <div class="w-8 h-8 rounded bg-black text-white font-serif font-bold flex items-center justify-center">K</div>
+          <div class="font-serif font-bold text-lg text-black">KHONCHITRO</div>
         </div>
-        <button onclick="toggleMobileMenu()" class="p-2 text-gallery-600 hover:text-gallery-900">
+        <button onclick="toggleMobileMenu()" class="p-2 text-neutral-600 hover:text-black">
           <i data-lucide="x" class="w-6 h-6"></i>
         </button>
       </div>
 
-      <nav class="flex flex-col gap-6 text-xl font-serif tracking-wide py-8">
-        <a href="#work" onclick="navigateTo('work'); toggleMobileMenu()" class="hover:text-accent-warm">Work</a>
-        <a href="#projects" onclick="navigateTo('projects'); toggleMobileMenu()" class="hover:text-accent-warm">Project Series</a>
-        <a href="#journal" onclick="navigateTo('journal'); toggleMobileMenu()" class="hover:text-accent-warm">Field Journal</a>
-        <a href="#curation" onclick="navigateTo('curation'); toggleMobileMenu()" class="hover:text-accent-warm">Saved Curation</a>
-        <a href="#about" onclick="navigateTo('about'); toggleMobileMenu()" class="hover:text-accent-warm">About & Exhibitions</a>
-        <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu()" class="hover:text-accent-warm">Contact & Budget Estimator</a>
-        <a href="#admin" onclick="navigateTo('admin'); toggleMobileMenu()" class="text-accent-warm font-mono text-sm uppercase tracking-widest pt-4">Admin CMS</a>
+      <nav class="flex flex-col gap-5 text-lg font-serif tracking-wide py-6">
+        <a href="#work" onclick="navigateTo('work'); toggleMobileMenu()" class="hover:text-black">Work</a>
+        <a href="#projects" onclick="navigateTo('projects'); toggleMobileMenu()" class="hover:text-black">Project Series</a>
+        <a href="#journal" onclick="navigateTo('journal'); toggleMobileMenu()" class="hover:text-black">Field Journal</a>
+        <a href="#curation" onclick="navigateTo('curation'); toggleMobileMenu()" class="hover:text-black">Saved Curation</a>
+        <a href="#about" onclick="navigateTo('about'); toggleMobileMenu()" class="hover:text-black">About & Exhibitions</a>
+        <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu()" class="hover:text-black">Contact & Budget Estimator</a>
+        <a href="#admin" onclick="navigateTo('admin'); toggleMobileMenu()" class="font-mono text-xs uppercase tracking-widest pt-3 text-black font-semibold">Admin CMS</a>
       </nav>
 
       <!-- Mobile Social Icons & Location Specs -->
-      <div class="border-t border-gallery-200 pt-4 flex flex-col gap-3">
-        <div class="flex items-center justify-between text-gallery-500">
-          <span class="text-[10px] font-mono uppercase tracking-widest text-gallery-400">Social Channels</span>
+      <div class="border-t border-neutral-200 pt-4 flex flex-col gap-3">
+        <div class="flex items-center justify-between text-neutral-600">
+          <span class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Social Channels</span>
           <div class="flex items-center gap-3">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-900 transition-colors" title="Facebook" aria-label="Facebook">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-black transition-colors" title="Facebook" aria-label="Facebook">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
               </svg>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-900 transition-colors" title="Instagram" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-black transition-colors" title="Instagram" aria-label="Instagram">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                 <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
               </svg>
             </a>
-            <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-gallery-900 transition-colors" title="Pexels Photography" aria-label="Pexels">
+            <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer" class="p-1.5 hover:text-black transition-colors" title="Pexels Photography" aria-label="Pexels">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="18" height="18" x="3" y="3" rx="3.5"/>
                 <path d="M9 8.5h4.5a2.5 2.5 0 0 1 0 5H9v4.5"/>
               </svg>
             </a>
-            <a href="mailto:ijubayer1071@gmail.com" class="p-1.5 hover:text-gallery-900 transition-colors" title="Email" aria-label="Email">
+            <a href="mailto:ijubayer1071@gmail.com" class="p-1.5 hover:text-black transition-colors" title="Email" aria-label="Email">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect width="20" height="16" x="2" y="4" rx="2.5"/>
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
@@ -316,7 +316,7 @@
             </a>
           </div>
         </div>
-        <div class="text-[10px] font-mono text-gallery-400 uppercase tracking-wider">
+        <div class="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">
           DHAKA, BANGLADESH • 35MM MONOCHROME & COLOR ARCHIVE
         </div>
       </div>
@@ -324,64 +324,58 @@
   </header>
 
   <!-- MAIN VIEWPORT CONTAINER -->
-  <main class="flex-grow">
+  <main class="flex-grow bg-white">
     
-    <!-- 1. HERO SECTION -->
-    <section id="hero" class="relative min-h-[55vh] sm:min-h-[65vh] flex items-center justify-start p-6 sm:p-12 md:p-20 overflow-hidden bg-white text-black border-b border-gallery-200">
-      <div class="relative z-10 max-w-5xl py-6">
-        <div class="flex items-center gap-2.5 mb-5">
-          <span class="w-2.5 h-2.5 rounded-full bg-black animate-pulse"></span>
-          <span class="font-mono text-xs tracking-[0.25em] text-black uppercase font-medium">Habiganj, Bangladesh • Visual Archive</span>
+    <!-- 1. HERO SECTION (Decreased Height & Primary Font System) -->
+    <section id="hero" class="relative flex items-center justify-start px-4 sm:px-8 md:px-12 py-8 sm:py-10 md:py-12 bg-white text-black border-b border-neutral-200">
+      <div class="relative z-10 max-w-4xl">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-2 h-2 rounded-full bg-black animate-pulse"></span>
+          <span class="font-mono text-[11px] tracking-[0.2em] text-black uppercase font-medium">Habiganj, Bangladesh • Visual Archive</span>
         </div>
         
-        <h1 class="text-3xl sm:text-5xl md:text-6xl font-serif font-light tracking-tight leading-snug mb-6 text-black">
-          Here we go... With the clicks of <a href="#about" onclick="navigateTo('about')" class="font-display italic font-bold text-[1.18em] text-black underline decoration-black underline-offset-8 hover:text-accent-warm hover:decoration-accent-warm transition-all cursor-pointer inline-block">Jubayer Ahmed</a>.
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-serif font-light tracking-tight leading-snug mb-3 text-black">
+          Here we go... With the clicks of <a href="#about" onclick="navigateTo('about')" class="font-serif font-semibold text-black underline underline-offset-4 decoration-black hover:opacity-75 transition-opacity cursor-pointer inline-block">Jubayer Ahmed</a>.
         </h1>
 
-        <div class="space-y-3.5 max-w-3xl">
-          <p class="text-base sm:text-lg md:text-xl text-black font-serif leading-relaxed font-normal">
+        <div class="space-y-2 max-w-3xl">
+          <p class="text-sm sm:text-base text-black font-serif leading-relaxed font-normal">
             Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh.
           </p>
-          <p class="text-xs sm:text-sm text-neutral-800 font-mono tracking-wide leading-relaxed">
+          <p class="text-[11px] sm:text-xs text-neutral-700 font-mono tracking-wide leading-relaxed">
             Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving
           </p>
         </div>
 
-        <div class="flex flex-wrap gap-4 items-center mt-10">
-          <a href="#work" onclick="navigateTo('work')" class="px-7 py-3.5 bg-black text-white hover:bg-neutral-800 font-medium text-xs uppercase tracking-[0.2em] rounded transition-all shadow-md">
+        <div class="flex flex-wrap gap-3 items-center mt-5">
+          <a href="#work" onclick="navigateTo('work')" class="px-5 py-2.5 bg-black text-white hover:bg-neutral-800 font-medium text-[11px] uppercase tracking-[0.18em] rounded transition-all shadow-sm">
             Explore Archive
           </a>
-          <a href="#about" onclick="navigateTo('about')" class="px-7 py-3.5 border border-black/30 hover:border-black text-black hover:bg-black/5 font-medium text-xs uppercase tracking-[0.2em] rounded transition-all">
+          <a href="#about" onclick="navigateTo('about')" class="px-5 py-2.5 border border-black/30 hover:border-black text-black hover:bg-neutral-50 font-medium text-[11px] uppercase tracking-[0.18em] rounded transition-all">
             About Jubayer
           </a>
         </div>
       </div>
-
-      <!-- Technical Spec Indicator -->
-      <div class="hidden lg:block absolute bottom-12 right-16 text-right font-mono text-[10px] text-neutral-600 tracking-wider">
-        <div class="text-black font-medium">35MM & DIGITAL ARCHIVE</div>
-        <div class="text-neutral-500">HABIGANJ, BANGLADESH • 24.38°N 91.41°E</div>
-      </div>
     </section>
 
     <!-- 2. ARCHIVE WORK SECTION -->
-    <section id="work" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <section id="work" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 bg-white">
       
       <!-- Section Header & Filter Controls -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-gallery-200 gap-6">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200 gap-4">
         <div>
-          <span class="font-mono text-xs tracking-[0.2em] text-accent-warm uppercase">Exhibition Catalog</span>
-          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gallery-900 mt-1">Archived Photographs</h2>
+          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Exhibition Catalog</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Archived Photographs</h2>
         </div>
 
         <!-- Filter Chips -->
         <div class="flex flex-wrap gap-2 text-xs font-mono">
-          <button onclick="filterCategory('ALL')" class="category-btn px-3 py-1.5 rounded-full border border-gallery-900 bg-gallery-900 text-white transition-all" data-cat="ALL">All (16)</button>
-          <button onclick="filterCategory('RIVER')" class="category-btn px-3 py-1.5 rounded-full border border-gallery-300 hover:border-gallery-700 bg-white text-gallery-700 transition-all" data-cat="RIVER">River</button>
-          <button onclick="filterCategory('MONSOON')" class="category-btn px-3 py-1.5 rounded-full border border-gallery-300 hover:border-gallery-700 bg-white text-gallery-700 transition-all" data-cat="MONSOON">Monsoon</button>
-          <button onclick="filterCategory('STREET')" class="category-btn px-3 py-1.5 rounded-full border border-gallery-300 hover:border-gallery-700 bg-white text-gallery-700 transition-all" data-cat="STREET">Old Town</button>
-          <button onclick="filterCategory('PORTRAIT')" class="category-btn px-3 py-1.5 rounded-full border border-gallery-300 hover:border-gallery-700 bg-white text-gallery-700 transition-all" data-cat="PORTRAIT">Portraits</button>
-          <button onclick="filterCategory('LANDSCAPE')" class="category-btn px-3 py-1.5 rounded-full border border-gallery-300 hover:border-gallery-700 bg-white text-gallery-700 transition-all" data-cat="LANDSCAPE">Landscape</button>
+          <button onclick="filterCategory('ALL')" class="category-btn px-3 py-1 rounded-full border border-black bg-black text-white transition-all" data-cat="ALL">All (16)</button>
+          <button onclick="filterCategory('RIVER')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="RIVER">River</button>
+          <button onclick="filterCategory('MONSOON')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="MONSOON">Monsoon</button>
+          <button onclick="filterCategory('STREET')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="STREET">Old Town</button>
+          <button onclick="filterCategory('PORTRAIT')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="PORTRAIT">Portraits</button>
+          <button onclick="filterCategory('LANDSCAPE')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="LANDSCAPE">Landscape</button>
         </div>
       </div>
 
@@ -392,12 +386,12 @@
     </section>
 
     <!-- 3. PROJECT SERIES SECTION -->
-    <section id="projects" class="bg-gallery-100/70 border-y border-gallery-200 py-20">
+    <section id="projects" class="bg-white border-t border-neutral-200 py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-xl mb-12">
-          <span class="font-mono text-xs tracking-[0.2em] text-accent-warm uppercase">Long-Term Bodies of Work</span>
-          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gallery-900 mt-1">Curated Series & Essays</h2>
-          <p class="text-gallery-600 text-sm mt-3 leading-relaxed">
+        <div class="max-w-xl mb-10">
+          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Long-Term Bodies of Work</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Curated Series & Essays</h2>
+          <p class="text-neutral-600 text-sm mt-2 leading-relaxed font-serif">
             Multi-year documentary explorations into specific geographic topologies, seasonal transitions, and human ecology.
           </p>
         </div>
@@ -409,13 +403,13 @@
     </section>
 
     <!-- 4. JOURNAL SECTION -->
-    <section id="journal" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-gallery-200 gap-4">
+    <section id="journal" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white border-t border-neutral-200">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-neutral-200 gap-4">
         <div>
-          <span class="font-mono text-xs tracking-[0.2em] text-accent-warm uppercase">Notes & Technical Meditations</span>
-          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gallery-900 mt-1">Field Journal</h2>
+          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Notes & Technical Meditations</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Field Journal</h2>
         </div>
-        <p class="text-xs font-mono text-gallery-500 uppercase tracking-widest">
+        <p class="text-xs font-mono text-neutral-500 uppercase tracking-widest">
           Darkroom logs • Analog philosophy
         </p>
       </div>
@@ -426,13 +420,13 @@
     </section>
 
     <!-- 5. SAVED CURATION SECTION -->
-    <section id="curation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gallery-200">
+    <section id="curation" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-200 bg-white">
       <div class="flex items-center justify-between mb-8">
         <div>
-          <span class="font-mono text-xs tracking-[0.2em] text-accent-warm uppercase">Personal Collection</span>
-          <h2 class="text-3xl font-serif font-bold text-gallery-900">Your Bookmarked Photographs</h2>
+          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Personal Collection</span>
+          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black">Your Bookmarked Photographs</h2>
         </div>
-        <button onclick="clearSavedPhotos()" class="text-xs font-mono text-gallery-500 hover:text-accent-warm transition-colors">
+        <button onclick="clearSavedPhotos()" class="text-xs font-mono text-neutral-500 hover:text-black transition-colors">
           Clear All
         </button>
       </div>
@@ -443,24 +437,24 @@
     </section>
 
     <!-- 6. ABOUT SECTION -->
-    <section id="about" class="bg-gallery-100/50 border-t border-gallery-200 py-20">
+    <section id="about" class="bg-white border-t border-neutral-200 py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           <!-- Artist Photo & Credentials -->
           <div class="lg:col-span-5">
-            <div class="relative rounded-lg overflow-hidden border border-gallery-300 shadow-sm bg-gallery-200">
+            <div class="relative rounded-lg overflow-hidden border border-neutral-200 shadow-sm bg-white">
               <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=85" alt="Khonchitro Studio Profile" class="w-full h-96 object-cover object-top" />
-              <div class="p-4 bg-white/90 border-t border-gallery-200">
-                <div class="font-serif font-bold text-base text-gallery-900">Khonchitro (ক্ষণচিত্র)</div>
-                <div class="font-mono text-[10px] text-gallery-500 uppercase tracking-widest mt-0.5">Dhaka, Bangladesh • Documentary & Visual Arts</div>
+              <div class="p-4 bg-white border-t border-neutral-200">
+                <div class="font-serif font-bold text-base text-black">Khonchitro (ক্ষণচিত্র)</div>
+                <div class="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mt-0.5">Habiganj & Dhaka, Bangladesh • Documentary & Visual Arts</div>
               </div>
             </div>
 
             <!-- Primary Gear & Medium -->
-            <div class="mt-6 p-4 rounded-lg bg-white border border-gallery-200">
-              <div class="font-mono text-[10px] text-gallery-400 uppercase tracking-widest mb-3">Primary Equipment</div>
-              <ul class="text-xs font-mono text-gallery-700 space-y-1.5">
+            <div class="mt-6 p-4 rounded-lg bg-white border border-neutral-200">
+              <div class="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-3">Primary Equipment</div>
+              <ul class="text-xs font-mono text-neutral-700 space-y-1.5">
                 <li>• Leica M11-P + Summilux 35mm f/1.4</li>
                 <li>• Leica Q3 (Summilux 28mm f/1.7)</li>
                 <li>• Hasselblad 907X 50C + XCD 45mm</li>
@@ -471,11 +465,11 @@
 
           <!-- Artist Statement & Bio -->
           <div class="lg:col-span-7 space-y-6">
-            <span class="font-mono text-xs tracking-[0.2em] text-accent-warm uppercase">Artist Statement</span>
-            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gallery-900">
+            <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Artist Statement</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black">
               Preserving Fleeting Atmospheric Moments Across the Bengal Delta
             </h2>
-            <div class="space-y-4 text-gallery-700 font-serif text-lg leading-relaxed">
+            <div class="space-y-4 text-neutral-800 font-serif text-base sm:text-lg leading-relaxed">
               <p>
                 <strong>Khonchitro (ক্ষণচিত্র)</strong> translates to the fleeting sketch or ephemeral moment. Rooted in the deltaic landscapes of Bangladesh, our photographic practice examines the interplay between water, memory, and time.
               </p>
@@ -485,29 +479,29 @@
             </div>
 
             <!-- Exhibitions List -->
-            <div class="pt-6 border-t border-gallery-200">
-              <h3 class="font-mono text-xs uppercase tracking-widest text-gallery-400 mb-4">Selected Exhibitions</h3>
+            <div class="pt-6 border-t border-neutral-200">
+              <h3 class="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4">Selected Exhibitions</h3>
               <div class="space-y-4 text-xs">
-                <div class="flex justify-between items-baseline border-b border-gallery-200/60 pb-2">
+                <div class="flex justify-between items-baseline border-b border-neutral-200 pb-2">
                   <div>
-                    <span class="font-semibold text-gallery-900">Silver Water & Silent Delta</span>
-                    <div class="text-gallery-500 font-mono">Bengal Foundation Gallery, Dhaka</div>
+                    <span class="font-semibold text-black">Silver Water & Silent Delta</span>
+                    <div class="text-neutral-500 font-mono">Bengal Foundation Gallery, Dhaka</div>
                   </div>
-                  <span class="font-mono text-gallery-400">2026</span>
+                  <span class="font-mono text-neutral-500">2026</span>
                 </div>
-                <div class="flex justify-between items-baseline border-b border-gallery-200/60 pb-2">
+                <div class="flex justify-between items-baseline border-b border-neutral-200 pb-2">
                   <div>
-                    <span class="font-semibold text-gallery-900">Chobi Mela XII: Resilience & Tide</span>
-                    <div class="text-gallery-500 font-mono">Shilpakala Academy, Dhaka</div>
+                    <span class="font-semibold text-black">Chobi Mela XII: Resilience & Tide</span>
+                    <div class="text-neutral-500 font-mono">Shilpakala Academy, Dhaka</div>
                   </div>
-                  <span class="font-mono text-gallery-400">2025</span>
+                  <span class="font-mono text-neutral-500">2025</span>
                 </div>
-                <div class="flex justify-between items-baseline border-b border-gallery-200/60 pb-2">
+                <div class="flex justify-between items-baseline border-b border-neutral-200 pb-2">
                   <div>
-                    <span class="font-semibold text-gallery-900">South Asian Visual Forum</span>
-                    <div class="text-gallery-500 font-mono">India International Centre, New Delhi</div>
+                    <span class="font-semibold text-black">South Asian Visual Forum</span>
+                    <div class="text-neutral-500 font-mono">India International Centre, New Delhi</div>
                   </div>
-                  <span class="font-mono text-gallery-400">2024</span>
+                  <span class="font-mono text-neutral-500">2024</span>
                 </div>
               </div>
             </div>
@@ -518,27 +512,27 @@
     </section>
 
     <!-- 7. CONTACT & BUDGET CALCULATOR SECTION -->
-    <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gallery-200">
+    <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-200 bg-white">
       
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="font-mono text-xs tracking-[0.2em] text-accent-warm uppercase">Commission & Print Acquisitions</span>
-        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-gallery-900 mt-2">Project Inquiries</h2>
-        <p class="text-gallery-600 font-serif text-lg mt-3">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Commission & Print Acquisitions</span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-black mt-2">Project Inquiries</h2>
+        <p class="text-neutral-600 font-serif text-base sm:text-lg mt-2">
           Available for international documentary assignments, fine-art museum prints, and editorial commissions.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <!-- Interactive Budget Calculator (Left 5 Cols) -->
-        <div class="lg:col-span-5 bg-white p-6 sm:p-8 rounded-xl border border-gallery-300 shadow-sm space-y-6">
-          <div class="flex items-center justify-between border-b border-gallery-200 pb-4">
+        <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-neutral-200 shadow-sm space-y-6">
+          <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
             <div>
-              <h3 class="font-serif font-bold text-xl text-gallery-900">Budget Estimator</h3>
-              <p class="text-[11px] font-mono text-gallery-500 uppercase tracking-wider">Transparent Assignment Pricing</p>
+              <h3 class="font-serif font-bold text-lg text-black">Budget Estimator</h3>
+              <p class="text-[11px] font-mono text-neutral-500 uppercase tracking-wider">Transparent Assignment Pricing</p>
             </div>
             <!-- Currency Selector -->
-            <select id="currency-select" onchange="calculateBudget()" class="text-xs font-mono bg-gallery-100 border border-gallery-300 rounded px-2 py-1 text-gallery-800">
+            <select id="currency-select" onchange="calculateBudget()" class="text-xs font-mono bg-white border border-neutral-300 rounded px-2 py-1 text-black">
               <option value="USD">USD ($)</option>
               <option value="BDT" selected>BDT (৳)</option>
               <option value="EUR">EUR (€)</option>
@@ -548,8 +542,8 @@
 
           <!-- Project Tier -->
           <div>
-            <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-2">Commission Tier</label>
-            <select id="tier-select" onchange="calculateBudget()" class="w-full text-sm font-serif bg-gallery-50 border border-gallery-300 rounded-lg p-3 text-gallery-900 focus:outline-none focus:border-gallery-900">
+            <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-2">Commission Tier</label>
+            <select id="tier-select" onchange="calculateBudget()" class="w-full text-sm font-serif bg-white border border-neutral-300 rounded-lg p-2.5 text-black focus:outline-none focus:border-black">
               <option value="editorial">Editorial & Documentary Story (3–5 Days)</option>
               <option value="commercial">Commercial Campaign & Brand Narrative</option>
               <option value="print">Museum-Grade Silver Gelatin Fine Art Print</option>
@@ -559,79 +553,79 @@
 
           <!-- Scope Addons -->
           <div class="space-y-2">
-            <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-1">Deliverables & Formats</label>
+            <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Deliverables & Formats</label>
             
-            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gallery-200 hover:bg-gallery-50 cursor-pointer text-xs font-sans">
-              <input type="checkbox" id="addon-analog" onchange="calculateBudget()" checked class="rounded text-gallery-900 focus:ring-0">
+            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
+              <input type="checkbox" id="addon-analog" onchange="calculateBudget()" checked class="rounded text-black focus:ring-0">
               <span class="flex-grow">35mm & Medium Format Film Darkroom Scans</span>
-              <span class="font-mono text-gallery-500" id="price-addon-analog">+৳18,000</span>
+              <span class="font-mono text-neutral-600" id="price-addon-analog">+৳18,000</span>
             </label>
 
-            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gallery-200 hover:bg-gallery-50 cursor-pointer text-xs font-sans">
-              <input type="checkbox" id="addon-rights" onchange="calculateBudget()" class="rounded text-gallery-900 focus:ring-0">
+            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
+              <input type="checkbox" id="addon-rights" onchange="calculateBudget()" class="rounded text-black focus:ring-0">
               <span class="flex-grow">Worldwide Full Commercial Copyright Buyout</span>
-              <span class="font-mono text-gallery-500" id="price-addon-rights">+৳45,000</span>
+              <span class="font-mono text-neutral-600" id="price-addon-rights">+৳45,000</span>
             </label>
 
-            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gallery-200 hover:bg-gallery-50 cursor-pointer text-xs font-sans">
-              <input type="checkbox" id="addon-rush" onchange="calculateBudget()" class="rounded text-gallery-900 focus:ring-0">
+            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
+              <input type="checkbox" id="addon-rush" onchange="calculateBudget()" class="rounded text-black focus:ring-0">
               <span class="flex-grow">Expedited 48-Hour Curation Delivery</span>
-              <span class="font-mono text-gallery-500" id="price-addon-rush">+৳25,000</span>
+              <span class="font-mono text-neutral-600" id="price-addon-rush">+৳25,000</span>
             </label>
           </div>
 
           <!-- Live Total Display -->
-          <div class="p-4 bg-gallery-100 rounded-lg border border-gallery-200 flex items-center justify-between">
+          <div class="p-4 bg-white rounded-lg border border-neutral-200 flex items-center justify-between">
             <div>
-              <div class="text-[10px] font-mono uppercase tracking-widest text-gallery-500">Estimated Total</div>
-              <div id="budget-total" class="text-2xl sm:text-3xl font-serif font-bold text-gallery-900">৳85,000</div>
+              <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Estimated Total</div>
+              <div id="budget-total" class="text-xl sm:text-2xl font-serif font-bold text-black">৳85,000</div>
             </div>
-            <button onclick="applyBudgetToForm()" class="px-4 py-2 bg-gallery-900 hover:bg-gallery-800 text-white rounded text-xs font-mono uppercase tracking-wider transition-colors">
+            <button onclick="applyBudgetToForm()" class="px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded text-xs font-mono uppercase tracking-wider transition-colors">
               Apply to Form
             </button>
           </div>
         </div>
 
         <!-- Contact Form (Right 7 Cols) -->
-        <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-xl border border-gallery-300 shadow-sm">
-          <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-5">
+        <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+          <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-1">Your Name *</label>
-                <input type="text" id="form-name" required placeholder="e.g. Maya Rahman" class="w-full px-4 py-2.5 rounded-lg border border-gallery-300 text-sm focus:border-gallery-900 focus:outline-none bg-gallery-50/50" />
+                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Your Name *</label>
+                <input type="text" id="form-name" required placeholder="e.g. Maya Rahman" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
               </div>
               <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-1">Email Address *</label>
-                <input type="email" id="form-email" required placeholder="name@domain.com" class="w-full px-4 py-2.5 rounded-lg border border-gallery-300 text-sm focus:border-gallery-900 focus:outline-none bg-gallery-50/50" />
+                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Email Address *</label>
+                <input type="email" id="form-email" required placeholder="name@domain.com" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-1">Project Category</label>
-                <input type="text" id="form-category" placeholder="Editorial, Commercial, Fine Art" class="w-full px-4 py-2.5 rounded-lg border border-gallery-300 text-sm focus:border-gallery-900 focus:outline-none bg-gallery-50/50" />
+                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Project Category</label>
+                <input type="text" id="form-category" placeholder="Editorial, Commercial, Fine Art" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
               </div>
               <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-1">Estimated Budget</label>
-                <input type="text" id="form-budget" placeholder="e.g. ৳85,000 or $1,200" class="w-full px-4 py-2.5 rounded-lg border border-gallery-300 text-sm focus:border-gallery-900 focus:outline-none bg-gallery-50/50" />
+                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Estimated Budget</label>
+                <input type="text" id="form-budget" placeholder="e.g. ৳85,000 or $1,200" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-gallery-600 mb-1">Assignment Scope & Narrative *</label>
-              <textarea id="form-message" rows="5" required placeholder="Describe your visual concept, location, dates, and desired deliverables..." class="w-full px-4 py-2.5 rounded-lg border border-gallery-300 text-sm focus:border-gallery-900 focus:outline-none bg-gallery-50/50"></textarea>
+              <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Assignment Scope & Narrative *</label>
+              <textarea id="form-message" rows="4" required placeholder="Describe your visual concept, location, dates, and desired deliverables..." class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white"></textarea>
             </div>
 
             <div class="flex items-center justify-between pt-2">
-              <div class="text-xs text-gallery-500 font-mono">
-                Direct: <a href="mailto:ijubayer1071@gmail.com" class="underline hover:text-gallery-900">ijubayer1071@gmail.com</a>
+              <div class="text-xs text-neutral-500 font-mono">
+                Direct: <a href="mailto:ijubayer1071@gmail.com" class="underline hover:text-black">ijubayer1071@gmail.com</a>
               </div>
-              <button type="submit" class="px-8 py-3 bg-gallery-900 hover:bg-gallery-800 text-white font-mono text-xs uppercase tracking-[0.2em] rounded-lg transition-all shadow-md">
+              <button type="submit" class="px-6 py-2.5 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-[0.18em] rounded-lg transition-all shadow-sm">
                 Send Inquiry
               </button>
             </div>
             
-            <div id="form-success" class="hidden p-4 rounded-lg bg-green-50 text-green-800 border border-green-200 text-xs font-sans">
+            <div id="form-success" class="hidden p-3 rounded-lg bg-green-50 text-green-800 border border-green-200 text-xs font-sans">
               Thank you! Your assignment inquiry has been recorded and an email dispatch is prepared.
             </div>
           </form>
@@ -641,19 +635,19 @@
     </section>
 
     <!-- 8. ADMIN CMS SECTION (Password-gated) -->
-    <section id="admin" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-gallery-300">
+    <section id="admin" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-neutral-200 bg-white">
       
       <!-- Admin Login Gate -->
-      <div id="admin-gate" class="max-w-md mx-auto p-8 rounded-xl bg-white border border-gallery-300 shadow-md text-center">
-        <div class="w-12 h-12 rounded-full bg-gallery-100 text-accent-warm flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="lock" class="w-6 h-6"></i>
+      <div id="admin-gate" class="max-w-md mx-auto p-6 rounded-xl bg-white border border-neutral-200 shadow-sm text-center">
+        <div class="w-10 h-10 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="lock" class="w-5 h-5"></i>
         </div>
-        <h2 class="text-2xl font-serif font-bold text-gallery-900">Khonchitro Studio CMS</h2>
-        <p class="text-xs font-mono text-gallery-500 uppercase tracking-widest mt-1 mb-6">Archive Management & EXIF Editor</p>
+        <h2 class="text-xl font-serif font-bold text-black">Khonchitro Studio CMS</h2>
+        <p class="text-[11px] font-mono text-neutral-500 uppercase tracking-widest mt-1 mb-5">Archive Management & EXIF Editor</p>
         
-        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-          <input type="password" id="admin-pass" placeholder="Enter admin password (jubayer2026)" class="w-full px-4 py-2.5 rounded border border-gallery-300 text-sm font-mono focus:border-gallery-900 focus:outline-none" />
-          <button type="submit" class="w-full py-2.5 bg-gallery-900 hover:bg-gallery-800 text-white font-mono text-xs uppercase tracking-widest rounded transition-colors">
+        <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+          <input type="password" id="admin-pass" placeholder="Enter admin password (jubayer2026)" class="w-full px-3 py-2 rounded border border-neutral-300 text-sm font-mono focus:border-black focus:outline-none bg-white" />
+          <button type="submit" class="w-full py-2 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest rounded transition-colors">
             Access CMS
           </button>
           <p id="admin-error" class="hidden text-xs text-red-600 font-mono">Invalid password. Default is: jubayer2026</p>
@@ -661,29 +655,29 @@
       </div>
 
       <!-- Admin Panel Dashboard (Shown upon login) -->
-      <div id="admin-dashboard" class="hidden space-y-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gallery-300 pb-6 gap-4">
+      <div id="admin-dashboard" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 pb-4 gap-4">
           <div>
             <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+              <span class="w-2 h-2 rounded-full bg-green-500"></span>
               <span class="font-mono text-xs text-green-700 font-semibold uppercase tracking-wider">Live CMS Connected</span>
             </div>
-            <h2 class="text-3xl font-serif font-bold text-gallery-900 mt-1">Photo Archive Editor</h2>
+            <h2 class="text-2xl font-serif font-bold text-black mt-1">Photo Archive Editor</h2>
           </div>
           <div class="flex gap-2">
-            <button onclick="addNewPhotoPrompt()" class="px-4 py-2 bg-accent-warm text-white rounded text-xs font-mono uppercase tracking-wider hover:bg-orange-700 transition-colors flex items-center gap-1.5">
+            <button onclick="addNewPhotoPrompt()" class="px-3 py-1.5 bg-black text-white rounded text-xs font-mono uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center gap-1.5">
               <i data-lucide="plus" class="w-3.5 h-3.5"></i>
               Add New Photo
             </button>
-            <button onclick="adminLogout()" class="px-4 py-2 border border-gallery-300 bg-white text-gallery-700 rounded text-xs font-mono uppercase tracking-wider hover:bg-gallery-100 transition-colors">
+            <button onclick="adminLogout()" class="px-3 py-1.5 border border-neutral-300 bg-white text-neutral-700 rounded text-xs font-mono uppercase tracking-wider hover:bg-neutral-50 transition-colors">
               Lock & Logout
             </button>
           </div>
         </div>
 
-        <div class="overflow-x-auto bg-white rounded-xl border border-gallery-200 shadow-sm">
+        <div class="overflow-x-auto bg-white rounded-xl border border-neutral-200 shadow-sm">
           <table class="w-full text-left text-xs font-mono">
-            <thead class="bg-gallery-50 border-b border-gallery-200 text-gallery-500 uppercase">
+            <thead class="bg-white border-b border-neutral-200 text-neutral-500 uppercase">
               <tr>
                 <th class="p-3">Thumbnail</th>
                 <th class="p-3">Title & Bengali</th>
@@ -693,7 +687,7 @@
                 <th class="p-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="admin-table-body" class="divide-y divide-gallery-100">
+            <tbody id="admin-table-body" class="divide-y divide-neutral-100">
               <!-- Rendered dynamically -->
             </tbody>
           </table>
@@ -708,7 +702,7 @@
   <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-black/95 text-white flex flex-col justify-between p-4 sm:p-8 backdrop-blur-sm">
     <!-- Top Bar -->
     <div class="flex items-center justify-between z-10">
-      <div class="font-mono text-xs text-gallery-400 tracking-wider">
+      <div class="font-mono text-xs text-neutral-400 tracking-wider">
         <span id="lb-index">01</span> / <span id="lb-total">16</span>
       </div>
       <div class="flex items-center gap-3">
@@ -738,42 +732,42 @@
     <div class="max-w-4xl mx-auto w-full text-center space-y-2 z-10 bg-black/40 p-4 rounded-lg backdrop-blur-md">
       <div class="flex items-center justify-center gap-3">
         <h3 id="lb-title" class="text-xl sm:text-2xl font-serif font-bold text-white">Photo Title</h3>
-        <span id="lb-bn" class="text-sm font-serif text-gallery-400 italic">বাংলা শিরোনাম</span>
+        <span id="lb-bn" class="text-sm font-serif text-neutral-400 italic">বাংলা শিরোনাম</span>
       </div>
-      <p id="lb-caption" class="text-xs sm:text-sm text-gallery-300 font-serif italic max-w-2xl mx-auto"></p>
-      <div id="lb-exif" class="font-mono text-[10px] text-gallery-400 tracking-wider">
+      <p id="lb-caption" class="text-xs sm:text-sm text-neutral-300 font-serif italic max-w-2xl mx-auto"></p>
+      <div id="lb-exif" class="font-mono text-[10px] text-neutral-400 tracking-wider">
         LEICA M11-P • SUMMILUX 35MM • f/2.8 • 1/250s • ISO 100
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="bg-gallery-950 text-gallery-400 border-t border-gallery-800 py-16 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+  <!-- FOOTER (Pure White Background with Crisp Black & Neutral Typography) -->
+  <footer class="bg-white text-neutral-700 border-t border-neutral-200 py-12 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
           <div class="flex items-center gap-3">
-            <div class="w-6 h-6 rounded bg-white text-gallery-950 font-serif font-bold flex items-center justify-center text-xs">K</div>
-            <span class="font-serif font-bold text-base text-white tracking-widest">KHONCHITRO (ক্ষণচিত্র)</span>
+            <div class="w-6 h-6 rounded bg-black text-white font-serif font-bold flex items-center justify-center text-xs">K</div>
+            <span class="font-serif font-bold text-base text-black tracking-widest">KHONCHITRO (ক্ষণচিত্র)</span>
           </div>
-          <p class="font-mono text-[10px] text-gallery-500 uppercase tracking-widest mt-1">
-            Minimalist Visual Archive & Documentary Photography
+          <p class="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mt-1">
+            Minimalist Visual Archive & Documentary Photography • Jubayer Ahmed
           </p>
         </div>
 
-        <div class="flex flex-wrap gap-6 font-mono text-[11px] uppercase tracking-wider text-gallery-400">
-          <a href="#work" onclick="navigateTo('work')" class="hover:text-white">Archive</a>
-          <a href="#projects" onclick="navigateTo('projects')" class="hover:text-white">Projects</a>
-          <a href="#journal" onclick="navigateTo('journal')" class="hover:text-white">Journal</a>
-          <a href="#about" onclick="navigateTo('about')" class="hover:text-white">About</a>
-          <a href="#contact" onclick="navigateTo('contact')" class="hover:text-white">Contact</a>
-          <a href="#admin" onclick="navigateTo('admin')" class="text-accent-warm hover:underline">Admin CMS</a>
+        <div class="flex flex-wrap gap-5 font-mono text-[11px] uppercase tracking-wider text-neutral-600">
+          <a href="#work" onclick="navigateTo('work')" class="hover:text-black">Archive</a>
+          <a href="#projects" onclick="navigateTo('projects')" class="hover:text-black">Projects</a>
+          <a href="#journal" onclick="navigateTo('journal')" class="hover:text-black">Journal</a>
+          <a href="#about" onclick="navigateTo('about')" class="hover:text-black">About</a>
+          <a href="#contact" onclick="navigateTo('contact')" class="hover:text-black">Contact</a>
+          <a href="#admin" onclick="navigateTo('admin')" class="hover:text-black font-semibold">Admin CMS</a>
         </div>
       </div>
 
-      <div class="pt-8 border-t border-gallery-800 flex flex-col sm:flex-row justify-between items-center text-gallery-500 font-mono text-[10px] gap-4">
+      <div class="pt-6 border-t border-neutral-200 flex flex-col sm:flex-row justify-between items-center text-neutral-500 font-mono text-[10px] gap-3">
         <div>© 2026 KHONCHITRO (ক্ষণচিত্র). ALL RIGHTS RESERVED.</div>
-        <div>DEVELOPED FOR NATIVE ANDROID & NETLIFY STATIC SPA</div>
+        <div>HABIGANJ, BANGLADESH • VISUAL STORYTELLING</div>
       </div>
     </div>
   </footer>
