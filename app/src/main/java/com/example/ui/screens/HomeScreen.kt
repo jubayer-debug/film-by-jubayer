@@ -128,18 +128,17 @@ fun HomeScreen(
             .background(GoblinBg)
             .testTag("home_lazy_column")
     ) {
-        // 1. HERO SECTION (Expansive viewport showcase)
+        // 1. HERO SECTION (Editorial typographic header with link to About)
         item(key = "hero_section") {
             HeroSection(
-                heroPhoto = activeHeroPhoto,
-                isMonochrome = uiState.isMonochromeMode,
-                showFilmGrain = uiState.isFilmGrainEnabled,
                 onScrollDown = {
                     scope.launch {
                         listState.animateScrollToItem(1)
                     }
                 },
-                onPhotoClick = { onPhotoClick(activeHeroPhoto) }
+                onNavigateToAbout = {
+                    onNavigate(NavigationSection.ABOUT)
+                }
             )
         }
 

@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -29,10 +28,12 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,141 +43,93 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.data.models.Photograph
 import com.example.ui.theme.GoblinAccentWarm
 import com.example.ui.theme.GoblinBg
+import com.example.ui.theme.GoblinBgSecondary
 import com.example.ui.theme.GoblinBorderSubtle
+import com.example.ui.theme.GoblinTextPrimary
+import com.example.ui.theme.GoblinTextSecondary
+import com.example.ui.theme.GoblinTextTertiary
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Editorial Full-Bleed Hero Component for 'Khonchitro'
+ * Editorial Hero Section for Jubayer Ahmed's Visual Photography Archive
  *
- * Features:
- * - Expansive landscape photography viewport showcase
- * - Staggered Framer-style spring entrance animations for background zoom and typography
- * - Multi-stop film gradient mask for high visual hierarchy
- * - Minimal 'Khonchitro' branding & location/technical spec
- * - Continuous breathing bounce scroll indicator with direct tap action
+ * Displays:
+ * - Headline: "Here we go... With the clicks of Jubayer Ahmed." (with "Jubayer Ahmed" linked to About page)
+ * - Description: "Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh."
+ * - Description (small): "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving"
  */
 @Composable
 fun HeroSection(
-    heroPhoto: Photograph,
-    isMonochrome: Boolean,
-    showFilmGrain: Boolean,
     onScrollDown: () -> Unit,
-    onPhotoClick: () -> Unit,
+    onNavigateToAbout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // -------------------------------------------------------------------------
-    // FRAMER-MOTION STYLE SPRING & STAGGERED ENTRANCE ANIMATIONS
+    // ENTRANCE ANIMATIONS
     // -------------------------------------------------------------------------
-    val photoScale = remember { Animatable(1.08f) }
-    val photoAlpha = remember { Animatable(0f) }
-
-    val brandAlpha = remember { Animatable(0f) }
-    val brandOffsetY = remember { Animatable(24f) }
+    val badgeAlpha = remember { Animatable(0f) }
+    val badgeOffsetY = remember { Animatable(20f) }
 
     val headlineAlpha = remember { Animatable(0f) }
-    val headlineOffsetY = remember { Animatable(32f) }
+    val headlineOffsetY = remember { Animatable(28f) }
 
-    val metadataAlpha = remember { Animatable(0f) }
-    val metadataOffsetY = remember { Animatable(20f) }
+    val descAlpha = remember { Animatable(0f) }
+    val descOffsetY = remember { Animatable(24f) }
 
-    val scrollIndicatorAlpha = remember { Animatable(0f) }
-    val scrollIndicatorOffsetY = remember { Animatable(16f) }
+    val footerAlpha = remember { Animatable(0f) }
+    val footerOffsetY = remember { Animatable(16f) }
 
     LaunchedEffect(Unit) {
-        // 1. Initial background image reveal & subtle settle zoom
+        // 1. Badge entrance
         launch {
-            photoAlpha.animateTo(1f, tween(900, easing = FastOutSlowInEasing))
-        }
-        launch {
-            photoScale.animateTo(
-                targetValue = 1f,
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioLowBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
+            badgeAlpha.animateTo(1f, tween(400))
+            badgeOffsetY.animateTo(0f, spring(dampingRatio = 0.8f, stiffness = 150f))
         }
 
-        // 2. Brand badge entrance (staggered delay 150ms)
-        delay(150)
+        // 2. Headline entrance
+        delay(100)
         launch {
-            brandAlpha.animateTo(1f, tween(500))
-        }
-        launch {
-            brandOffsetY.animateTo(
-                targetValue = 0f,
-                animationSpec = spring(
-                    dampingRatio = 0.8f,
-                    stiffness = 140f
-                )
-            )
+            headlineAlpha.animateTo(1f, tween(500))
+            headlineOffsetY.animateTo(0f, spring(dampingRatio = 0.85f, stiffness = 140f))
         }
 
-        // 3. Headline & quote entrance (staggered delay 300ms)
-        delay(150)
+        // 3. Description entrance
+        delay(120)
         launch {
-            headlineAlpha.animateTo(1f, tween(600))
-        }
-        launch {
-            headlineOffsetY.animateTo(
-                targetValue = 0f,
-                animationSpec = spring(
-                    dampingRatio = 0.85f,
-                    stiffness = 120f
-                )
-            )
+            descAlpha.animateTo(1f, tween(500))
+            descOffsetY.animateTo(0f, spring(dampingRatio = 0.85f, stiffness = 140f))
         }
 
-        // 4. Coordinates & metadata entrance (staggered delay 450ms)
-        delay(150)
+        // 4. Action buttons & technical footer
+        delay(120)
         launch {
-            metadataAlpha.animateTo(1f, tween(500))
-        }
-        launch {
-            metadataOffsetY.animateTo(
-                targetValue = 0f,
-                animationSpec = spring(
-                    dampingRatio = 0.75f,
-                    stiffness = 130f
-                )
-            )
-        }
-
-        // 5. Scroll indicator entrance (staggered delay 600ms)
-        delay(150)
-        launch {
-            scrollIndicatorAlpha.animateTo(1f, tween(600))
-        }
-        launch {
-            scrollIndicatorOffsetY.animateTo(
-                targetValue = 0f,
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = 120f
-                )
-            )
+            footerAlpha.animateTo(1f, tween(500))
+            footerOffsetY.animateTo(0f, spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = 130f))
         }
     }
 
-    // Continuous breathing bounce animation for scroll indicator
+    // Gentle breathing bounce animation for scroll button
     val infiniteTransition = rememberInfiniteTransition(label = "ScrollIndicatorBounce")
     val bounceOffset by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = 7f,
+        targetValue = 6f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 1400, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
@@ -184,233 +137,221 @@ fun HeroSection(
         label = "bounce"
     )
 
-    BoxWithConstraints(
+    // Build the hero title with clickable "Jubayer Ahmed"
+    val annotatedHeading = remember {
+        buildAnnotatedString {
+            append("Here we go... With the clicks of ")
+            pushStringAnnotation(tag = "ABOUT_LINK", annotation = "about")
+            withStyle(
+                style = SpanStyle(
+                    color = GoblinAccentWarm,
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Normal
+                )
+            ) {
+                append("Jubayer Ahmed")
+            }
+            pop()
+            append(".")
+        }
+    }
+
+    Surface(
+        color = GoblinBg,
         modifier = modifier
             .fillMaxWidth()
             .testTag("hero_section")
     ) {
-        // Calculate expansive hero viewport height
-        val heroHeight = (maxHeight * 0.88f).coerceIn(580.dp, 800.dp)
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(heroHeight)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) { onPhotoClick() }
-        ) {
-            // -----------------------------------------------------------------
-            // 1. POWERFUL LANDSCAPE BACKGROUND ARTWORK WITH SPRING ZOOM
-            // -----------------------------------------------------------------
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .scale(photoScale.value)
-                    .alpha(photoAlpha.value)
-            ) {
-                PhotographicArtwork(
-                    photograph = heroPhoto,
-                    isMonochrome = isMonochrome,
-                    showFilmGrain = showFilmGrain,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-
-            // -----------------------------------------------------------------
-            // 2. EDITORIAL MULTI-STOP GRADIENT OVERLAY
-            // -----------------------------------------------------------------
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colorStops = arrayOf(
-                                0.0f to Color(0x99000000),
-                                0.25f to Color(0x22000000),
-                                0.60f to Color(0x55000000),
-                                0.85f to Color(0xCC000000),
-                                0.98f to Color(0xFAFFFFFF),
-                                1.0f to GoblinBg
-                            )
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0xFF141312),
+                            GoblinBg,
+                            Color(0xFF0F0E0D)
                         )
                     )
-            )
-
-            // -----------------------------------------------------------------
-            // 3. EDITORIAL HERO FOREGROUND CONTENT
-            // -----------------------------------------------------------------
+                )
+                .statusBarsPadding()
+                .padding(horizontal = 24.dp, vertical = 32.dp)
+        ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-                    .padding(horizontal = 24.dp, vertical = 22.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth()
             ) {
-                // Top Row: Minimal 'Film by Jubayer' Branding & Darkroom Spec
+                // 1. TOP SUB-HEADER BADGE
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .offset { IntOffset(0, brandOffsetY.value.roundToInt()) }
-                        .alpha(brandAlpha.value),
+                        .offset { IntOffset(0, badgeOffsetY.value.roundToInt()) }
+                        .alpha(badgeAlpha.value),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier
-                                    .size(6.dp)
-                                    .clip(CircleShape)
-                                    .background(Color(0xFFE2A860))
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "KHONCHITRO",
-                                fontFamily = FontFamily.SansSerif,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 11.sp,
-                                letterSpacing = 3.5.sp,
-                                color = Color(0xFFF6F5F2)
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(7.dp)
+                                .clip(CircleShape)
+                                .background(GoblinAccentWarm)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "ক্ষণচিত্র • CINEMATIC VISUAL ARCHIVE",
+                            text = "HABIGANJ, BANGLADESH • VISUAL ARCHIVE",
                             fontFamily = FontFamily.Monospace,
-                            fontSize = 8.5.sp,
-                            letterSpacing = 1.8.sp,
-                            color = Color(0xFFB5B3AE)
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 10.sp,
+                            letterSpacing = 2.4.sp,
+                            color = GoblinAccentWarm
                         )
                     }
 
-                    // Technical EXIF Badge
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
-                            .border(0.5.dp, Color(0x44FFFFFF), RoundedCornerShape(4.dp))
-                            .background(Color(0x77000000))
-                            .padding(horizontal = 10.dp, vertical = 5.dp)
+                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
+                            .background(GoblinBgSecondary)
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = Icons.Default.CenterFocusStrong,
-                                contentDescription = "Camera metadata",
-                                tint = Color(0xFFCCCCCC),
-                                modifier = Modifier.size(11.dp)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "LEICA M • 35MM",
-                                fontFamily = FontFamily.Monospace,
-                                fontSize = 8.5.sp,
-                                letterSpacing = 1.4.sp,
-                                color = Color(0xFFEEEEEE)
-                            )
-                        }
+                        Text(
+                            text = "EST. 2024",
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 8.5.sp,
+                            letterSpacing = 1.4.sp,
+                            color = GoblinTextTertiary
+                        )
                     }
                 }
 
-                // Middle: Evocative Headline & Essay Lead
-                Column(
+                Spacer(modifier = Modifier.height(28.dp))
+
+                // 2. HERO HEADING WITH CLICKABLE "JUBAYER AHMED"
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .offset { IntOffset(0, headlineOffsetY.value.roundToInt()) }
                         .alpha(headlineAlpha.value)
                 ) {
-                    Text(
-                        text = "BANGLADESH LANDSCAPE DOCUMENTARY",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 9.5.sp,
-                        letterSpacing = 2.8.sp,
-                        color = Color(0xFFE2A860)
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        text = "Light, water &\nshifting silt across\nthe river delta.",
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 36.sp,
-                        lineHeight = 44.sp,
-                        letterSpacing = (-0.5).sp,
-                        color = Color(0xFFFFFFFF)
-                    )
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(
-                        text = "Documenting transient landscapes, tidal waters, and human resilience through analog discipline.",
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 12.sp,
-                        lineHeight = 18.sp,
-                        color = Color(0xFFDDDDDC),
-                        modifier = Modifier.fillMaxWidth(0.88f)
+                    ClickableText(
+                        text = annotatedHeading,
+                        style = TextStyle(
+                            fontFamily = FontFamily.Serif,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 32.sp,
+                            lineHeight = 42.sp,
+                            letterSpacing = (-0.5).sp,
+                            color = GoblinTextPrimary
+                        ),
+                        modifier = Modifier.testTag("hero_heading_text"),
+                        onClick = { offset ->
+                            annotatedHeading.getStringAnnotations(
+                                tag = "ABOUT_LINK",
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()?.let {
+                                onNavigateToAbout()
+                            }
+                        }
                     )
                 }
 
-                // Bottom: Landscape Geo Coordinates + Interactive Scroll Indicator
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Bottom
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // 3. DESCRIPTIONS (Primary & Small Sub-description)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset { IntOffset(0, descOffsetY.value.roundToInt()) }
+                        .alpha(descAlpha.value),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    // Geo Coordinates & Season Info
-                    Column(
+                    // Primary focus areas
+                    Text(
+                        text = "Landscapes, Documentary, Rural, Wildlife, Nature, and Visual Storytelling Photography Based in Habiganj, Bangladesh.",
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 15.sp,
+                        lineHeight = 22.sp,
+                        color = GoblinTextSecondary
+                    )
+
+                    // Small description
+                    Text(
+                        text = "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 11.5.sp,
+                        lineHeight = 17.sp,
+                        letterSpacing = 0.4.sp,
+                        color = GoblinTextTertiary
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // 4. ACTION BUTTONS & EXPLORE TRIGGER
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .offset { IntOffset(0, footerOffsetY.value.roundToInt()) }
+                        .alpha(footerAlpha.value),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Explore Archive button
+                    Row(
                         modifier = Modifier
-                            .offset { IntOffset(0, metadataOffsetY.value.roundToInt()) }
-                            .alpha(metadataAlpha.value)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(GoblinTextPrimary)
+                            .clickable { onScrollDown() }
+                            .padding(horizontal = 18.dp, vertical = 12.dp)
+                            .testTag("explore_archive_btn"),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = heroPhoto.location.uppercase(),
+                            text = "EXPLORE ARCHIVE",
                             fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 10.sp,
-                            letterSpacing = 2.0.sp,
-                            color = Color(0xFFFFFFFF)
+                            fontSize = 10.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = 1.8.sp,
+                            color = GoblinBg
                         )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "23° 48' N • MONSOON ARCHIVE",
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 8.5.sp,
-                            letterSpacing = 1.4.sp,
-                            color = Color(0xFFB5B3AE)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            imageVector = Icons.Default.ArrowDownward,
+                            contentDescription = "Scroll to gallery",
+                            tint = GoblinBg,
+                            modifier = Modifier
+                                .size(13.dp)
+                                .offset(y = bounceOffset.dp)
                         )
                     }
 
-                    // Interactive Framer-Style Scroll Indicator
-                    Box(
+                    // About Jubayer button
+                    Row(
                         modifier = Modifier
-                            .offset { IntOffset(0, scrollIndicatorOffsetY.value.roundToInt()) }
-                            .alpha(scrollIndicatorAlpha.value)
+                            .clip(RoundedCornerShape(6.dp))
+                            .border(1.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
+                            .background(GoblinBgSecondary)
+                            .clickable { onNavigateToAbout() }
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .testTag("about_jubayer_hero_btn"),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(24.dp))
-                                .border(0.5.dp, Color(0x66FFFFFF), RoundedCornerShape(24.dp))
-                                .background(Color(0x99000000))
-                                .clickable { onScrollDown() }
-                                .padding(horizontal = 14.dp, vertical = 9.dp)
-                                .testTag("scroll_indicator_button"),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "SCROLL TO EXPLORE",
-                                fontFamily = FontFamily.SansSerif,
-                                fontSize = 9.5.sp,
-                                fontWeight = FontWeight.Medium,
-                                letterSpacing = 2.0.sp,
-                                color = Color(0xFFFFFFFF)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Icon(
-                                imageVector = Icons.Default.ArrowDownward,
-                                contentDescription = "Scroll down",
-                                tint = Color(0xFFE2A860),
-                                modifier = Modifier
-                                    .size(13.dp)
-                                    .offset(y = bounceOffset.dp)
-                            )
-                        }
+                        Text(
+                            text = "ABOUT JUBAYER",
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 10.5.sp,
+                            fontWeight = FontWeight.Medium,
+                            letterSpacing = 1.6.sp,
+                            color = GoblinTextSecondary
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Go to About page",
+                            tint = GoblinAccentWarm,
+                            modifier = Modifier.size(12.dp)
+                        )
                     }
                 }
             }
