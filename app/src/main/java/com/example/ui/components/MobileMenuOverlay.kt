@@ -151,7 +151,8 @@ fun MobileMenuOverlay(
                         NavigationSection.JOURNAL to "03",
                         NavigationSection.ABOUT to "04",
                         NavigationSection.CONTACT to "05",
-                        NavigationSection.CURATION to "06"
+                        NavigationSection.CURATION to "06",
+                        NavigationSection.ADMIN to "07"
                     )
 
                     navItems.forEach { (section, indexStr) ->

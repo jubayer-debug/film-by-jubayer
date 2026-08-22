@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +51,10 @@ fun AboutScreen(
     onNavigate: (NavigationSection) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val portraitPhoto = PortfolioRepository.photographs.first { it.id == "photo_06" }
+    val portraitPhoto = remember(uiState.contentUpdateVersion) {
+        PortfolioRepository.photographs.firstOrNull { it.id == "photo_06" } ?: PortfolioRepository.photographs.firstOrNull()
+    }
+    val exhibitions = remember(uiState.contentUpdateVersion) { PortfolioRepository.exhibitions }
 
     LazyColumn(
         modifier = modifier
@@ -93,28 +97,30 @@ fun AboutScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 12.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.2f)
-                        .clip(RoundedCornerShape(4.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-                ) {
-                    PhotographicArtwork(
-                        photograph = portraitPhoto,
-                        isMonochrome = uiState.isMonochromeMode,
-                        showFilmGrain = uiState.isFilmGrainEnabled,
-                        modifier = Modifier.fillMaxSize()
+                if (portraitPhoto != null) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1.2f)
+                            .clip(RoundedCornerShape(4.dp))
+                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
+                    ) {
+                        PhotographicArtwork(
+                            photograph = portraitPhoto,
+                            isMonochrome = uiState.isMonochromeMode,
+                            showFilmGrain = uiState.isFilmGrainEnabled,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "FILM BY JUBAYER • DHAKA, BANGLADESH",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 9.5.sp,
+                        letterSpacing = 1.8.sp,
+                        color = GoblinTextTertiary
                     )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "FILM BY JUBAYER • DHAKA, BANGLADESH",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 9.5.sp,
-                    letterSpacing = 1.8.sp,
-                    color = GoblinTextTertiary
-                )
             }
         }
 
@@ -173,7 +179,7 @@ fun AboutScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                PortfolioRepository.exhibitions.forEach { ex ->
+                exhibitions.forEach { ex ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

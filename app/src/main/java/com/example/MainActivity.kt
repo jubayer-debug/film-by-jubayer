@@ -25,6 +25,7 @@ import com.example.ui.components.ImageLightbox
 import com.example.ui.components.MobileMenuOverlay
 import com.example.ui.components.NavigationHeader
 import com.example.ui.screens.AboutScreen
+import com.example.ui.screens.AdminScreen
 import com.example.ui.screens.ContactScreen
 import com.example.ui.screens.CurationScreen
 import com.example.ui.screens.HomeScreen
@@ -190,6 +191,14 @@ fun GoblinPortfolioApp(
                                         onNavigate = { viewModel.navigateTo(it) }
                                     )
                                 }
+
+                                NavigationSection.ADMIN -> {
+                                    AdminScreen(
+                                        viewModel = viewModel,
+                                        uiState = uiState,
+                                        onNavigate = { viewModel.navigateTo(it) }
+                                    )
+                                }
                             }
                         }
                     }
@@ -224,7 +233,8 @@ fun GoblinPortfolioApp(
                 onNext = { viewModel.nextLightboxPhoto() },
                 onPrevious = { viewModel.previousLightboxPhoto() },
                 onToggleFavorite = { viewModel.toggleFavorite(it) },
-                onToggleExif = { viewModel.toggleLightboxExif() }
+                onToggleExif = { viewModel.toggleLightboxExif() },
+                onEditInAdmin = { viewModel.openAdminEditFromLightbox() }
             )
         }
     }

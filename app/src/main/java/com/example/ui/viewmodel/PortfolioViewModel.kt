@@ -3,6 +3,7 @@ package com.example.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.PortfolioRepository
+import com.example.data.models.Exhibition
 import com.example.data.models.JournalEntry
 import com.example.data.models.PhotoCategory
 import com.example.data.models.Photograph
@@ -20,7 +21,16 @@ enum class NavigationSection(val label: String, val routeKey: String) {
     JOURNAL("JOURNAL", "journal"),
     ABOUT("ABOUT", "about"),
     CONTACT("CONTACT", "contact"),
-    CURATION("SAVED", "curation")
+    CURATION("SAVED", "curation"),
+    ADMIN("ADMIN", "admin")
+}
+
+enum class AdminTab(val label: String, val iconLabel: String) {
+    PHOTOS("PHOTOGRAPHS", "📷"),
+    PROJECTS("PROJECTS", "📁"),
+    JOURNAL("FIELD JOURNAL", "✍️"),
+    EXHIBITIONS("EXHIBITIONS", "🏛️"),
+    TOOLS("PRESETS & BACKUP", "⚙️")
 }
 
 enum class PhotoSortOrder(val label: String, val shortLabel: String) {
@@ -57,7 +67,20 @@ data class PortfolioUiState(
     val isFilmGrainEnabled: Boolean = true,
     val isAmbientSoundActive: Boolean = false,
     val favoritePhotoIds: Set<String> = emptySet(),
-    val contactForm: ContactFormState = ContactFormState()
+    val contactForm: ContactFormState = ContactFormState(),
+    // Admin CMS state
+    val adminTab: AdminTab = AdminTab.PHOTOS,
+    val adminEditingPhoto: Photograph? = null,
+    val isAddingPhoto: Boolean = false,
+    val adminEditingProject: Project? = null,
+    val isAddingProject: Boolean = false,
+    val adminEditingJournal: JournalEntry? = null,
+    val isAddingJournal: Boolean = false,
+    val adminEditingExhibitionIndex: Int? = null,
+    val adminEditingExhibition: Exhibition? = null,
+    val isAddingExhibition: Boolean = false,
+    val adminSnackbarMessage: String? = null,
+    val contentUpdateVersion: Long = 0L
 )
 
 class PortfolioViewModel : ViewModel() {
@@ -74,6 +97,364 @@ class PortfolioViewModel : ViewModel() {
                 isMobileMenuOpen = false
             )
         }
+    }
+
+    // --- Admin CMS Methods ---
+    fun selectAdminTab(tab: AdminTab) {
+        _uiState.update { it.copy(adminTab = tab) }
+    }
+
+    fun startAddPhoto() {
+        val newPhoto = Photograph(
+            id = "photo_${System.currentTimeMillis() % 100000}",
+            title = "",
+            bengaliTitle = "",
+            location = "Dhaka, Bangladesh",
+            year = "2026",
+            category = PhotoCategory.RIVER,
+            orientation = com.example.data.models.PhotoOrientation.LANDSCAPE,
+            caption = "",
+            story = "",
+            mood = com.example.data.models.VisualMood.RIVER_DAWN,
+            exif = com.example.data.models.CameraExif(
+                camera = "Leica M11-P",
+                lens = "Summilux-M 35mm f/1.4",
+                aperture = "f/2.8",
+                shutter = "1/250s",
+                iso = "ISO 100",
+                focalLength = "35mm"
+            ),
+            isCuratedFeatured = true,
+            imageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85",
+            thumbUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
+        )
+        _uiState.update {
+            it.copy(
+                adminEditingPhoto = newPhoto,
+                isAddingPhoto = true
+            )
+        }
+    }
+
+    fun startEditPhoto(photo: Photograph) {
+        _uiState.update {
+            it.copy(
+                adminEditingPhoto = photo,
+                isAddingPhoto = false
+            )
+        }
+    }
+
+    fun openAdminEditFromLightbox() {
+        val photo = _uiState.value.lightboxPhoto ?: return
+        _uiState.update {
+            it.copy(
+                activeSection = NavigationSection.ADMIN,
+                adminTab = AdminTab.PHOTOS,
+                adminEditingPhoto = photo,
+                isAddingPhoto = false,
+                lightboxPhoto = null
+            )
+        }
+    }
+
+    fun cancelEditPhoto() {
+        _uiState.update {
+            it.copy(
+                adminEditingPhoto = null,
+                isAddingPhoto = false
+            )
+        }
+    }
+
+    fun savePhoto(photo: Photograph) {
+        if (_uiState.value.isAddingPhoto) {
+            PortfolioRepository.addPhotograph(photo)
+            showAdminSnackbar("Added photograph \"${photo.title.ifBlank { "Untitled" }}\"")
+        } else {
+            PortfolioRepository.updatePhotograph(photo)
+            showAdminSnackbar("Updated photograph \"${photo.title.ifBlank { "Untitled" }}\"")
+        }
+        _uiState.update {
+            it.copy(
+                adminEditingPhoto = null,
+                isAddingPhoto = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    fun deletePhoto(photoId: String) {
+        PortfolioRepository.deletePhotograph(photoId)
+        showAdminSnackbar("Deleted photograph from archive")
+        _uiState.update {
+            it.copy(
+                adminEditingPhoto = null,
+                isAddingPhoto = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    // Projects Admin
+    fun startAddProject() {
+        val newProj = Project(
+            id = "proj_${System.currentTimeMillis() % 100000}",
+            number = String.format("%02d", PortfolioRepository.projects.size + 1),
+            title = "",
+            bengaliTitle = "",
+            subtitle = "",
+            location = "Bangladesh",
+            year = "2026",
+            photoCount = 10,
+            coverPhotoId = PortfolioRepository.photographs.firstOrNull()?.id ?: "photo_01",
+            description = "",
+            essayText = "",
+            photoIds = PortfolioRepository.photographs.take(4).map { it.id },
+            quote = ""
+        )
+        _uiState.update {
+            it.copy(
+                adminEditingProject = newProj,
+                isAddingProject = true
+            )
+        }
+    }
+
+    fun startEditProject(project: Project) {
+        _uiState.update {
+            it.copy(
+                adminEditingProject = project,
+                isAddingProject = false
+            )
+        }
+    }
+
+    fun cancelEditProject() {
+        _uiState.update {
+            it.copy(
+                adminEditingProject = null,
+                isAddingProject = false
+            )
+        }
+    }
+
+    fun saveProject(project: Project) {
+        if (_uiState.value.isAddingProject) {
+            PortfolioRepository.addProject(project)
+            showAdminSnackbar("Added series \"${project.title.ifBlank { "Untitled" }}\"")
+        } else {
+            PortfolioRepository.updateProject(project)
+            showAdminSnackbar("Updated series \"${project.title.ifBlank { "Untitled" }}\"")
+        }
+        _uiState.update {
+            it.copy(
+                adminEditingProject = null,
+                isAddingProject = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    fun deleteProject(projectId: String) {
+        PortfolioRepository.deleteProject(projectId)
+        showAdminSnackbar("Removed project series")
+        _uiState.update {
+            it.copy(
+                adminEditingProject = null,
+                isAddingProject = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    // Journal Admin
+    fun startAddJournal() {
+        val newJournal = JournalEntry(
+            id = "journal_${System.currentTimeMillis() % 100000}",
+            title = "",
+            bengaliTitle = "",
+            date = "MARCH 2026",
+            readTime = "5 MIN READ",
+            location = "Field Diary",
+            excerpt = "",
+            content = "",
+            coverPhotoId = PortfolioRepository.photographs.firstOrNull()?.id ?: "photo_01"
+        )
+        _uiState.update {
+            it.copy(
+                adminEditingJournal = newJournal,
+                isAddingJournal = true
+            )
+        }
+    }
+
+    fun startEditJournal(journal: JournalEntry) {
+        _uiState.update {
+            it.copy(
+                adminEditingJournal = journal,
+                isAddingJournal = false
+            )
+        }
+    }
+
+    fun cancelEditJournal() {
+        _uiState.update {
+            it.copy(
+                adminEditingJournal = null,
+                isAddingJournal = false
+            )
+        }
+    }
+
+    fun saveJournal(journal: JournalEntry) {
+        if (_uiState.value.isAddingJournal) {
+            PortfolioRepository.addJournalEntry(journal)
+            showAdminSnackbar("Published article \"${journal.title.ifBlank { "Untitled" }}\"")
+        } else {
+            PortfolioRepository.updateJournalEntry(journal)
+            showAdminSnackbar("Updated article \"${journal.title.ifBlank { "Untitled" }}\"")
+        }
+        _uiState.update {
+            it.copy(
+                adminEditingJournal = null,
+                isAddingJournal = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    fun deleteJournal(journalId: String) {
+        PortfolioRepository.deleteJournalEntry(journalId)
+        showAdminSnackbar("Removed journal entry")
+        _uiState.update {
+            it.copy(
+                adminEditingJournal = null,
+                isAddingJournal = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    // Exhibition Admin
+    fun startAddExhibition() {
+        val newExhibition = com.example.data.models.Exhibition(
+            year = "2026",
+            title = "",
+            venue = "",
+            location = "Dhaka, Bangladesh",
+            type = "Solo Exhibition"
+        )
+        _uiState.update {
+            it.copy(
+                adminEditingExhibition = newExhibition,
+                adminEditingExhibitionIndex = null,
+                isAddingExhibition = true
+            )
+        }
+    }
+
+    fun startEditExhibition(index: Int, exhibition: com.example.data.models.Exhibition) {
+        _uiState.update {
+            it.copy(
+                adminEditingExhibition = exhibition,
+                adminEditingExhibitionIndex = index,
+                isAddingExhibition = false
+            )
+        }
+    }
+
+    fun cancelEditExhibition() {
+        _uiState.update {
+            it.copy(
+                adminEditingExhibition = null,
+                adminEditingExhibitionIndex = null,
+                isAddingExhibition = false
+            )
+        }
+    }
+
+    fun saveExhibition(exhibition: com.example.data.models.Exhibition) {
+        val index = _uiState.value.adminEditingExhibitionIndex
+        if (index != null && !_uiState.value.isAddingExhibition) {
+            PortfolioRepository.updateExhibition(index, exhibition)
+            showAdminSnackbar("Updated exhibition \"${exhibition.title}\"")
+        } else {
+            PortfolioRepository.addExhibition(exhibition)
+            showAdminSnackbar("Added exhibition \"${exhibition.title}\"")
+        }
+        _uiState.update {
+            it.copy(
+                adminEditingExhibition = null,
+                adminEditingExhibitionIndex = null,
+                isAddingExhibition = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    fun deleteExhibition(index: Int) {
+        PortfolioRepository.deleteExhibition(index)
+        showAdminSnackbar("Removed exhibition entry")
+        _uiState.update {
+            it.copy(
+                adminEditingExhibition = null,
+                adminEditingExhibitionIndex = null,
+                isAddingExhibition = false,
+                contentUpdateVersion = System.currentTimeMillis()
+            )
+        }
+    }
+
+    fun resetCuratedArchive() {
+        PortfolioRepository.resetToDefaults()
+        showAdminSnackbar("Archive restored to default curated gallery")
+        _uiState.update {
+            it.copy(contentUpdateVersion = System.currentTimeMillis())
+        }
+    }
+
+    fun appendEditorialPresets() {
+        val presets = PortfolioRepository.photoPresets
+        val randomPreset = presets.random()
+        val photo = Photograph(
+            id = "photo_${System.currentTimeMillis() % 100000}",
+            title = randomPreset.first,
+            bengaliTitle = "নতুন চিত্রপট",
+            location = "Bangladesh Delta",
+            year = "2026",
+            category = PhotoCategory.RIVER,
+            orientation = com.example.data.models.PhotoOrientation.LANDSCAPE,
+            caption = "Documentary frame captured along the waterways.",
+            story = "Natural light reflecting off the Bengal waterways at dawn, preserving the fleeting visual heritage.",
+            mood = com.example.data.models.VisualMood.RIVER_DAWN,
+            exif = com.example.data.models.CameraExif(
+                camera = "Leica M11-P",
+                lens = "Summilux 35mm f/1.4",
+                aperture = "f/2.0",
+                shutter = "1/500s",
+                iso = "ISO 100",
+                focalLength = "35mm"
+            ),
+            isCuratedFeatured = true,
+            imageUrl = randomPreset.second,
+            thumbUrl = randomPreset.second
+        )
+        PortfolioRepository.addPhotograph(photo)
+        showAdminSnackbar("Added sample photo \"${photo.title}\" to archive")
+        _uiState.update { it.copy(contentUpdateVersion = System.currentTimeMillis()) }
+    }
+
+    fun showAdminSnackbar(msg: String) {
+        _uiState.update { it.copy(adminSnackbarMessage = msg) }
+        viewModelScope.launch {
+            delay(3000)
+            _uiState.update { if (it.adminSnackbarMessage == msg) it.copy(adminSnackbarMessage = null) else it }
+        }
+    }
+
+    fun dismissAdminSnackbar() {
+        _uiState.update { it.copy(adminSnackbarMessage = null) }
     }
 
     fun openProject(project: Project) {

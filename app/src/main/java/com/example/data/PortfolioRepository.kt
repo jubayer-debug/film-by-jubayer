@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 object PortfolioRepository {
 
-    val photographs: List<Photograph> = listOf(
+    private val defaultPhotographs: List<Photograph> = listOf(
         Photograph(
             id = "photo_01",
             title = "Beyond the River",
@@ -271,27 +271,7 @@ object PortfolioRepository {
         )
     )
 
-    // Dynamic Random Discovery Helpers
-    fun getRandomPhotograph(excludeId: String? = null): Photograph {
-        val pool = if (excludeId != null) photographs.filter { it.id != excludeId } else photographs
-        return (pool.ifEmpty { photographs }).random()
-    }
-
-    fun getShuffledPhotographs(seed: Long = System.currentTimeMillis()): List<Photograph> {
-        val rnd = Random(seed)
-        return photographs.shuffled(rnd)
-    }
-
-    fun getRandomCuratedDiscovery(count: Int = 4): List<Photograph> {
-        return photographs.shuffled().take(count.coerceAtMost(photographs.size))
-    }
-
-    fun getRandomPhotographForCategory(category: PhotoCategory): Photograph {
-        val pool = if (category == PhotoCategory.ALL) photographs else photographs.filter { it.category == category }
-        return (pool.ifEmpty { photographs }).random()
-    }
-
-    val projects: List<Project> = listOf(
+    private val defaultProjects: List<Project> = listOf(
         Project(
             id = "proj_01",
             number = "01",
@@ -354,7 +334,7 @@ object PortfolioRepository {
         )
     )
 
-    val journalEntries: List<JournalEntry> = listOf(
+    private val defaultJournalEntries: List<JournalEntry> = listOf(
         JournalEntry(
             id = "journal_01",
             title = "On Analog Patience: Why 35mm Still Matters",
@@ -390,7 +370,7 @@ object PortfolioRepository {
         )
     )
 
-    val exhibitions: List<Exhibition> = listOf(
+    private val defaultExhibitions: List<Exhibition> = listOf(
         Exhibition(
             year = "2026",
             title = "SILVER WATER & SILENT DELTA",
@@ -413,6 +393,141 @@ object PortfolioRepository {
             type = "Group Exhibition"
         )
     )
+
+    // Dynamic mutable runtime collections
+    private val _photographs = defaultPhotographs.toMutableList()
+    private val _projects = defaultProjects.toMutableList()
+    private val _journalEntries = defaultJournalEntries.toMutableList()
+    private val _exhibitions = defaultExhibitions.toMutableList()
+
+    val photographs: List<Photograph>
+        get() = synchronized(this) { _photographs.toList() }
+
+    val projects: List<Project>
+        get() = synchronized(this) { _projects.toList() }
+
+    val journalEntries: List<JournalEntry>
+        get() = synchronized(this) { _journalEntries.toList() }
+
+    val exhibitions: List<Exhibition>
+        get() = synchronized(this) { _exhibitions.toList() }
+
+    // CRUD for Photographs
+    fun addPhotograph(photo: Photograph) = synchronized(this) {
+        _photographs.add(0, photo)
+    }
+
+    fun updatePhotograph(photo: Photograph) = synchronized(this) {
+        val index = _photographs.indexOfFirst { it.id == photo.id }
+        if (index != -1) {
+            _photographs[index] = photo
+        } else {
+            _photographs.add(0, photo)
+        }
+    }
+
+    fun deletePhotograph(id: String) = synchronized(this) {
+        _photographs.removeAll { it.id == id }
+    }
+
+    // CRUD for Projects
+    fun addProject(project: Project) = synchronized(this) {
+        _projects.add(project)
+    }
+
+    fun updateProject(project: Project) = synchronized(this) {
+        val index = _projects.indexOfFirst { it.id == project.id }
+        if (index != -1) {
+            _projects[index] = project
+        } else {
+            _projects.add(project)
+        }
+    }
+
+    fun deleteProject(id: String) = synchronized(this) {
+        _projects.removeAll { it.id == id }
+    }
+
+    // CRUD for Journal Entries
+    fun addJournalEntry(journal: JournalEntry) = synchronized(this) {
+        _journalEntries.add(0, journal)
+    }
+
+    fun updateJournalEntry(journal: JournalEntry) = synchronized(this) {
+        val index = _journalEntries.indexOfFirst { it.id == journal.id }
+        if (index != -1) {
+            _journalEntries[index] = journal
+        } else {
+            _journalEntries.add(0, journal)
+        }
+    }
+
+    fun deleteJournalEntry(id: String) = synchronized(this) {
+        _journalEntries.removeAll { it.id == id }
+    }
+
+    // CRUD for Exhibitions
+    fun addExhibition(exhibition: Exhibition) = synchronized(this) {
+        _exhibitions.add(0, exhibition)
+    }
+
+    fun updateExhibition(index: Int, exhibition: Exhibition) = synchronized(this) {
+        if (index in _exhibitions.indices) {
+            _exhibitions[index] = exhibition
+        }
+    }
+
+    fun deleteExhibition(index: Int) = synchronized(this) {
+        if (index in _exhibitions.indices) {
+            _exhibitions.removeAt(index)
+        }
+    }
+
+    // Reset to defaults
+    fun resetToDefaults() = synchronized(this) {
+        _photographs.clear()
+        _photographs.addAll(defaultPhotographs)
+        _projects.clear()
+        _projects.addAll(defaultProjects)
+        _journalEntries.clear()
+        _journalEntries.addAll(defaultJournalEntries)
+        _exhibitions.clear()
+        _exhibitions.addAll(defaultExhibitions)
+    }
+
+    // Curated high-res presets for 1-click admin addition
+    val photoPresets = listOf(
+        Pair("Meghna River Mist", "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Monsoon Flood Path", "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Old Town Lanterns", "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Tea Estate Fog", "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Riverman Portrait", "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Chalan Beel Sunset", "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Jute Field Harvest", "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Sundarbans Mangrove", "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Sadarghat Night Steamers", "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=1600&q=85"),
+        Pair("Coastal Trees Horizon", "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=85")
+    )
+
+    // Dynamic Random Discovery Helpers
+    fun getRandomPhotograph(excludeId: String? = null): Photograph {
+        val pool = if (excludeId != null) photographs.filter { it.id != excludeId } else photographs
+        return (pool.ifEmpty { photographs }).random()
+    }
+
+    fun getShuffledPhotographs(seed: Long = System.currentTimeMillis()): List<Photograph> {
+        val rnd = Random(seed)
+        return photographs.shuffled(rnd)
+    }
+
+    fun getRandomCuratedDiscovery(count: Int = 4): List<Photograph> {
+        return photographs.shuffled().take(count.coerceAtMost(photographs.size))
+    }
+
+    fun getRandomPhotographForCategory(category: PhotoCategory): Photograph {
+        val pool = if (category == PhotoCategory.ALL) photographs else photographs.filter { it.category == category }
+        return (pool.ifEmpty { photographs }).random()
+    }
 
     fun getPhotoById(id: String): Photograph? {
         return photographs.find { it.id == id }

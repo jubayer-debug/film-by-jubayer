@@ -31,6 +31,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
@@ -82,6 +83,7 @@ fun ImageLightbox(
     onPrevious: () -> Unit,
     onToggleFavorite: (String) -> Unit,
     onToggleExif: () -> Unit,
+    onEditInAdmin: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     var scale by remember { mutableFloatStateOf(1f) }
@@ -256,8 +258,28 @@ fun ImageLightbox(
                 color = GoblinTextSecondary
             )
 
-            // Right Action: Bookmark + EXIF
+            // Right Action: Edit + Bookmark + EXIF
             Row(verticalAlignment = Alignment.CenterVertically) {
+                if (onEditInAdmin != null) {
+                    IconButton(
+                        onClick = onEditInAdmin,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xEEFFFFFF))
+                            .border(0.5.dp, GoblinBorderSubtle, CircleShape)
+                            .testTag("lightbox_admin_edit_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit photo content",
+                            tint = GoblinAccentWarm,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                }
+
                 IconButton(
                     onClick = { onToggleFavorite(photo.id) },
                     modifier = Modifier

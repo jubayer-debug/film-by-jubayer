@@ -89,7 +89,7 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     
     // Filter and sort photos based on UI state
-    val filteredPhotos = remember(uiState.selectedCategory, uiState.sortOrder, uiState.searchQuery, uiState.randomSeed) {
+    val filteredPhotos = remember(uiState.selectedCategory, uiState.sortOrder, uiState.searchQuery, uiState.randomSeed, uiState.contentUpdateVersion) {
         var list = PortfolioRepository.photographs
         if (uiState.selectedCategory != PhotoCategory.ALL) {
             list = list.filter { it.category == uiState.selectedCategory }
@@ -705,6 +705,15 @@ fun FooterSection(
                 letterSpacing = 1.5.sp,
                 color = GoblinTextSecondary,
                 modifier = Modifier.clickable { onNavigate(NavigationSection.CONTACT) }
+            )
+            Text(
+                text = "ADMIN CMS",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                letterSpacing = 1.5.sp,
+                fontWeight = FontWeight.Bold,
+                color = GoblinAccentWarm,
+                modifier = Modifier.clickable { onNavigate(NavigationSection.ADMIN) }.testTag("footer_admin_link")
             )
         }
 

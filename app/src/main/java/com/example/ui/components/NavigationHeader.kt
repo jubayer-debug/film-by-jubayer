@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterVintage
@@ -169,7 +170,8 @@ private fun DesktopNavigationRow(
                 NavigationSection.JOURNAL,
                 NavigationSection.ABOUT,
                 NavigationSection.CONTACT,
-                NavigationSection.CURATION
+                NavigationSection.CURATION,
+                NavigationSection.ADMIN
             )
 
             sections.forEach { section ->
@@ -371,6 +373,21 @@ private fun MobileNavigationRow(
                         }
                     }
                 }
+            }
+
+            // Admin CMS Button
+            IconButton(
+                onClick = { onNavigate(NavigationSection.ADMIN) },
+                modifier = Modifier
+                    .size(36.dp)
+                    .testTag("admin_nav_button")
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Tune,
+                    contentDescription = "Admin CMS",
+                    tint = if (uiState.activeSection == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextTertiary,
+                    modifier = Modifier.size(17.dp)
+                )
             }
 
             // Full-Screen Mobile Menu Overlay Toggle
