@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,6 +25,12 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Bookmark
@@ -150,6 +157,8 @@ private fun DesktopNavigationRow(
     onToggleFilmGrain: () -> Unit,
     onToggleAmbient: () -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -160,85 +169,69 @@ private fun DesktopNavigationRow(
             onClick = { onNavigate(NavigationSection.WORK) }
         )
 
-        // Center: Horizontal Navigation Links
+        // Right Container: Horizontal Nav Links (Right-Aligned) + Social Line Icons + Darkroom Controls
         Row(
-            horizontalArrangement = Arrangement.spacedBy(28.dp),
+            horizontalArrangement = Arrangement.spacedBy(18.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val sections = listOf(
-                NavigationSection.WORK,
-                NavigationSection.PROJECTS,
-                NavigationSection.JOURNAL,
-                NavigationSection.ABOUT,
-                NavigationSection.CONTACT,
-                NavigationSection.CURATION,
-                NavigationSection.ADMIN
-            )
-
-            sections.forEach { section ->
-                val isActive = uiState.activeSection == section
-                val targetColor by animateColorAsState(
-                    targetValue = if (isActive) GoblinTextPrimary else GoblinTextTertiary,
-                    animationSpec = tween(200),
-                    label = "nav_color_${section.name}"
+            // Horizontal Navigation Links (Visually Quiet, Small Typography with Generous Letter Spacing)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val primarySections = listOf(
+                    NavigationSection.PHOTOS to "Photos",
+                    NavigationSection.ALBUMS to "Albums",
+                    NavigationSection.TOP10 to "#TOP 10",
+                    NavigationSection.JOURNAL to "Journal",
+                    NavigationSection.ABOUT to "About"
                 )
 
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .heightIn(min = 44.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) { onNavigate(section) }
-                        .padding(vertical = 4.dp, horizontal = 4.dp)
-                        .testTag("nav_link_${section.routeKey}")
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                primarySections.forEach { (section, displayLabel) ->
+                    val isActive = uiState.activeSection == section
+                    val targetColor by animateColorAsState(
+                        targetValue = if (isActive) GoblinTextPrimary else GoblinTextTertiary.copy(alpha = 0.85f),
+                        animationSpec = tween(220),
+                        label = "nav_color_${section.name}"
+                    )
+                    val underlineWidth by androidx.compose.animation.core.animateDpAsState(
+                        targetValue = if (isActive) 14.dp else 0.dp,
+                        animationSpec = tween(240),
+                        label = "nav_line_${section.name}"
+                    )
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .heightIn(min = 44.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { onNavigate(section) }
+                            .padding(vertical = 4.dp, horizontal = 4.dp)
+                            .testTag("nav_link_${section.routeKey}")
+                    ) {
                         Text(
-                            text = section.label,
+                            text = displayLabel,
                             fontFamily = FontFamily.SansSerif,
                             fontSize = 11.5.sp,
-                            fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
-                            letterSpacing = 2.0.sp,
+                            fontWeight = if (isActive) FontWeight.Medium else FontWeight.Normal,
+                            letterSpacing = 2.4.sp,
                             color = targetColor
                         )
-                        if (section == NavigationSection.CURATION && uiState.favoritePhotoIds.isNotEmpty()) {
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "[${uiState.favoritePhotoIds.size}]",
-                                fontSize = 9.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isActive) GoblinAccentWarm else GoblinTextTertiary
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Box(
+                            modifier = Modifier
+                                .width(underlineWidth)
+                                .height(1.dp)
+                                .background(GoblinTextPrimary.copy(alpha = 0.9f))
+                        )
                     }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Box(
-                        modifier = Modifier
-                            .width(if (isActive) 16.dp else 0.dp)
-                            .height(1.5.dp)
-                            .background(GoblinTextPrimary)
-                    )
                 }
             }
-        }
 
-        // Right: Atmospheric Darkroom Controls & Coordinates
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            // Coordinate Metadata
-            Text(
-                text = "23.8° N • DHAKA",
-                fontFamily = FontFamily.Monospace,
-                fontSize = 9.sp,
-                letterSpacing = 1.2.sp,
-                color = GoblinTextTertiary
-            )
-
+            // Divider between Menu & Social Links
             Box(
                 modifier = Modifier
                     .width(1.dp)
@@ -246,42 +239,114 @@ private fun DesktopNavigationRow(
                     .background(GoblinBorderSubtle)
             )
 
-            // B&W Monochrome Switch
-            MonochromeQuickButton(
-                isActive = uiState.isMonochromeMode,
-                onClick = onToggleMonochrome,
-                label = "B&W",
-                testTag = "desktop_bw_toggle"
-            )
-
-            // Grain Switch
-            MonochromeQuickButton(
-                isActive = uiState.isFilmGrainEnabled,
-                onClick = onToggleFilmGrain,
-                label = "GRAIN",
-                testTag = "desktop_grain_toggle"
-            )
-
-            // Audio Switch
-            IconButton(
-                onClick = onToggleAmbient,
-                modifier = Modifier
-                    .size(40.dp)
-                    .testTag("desktop_audio_toggle")
+            // Social Line Icons (Facebook, Instagram, Pexels, Mail)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = if (uiState.isAmbientSoundActive) Icons.Outlined.GraphicEq else Icons.Outlined.VolumeMute,
-                    contentDescription = "Toggle Ambience",
-                    tint = if (uiState.isAmbientSoundActive) GoblinAccentWarm else GoblinTextTertiary,
-                    modifier = Modifier.size(17.dp)
+                SocialLineIconButton(
+                    title = "Facebook",
+                    onClick = {
+                        try { uriHandler.openUri("https://facebook.com") } catch (_: Exception) {}
+                    }
+                ) {
+                    FacebookLineIcon(color = GoblinTextTertiary)
+                }
+
+                SocialLineIconButton(
+                    title = "Instagram",
+                    onClick = {
+                        try { uriHandler.openUri("https://instagram.com") } catch (_: Exception) {}
+                    }
+                ) {
+                    InstagramLineIcon(color = GoblinTextTertiary)
+                }
+
+                SocialLineIconButton(
+                    title = "Pexels",
+                    onClick = {
+                        try { uriHandler.openUri("https://www.pexels.com") } catch (_: Exception) {}
+                    }
+                ) {
+                    PexelsLineIcon(color = GoblinTextTertiary)
+                }
+
+                SocialLineIconButton(
+                    title = "Mail",
+                    onClick = {
+                        try { uriHandler.openUri("mailto:ijubayer1071@gmail.com") } catch (_: Exception) {}
+                    }
+                ) {
+                    MailLineIcon(color = GoblinTextTertiary)
+                }
+            }
+
+            // Divider between Social Links & Darkroom Controls
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(16.dp)
+                    .background(GoblinBorderSubtle)
+            )
+
+            // Atmospheric Darkroom Controls & Coordinates
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Coordinate Metadata
+                Text(
+                    text = "23.8° N • DHAKA",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 9.sp,
+                    letterSpacing = 1.2.sp,
+                    color = GoblinTextTertiary
                 )
+
+                Box(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .height(14.dp)
+                        .background(GoblinBorderSubtle)
+                )
+
+                // B&W Monochrome Switch
+                MonochromeQuickButton(
+                    isActive = uiState.isMonochromeMode,
+                    onClick = onToggleMonochrome,
+                    label = "B&W",
+                    testTag = "desktop_bw_toggle"
+                )
+
+                // Grain Switch
+                MonochromeQuickButton(
+                    isActive = uiState.isFilmGrainEnabled,
+                    onClick = onToggleFilmGrain,
+                    label = "GRAIN",
+                    testTag = "desktop_grain_toggle"
+                )
+
+                // Audio Switch
+                IconButton(
+                    onClick = onToggleAmbient,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .testTag("desktop_audio_toggle")
+                ) {
+                    Icon(
+                        imageVector = if (uiState.isAmbientSoundActive) Icons.Outlined.GraphicEq else Icons.Outlined.VolumeMute,
+                        contentDescription = "Toggle Ambience",
+                        tint = if (uiState.isAmbientSoundActive) GoblinAccentWarm else GoblinTextTertiary,
+                        modifier = Modifier.size(17.dp)
+                    )
+                }
             }
         }
     }
 }
 
 /**
- * Mobile Compact Navigation Bar
+ * Mobile Compact Navigation Bar: [MONOGRAM] [MENU]
  */
 @Composable
 private fun MobileNavigationRow(
@@ -296,91 +361,44 @@ private fun MobileNavigationRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left: Khonchitro Monogram & Brand
+        // Left: [MONOGRAM]
         KhonchitroBrandLogo(
-            onClick = { onNavigate(NavigationSection.WORK) }
+            onClick = { onNavigate(NavigationSection.PHOTOS) }
         )
 
-        // Right: Atmosphere + Saved + Admin + Hamburger Toggle (All with responsive 44dp touch targets)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        // Right: [MENU] Button
+        Box(
+            modifier = Modifier
+                .heightIn(min = 48.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) { onToggleMobileMenu() }
+                .padding(horizontal = 4.dp, vertical = 6.dp)
+                .testTag("menu_toggle_button"),
+            contentAlignment = Alignment.Center
         ) {
-            // Atmosphere Toggle Button
-            IconButton(
-                onClick = onToggleAtmosphereMenu,
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier
-                    .size(44.dp)
-                    .testTag("atmosphere_button")
+                    .border(0.75.dp, GoblinBorderSubtle, RoundedCornerShape(3.dp))
+                    .background(Color.White.copy(alpha = 0.8f), RoundedCornerShape(3.dp))
+                    .padding(horizontal = 10.dp, vertical = 6.dp)
             ) {
-                Icon(
-                    imageVector = if (uiState.isMonochromeMode) Icons.Outlined.Contrast else Icons.Default.FilterVintage,
-                    contentDescription = "Atmospheric modes",
-                    tint = if (uiState.isMonochromeMode || uiState.isAmbientSoundActive) GoblinTextPrimary else GoblinTextTertiary,
-                    modifier = Modifier.size(19.dp)
+                Text(
+                    text = "MENU",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 10.5.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 2.0.sp,
+                    color = GoblinTextPrimary
                 )
-            }
-
-            // Saved Exhibition Curation Button
-            IconButton(
-                onClick = { onNavigate(NavigationSection.CURATION) },
-                modifier = Modifier
-                    .size(44.dp)
-                    .testTag("saved_curation_button")
-            ) {
-                Box(contentAlignment = Alignment.TopEnd) {
-                    Icon(
-                        imageVector = if (uiState.favoritePhotoIds.isNotEmpty()) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                        contentDescription = "Saved Exhibition",
-                        tint = if (uiState.activeSection == NavigationSection.CURATION) GoblinTextPrimary else GoblinTextTertiary,
-                        modifier = Modifier.size(19.dp)
-                    )
-                    if (uiState.favoritePhotoIds.isNotEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .size(12.dp)
-                                .clip(CircleShape)
-                                .background(GoblinTextPrimary),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "${uiState.favoritePhotoIds.size}",
-                                fontSize = 7.5.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White
-                            )
-                        }
-                    }
-                }
-            }
-
-            // Admin CMS Button
-            IconButton(
-                onClick = { onNavigate(NavigationSection.ADMIN) },
-                modifier = Modifier
-                    .size(44.dp)
-                    .testTag("admin_nav_button")
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Tune,
-                    contentDescription = "Admin CMS",
-                    tint = if (uiState.activeSection == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextTertiary,
-                    modifier = Modifier.size(19.dp)
-                )
-            }
-
-            // Full-Screen Mobile Menu Overlay Toggle
-            IconButton(
-                onClick = onToggleMobileMenu,
-                modifier = Modifier
-                    .size(44.dp)
-                    .testTag("menu_toggle_button")
-            ) {
                 Icon(
                     imageVector = if (uiState.isMobileMenuOpen) Icons.Default.Close else Icons.Default.Menu,
                     contentDescription = "Menu Overlay",
                     tint = GoblinTextPrimary,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(15.dp)
                 )
             }
         }
@@ -597,5 +615,175 @@ private fun AtmosphereDropdownCard(
                 color = if (uiState.isAmbientSoundActive) GoblinAccentWarm else GoblinTextTertiary
             )
         }
+    }
+}
+
+/**
+ * Reusable Social Action Button with Line Icon
+ */
+@Composable
+fun SocialLineIconButton(
+    title: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+            .size(36.dp)
+            .testTag("social_link_${title.lowercase()}")
+    ) {
+        content()
+    }
+}
+
+/**
+ * Facebook Minimalist Line Icon
+ */
+@Composable
+fun FacebookLineIcon(
+    color: Color = GoblinTextTertiary,
+    modifier: Modifier = Modifier.size(16.dp)
+) {
+    Canvas(modifier = modifier) {
+        val strokeWidth = 1.6.dp.toPx()
+        val w = size.width
+        val h = size.height
+
+        // Outer rounded square outline
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(0f, 0f),
+            size = Size(w, h),
+            cornerRadius = CornerRadius(3.5.dp.toPx()),
+            style = Stroke(width = strokeWidth)
+        )
+
+        // Path for lowercase 'f'
+        val path = Path().apply {
+            moveTo(w * 0.62f, h * 0.90f)
+            lineTo(w * 0.62f, h * 0.52f)
+            lineTo(w * 0.76f, h * 0.52f)
+            moveTo(w * 0.48f, h * 0.52f)
+            lineTo(w * 0.62f, h * 0.52f)
+            lineTo(w * 0.62f, h * 0.35f)
+            cubicTo(
+                w * 0.62f, h * 0.22f,
+                w * 0.70f, h * 0.20f,
+                w * 0.80f, h * 0.20f
+            )
+        }
+        drawPath(path = path, color = color, style = Stroke(width = strokeWidth))
+    }
+}
+
+/**
+ * Instagram Minimalist Line Icon
+ */
+@Composable
+fun InstagramLineIcon(
+    color: Color = GoblinTextTertiary,
+    modifier: Modifier = Modifier.size(16.dp)
+) {
+    Canvas(modifier = modifier) {
+        val strokeWidth = 1.6.dp.toPx()
+        val w = size.width
+        val h = size.height
+
+        // Outer rounded rect
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(0f, 0f),
+            size = Size(w, h),
+            cornerRadius = CornerRadius(4.5.dp.toPx()),
+            style = Stroke(width = strokeWidth)
+        )
+
+        // Center lens circle
+        drawCircle(
+            color = color,
+            radius = w * 0.24f,
+            center = Offset(w * 0.5f, h * 0.5f),
+            style = Stroke(width = strokeWidth)
+        )
+
+        // Top-right flash dot
+        drawCircle(
+            color = color,
+            radius = 1.2.dp.toPx(),
+            center = Offset(w * 0.76f, h * 0.24f)
+        )
+    }
+}
+
+/**
+ * Pexels Minimalist Line Icon
+ */
+@Composable
+fun PexelsLineIcon(
+    color: Color = GoblinTextTertiary,
+    modifier: Modifier = Modifier.size(16.dp)
+) {
+    Canvas(modifier = modifier) {
+        val strokeWidth = 1.6.dp.toPx()
+        val w = size.width
+        val h = size.height
+
+        // Outer rounded rect
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(0f, 0f),
+            size = Size(w, h),
+            cornerRadius = CornerRadius(3.5.dp.toPx()),
+            style = Stroke(width = strokeWidth)
+        )
+
+        // Letter 'P' line path
+        val path = Path().apply {
+            moveTo(w * 0.38f, h * 0.80f)
+            lineTo(w * 0.38f, h * 0.26f)
+            lineTo(w * 0.58f, h * 0.26f)
+            cubicTo(
+                w * 0.72f, h * 0.26f,
+                w * 0.72f, h * 0.54f,
+                w * 0.58f, h * 0.54f
+            )
+            lineTo(w * 0.38f, h * 0.54f)
+        }
+        drawPath(path = path, color = color, style = Stroke(width = strokeWidth))
+    }
+}
+
+/**
+ * Mail / Direct Envelope Line Icon
+ */
+@Composable
+fun MailLineIcon(
+    color: Color = GoblinTextTertiary,
+    modifier: Modifier = Modifier.size(16.dp)
+) {
+    Canvas(modifier = modifier) {
+        val strokeWidth = 1.6.dp.toPx()
+        val w = size.width
+        val h = size.height * 0.82f
+        val topOffset = (size.height - h) / 2f
+
+        // Envelope rectangle
+        drawRoundRect(
+            color = color,
+            topLeft = Offset(0f, topOffset),
+            size = Size(w, h),
+            cornerRadius = CornerRadius(2.5.dp.toPx()),
+            style = Stroke(width = strokeWidth)
+        )
+
+        // Flap 'V' crease
+        val flapPath = Path().apply {
+            moveTo(0f, topOffset + 1.dp.toPx())
+            lineTo(w * 0.5f, topOffset + h * 0.58f)
+            lineTo(w, topOffset + 1.dp.toPx())
+        }
+        drawPath(path = flapPath, color = color, style = Stroke(width = strokeWidth))
     }
 }

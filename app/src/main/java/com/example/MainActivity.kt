@@ -18,10 +18,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.data.PortfolioRepository
 import com.example.ui.components.ImageLightbox
+import com.example.ui.components.LoadingScreen
 import com.example.ui.components.MobileMenuOverlay
 import com.example.ui.components.NavigationHeader
 import com.example.ui.screens.AboutScreen
@@ -55,6 +60,7 @@ fun GoblinPortfolioApp(
     viewModel: PortfolioViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var isAppLoading by rememberSaveable { mutableStateOf(true) }
 
     // Handle Hardware & Gesture Back
     BackHandler(
@@ -132,7 +138,7 @@ fun GoblinPortfolioApp(
                         // Primary Section Views
                         else -> {
                             when (uiState.activeSection) {
-                                NavigationSection.WORK -> {
+                                NavigationSection.PHOTOS, NavigationSection.WORK -> {
                                     HomeScreen(
                                         uiState = uiState,
                                         onPhotoClick = { viewModel.openLightbox(it) },
@@ -146,7 +152,21 @@ fun GoblinPortfolioApp(
                                     )
                                 }
 
-                                NavigationSection.PROJECTS -> {
+                                NavigationSection.TOP10 -> {
+                                    HomeScreen(
+                                        uiState = uiState.copy(selectedCategory = com.example.data.models.PhotoCategory.ALL),
+                                        onPhotoClick = { viewModel.openLightbox(it) },
+                                        onProjectClick = { viewModel.openProject(it) },
+                                        onCategorySelect = { viewModel.selectCategory(it) },
+                                        onSortOrderChange = { viewModel.setSortOrder(it) },
+                                        onSearchQueryChange = { viewModel.setSearchQuery(it) },
+                                        onResetFilters = { viewModel.resetFilters() },
+                                        onToggleFavorite = { viewModel.toggleFavorite(it) },
+                                        onNavigate = { viewModel.navigateTo(it) }
+                                    )
+                                }
+
+                                NavigationSection.ALBUMS, NavigationSection.PROJECTS -> {
                                     ProjectsScreen(
                                         uiState = uiState,
                                         onProjectClick = { viewModel.openProject(it) },
@@ -165,7 +185,12 @@ fun GoblinPortfolioApp(
                                 NavigationSection.ABOUT -> {
                                     AboutScreen(
                                         uiState = uiState,
-                                        onNavigate = { viewModel.navigateTo(it) }
+                                        onNavigate = { viewModel.navigateTo(it) },
+                                        onPhotoClick = { viewModel.openLightbox(it) },
+                                        onProjectClick = { projectId ->
+                                            val proj = com.example.data.PortfolioRepository.getProjectById(projectId)
+                                            if (proj != null) viewModel.openProject(proj)
+                                        }
                                     )
                                 }
 
@@ -240,5 +265,11 @@ fun GoblinPortfolioApp(
                 onEditInAdmin = { viewModel.openAdminEditFromLightbox() }
             )
         }
+
+        // 1-SECOND OPENING LOADING SCREEN (CENTERED LOGO + ANIMATED LINE + ISO 1..100)
+        LoadingScreen(
+            isLoading = isAppLoading,
+            onLoadingComplete = { isAppLoading = false }
+        )
     }
 }
