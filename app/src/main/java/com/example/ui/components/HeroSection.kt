@@ -54,6 +54,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.theme.GoblinTextPrimary
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -128,15 +129,15 @@ fun HeroSection(
         label = "bounce"
     )
 
-    // Build the hero title with site's primary serif font and underlined clickable "Jubayer Ahmed"
+    // Build the hero title with site's primary sans-serif font and underlined clickable "Jubayer Ahmed"
     val annotatedHeading = remember {
         buildAnnotatedString {
             append("Here we go... With the clicks of ")
             pushStringAnnotation(tag = "ABOUT_LINK", annotation = "about")
             withStyle(
                 style = SpanStyle(
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Bold,
                     fontSize = 28.sp,
                     color = Color.Black,
                     textDecoration = TextDecoration.Underline
@@ -222,8 +223,8 @@ fun HeroSection(
                     ClickableText(
                         text = annotatedHeading,
                         style = TextStyle(
-                            fontFamily = FontFamily.Serif,
-                            fontWeight = FontWeight.Light,
+                            fontFamily = FontFamily.SansSerif,
+                            fontWeight = FontWeight.Medium,
                             fontSize = 28.sp,
                             lineHeight = 36.sp,
                             letterSpacing = (-0.3).sp,
@@ -244,103 +245,19 @@ fun HeroSection(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // 3. DESCRIPTIONS (Organized in two clean lines with site's primary serif font)
-                Column(
+                // 3. DESCRIPTION (Unified single text block with site's primary sans-serif font)
+                Text(
+                    text = "Landscapes, documentary, rural, wildlife, nature, and visual storytelling photography based in Habiganj, Bangladesh. Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving.",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 14.sp,
+                    lineHeight = 22.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = GoblinTextPrimary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .offset { IntOffset(0, descOffsetY.value.roundToInt()) }
-                        .alpha(descAlpha.value),
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    // Line 1
-                    Text(
-                        text = "Landscapes, documentary, rural, wildlife, nature, and visual storytelling photography based in Habiganj, Bangladesh.",
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 14.5.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color.Black
-                    )
-
-                    // Line 2
-                    Text(
-                        text = "Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving.",
-                        fontFamily = FontFamily.Serif,
-                        fontSize = 14.5.sp,
-                        lineHeight = 20.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color(0xFF2B2B2B)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(14.dp))
-
-                // 4. ACTION BUTTONS
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .offset { IntOffset(0, footerOffsetY.value.roundToInt()) }
-                        .alpha(footerAlpha.value),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Explore Archive button (Black filled with white text)
-                    Row(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
-                            .background(Color.Black)
-                            .clickable { onScrollDown() }
-                            .padding(horizontal = 14.dp, vertical = 9.dp)
-                            .testTag("explore_archive_btn"),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "EXPLORE ARCHIVE",
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 9.5.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            letterSpacing = 1.4.sp,
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Icon(
-                            imageVector = Icons.Default.ArrowDownward,
-                            contentDescription = "Scroll to gallery",
-                            tint = Color.White,
-                            modifier = Modifier
-                                .size(11.dp)
-                                .offset(y = bounceOffset.dp)
-                        )
-                    }
-
-                    // About Jubayer button (Black border & black text)
-                    Row(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(4.dp))
-                            .border(1.dp, Color(0xFFCCCCCC), RoundedCornerShape(4.dp))
-                            .background(Color.White)
-                            .clickable { onNavigateToAbout() }
-                            .padding(horizontal = 12.dp, vertical = 9.dp)
-                            .testTag("about_jubayer_hero_btn"),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "ABOUT JUBAYER",
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 9.5.sp,
-                            fontWeight = FontWeight.Medium,
-                            letterSpacing = 1.4.sp,
-                            color = Color.Black
-                        )
-                        Spacer(modifier = Modifier.width(5.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Go to About page",
-                            tint = Color.Black,
-                            modifier = Modifier.size(11.dp)
-                        )
-                    }
-                }
+                        .alpha(descAlpha.value)
+                )
             }
         }
     }

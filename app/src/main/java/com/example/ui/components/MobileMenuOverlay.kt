@@ -100,7 +100,7 @@ fun MobileMenuOverlay(
                         ) {
                             Text(
                                 text = "K",
-                                fontFamily = FontFamily.Serif,
+                                fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 15.sp,
                                 color = Color.White
@@ -110,7 +110,7 @@ fun MobileMenuOverlay(
                         Column {
                             Text(
                                 text = "KHONCHITRO",
-                                fontFamily = FontFamily.Serif,
+                                fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 15.sp,
                                 letterSpacing = 2.2.sp,
@@ -186,10 +186,10 @@ fun MobileMenuOverlay(
                                 )
                                 Text(
                                     text = section.label,
-                                    fontFamily = FontFamily.Serif,
-                                    fontSize = 28.sp,
-                                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                                    letterSpacing = 2.sp,
+                                    fontFamily = FontFamily.SansSerif,
+                                    fontSize = 24.sp,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                    letterSpacing = 1.5.sp,
                                     color = if (isSelected) GoblinTextPrimary else GoblinTextSecondary
                                 )
                                 if (section == NavigationSection.CURATION && savedCount > 0) {

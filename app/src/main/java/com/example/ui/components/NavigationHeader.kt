@@ -486,7 +486,7 @@ private fun KhonchitroBrandLogo(
         ) {
             Text(
                 text = "K",
-                fontFamily = FontFamily.Serif,
+                fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 color = Color.White
@@ -496,7 +496,7 @@ private fun KhonchitroBrandLogo(
         Column {
             Text(
                 text = "KHONCHITRO",
-                fontFamily = FontFamily.Serif,
+                fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold,
                 fontSize = 13.sp,
                 letterSpacing = 2.0.sp,

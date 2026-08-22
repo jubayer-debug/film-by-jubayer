@@ -424,10 +424,10 @@ fun EditorialPhotoCard(
         // Caption & Location label
         Text(
             text = photo.title.uppercase(),
-            fontFamily = FontFamily.Serif,
+            fontFamily = FontFamily.SansSerif,
             fontSize = 12.5.sp,
-            fontWeight = FontWeight.Medium,
-            letterSpacing = 1.sp,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.8.sp,
             color = GoblinTextPrimary
         )
         Text(
@@ -462,12 +462,12 @@ private fun PhilosophyQuoteSection() {
             Spacer(modifier = Modifier.height(14.dp))
             Text(
                 text = "\"Some places are remembered\nnot because they were extraordinary,\nbut because the light stayed.\"",
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Light,
-                fontSize = 19.sp,
-                lineHeight = 28.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.Normal,
+                fontSize = 18.sp,
+                lineHeight = 26.sp,
                 textAlign = TextAlign.Center,
-                fontStyle = FontStyle.Italic,
+                fontStyle = FontStyle.Normal,
                 color = GoblinTextPrimary
             )
             Spacer(modifier = Modifier.height(14.dp))
@@ -503,10 +503,10 @@ private fun FeaturedProjectsPreview(
             Column {
                 Text(
                     text = "PROJECTS",
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
-                    letterSpacing = 2.sp,
+                    letterSpacing = 1.5.sp,
                     color = GoblinTextPrimary
                 )
                 Text(
@@ -568,10 +568,10 @@ private fun FeaturedProjectsPreview(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = "${project.number} — ${project.title}",
-                                fontFamily = FontFamily.Serif,
+                                fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 14.sp,
-                                letterSpacing = 1.sp,
+                                letterSpacing = 0.5.sp,
                                 color = GoblinTextPrimary
                             )
                         }
@@ -616,10 +616,10 @@ fun FooterSection(
             Column {
                 Text(
                     text = "FILM BY JUBAYER",
-                    fontFamily = FontFamily.Serif,
+                    fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
-                    letterSpacing = 2.2.sp,
+                    letterSpacing = 2.0.sp,
                     color = GoblinTextPrimary
                 )
                 Text(
@@ -670,7 +670,7 @@ fun FooterSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val footerNavs = listOf(
-                NavigationSection.WORK to "WORK",
+                NavigationSection.WORK to "PHOTOS",
                 NavigationSection.PROJECTS to "PROJECTS",
                 NavigationSection.JOURNAL to "JOURNAL",
                 NavigationSection.ABOUT to "ABOUT",
