@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 enum class NavigationSection(val label: String, val routeKey: String) {
-    WORK("WORK", "work"),
+    WORK("PHOTOS", "work"),
     PROJECTS("PROJECTS", "projects"),
     JOURNAL("JOURNAL", "journal"),
     ABOUT("ABOUT", "about"),
