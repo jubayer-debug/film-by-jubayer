@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "Film by Jubayer"
+rootProject.name = "Khonchitro"
 
 include(":app")

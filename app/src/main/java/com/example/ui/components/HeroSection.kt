@@ -60,13 +60,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Editorial Full-Bleed Hero Component for 'Film by Jubayer'
+ * Editorial Full-Bleed Hero Component for 'Khonchitro'
  *
  * Features:
  * - Expansive landscape photography viewport showcase
  * - Staggered Framer-style spring entrance animations for background zoom and typography
  * - Multi-stop film gradient mask for high visual hierarchy
- * - Minimal 'Film by Jubayer' branding & location/technical spec
+ * - Minimal 'Khonchitro' branding & location/technical spec
  * - Continuous breathing bounce scroll indicator with direct tap action
  */
 @Composable
@@ -267,7 +267,7 @@ fun HeroSection(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = "FILM BY JUBAYER",
+                                text = "KHONCHITRO",
                                 fontFamily = FontFamily.SansSerif,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 11.sp,
@@ -277,10 +277,10 @@ fun HeroSection(
                         }
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "A CINEMATIC VISUAL ARCHIVE",
+                            text = "ক্ষণচিত্র • CINEMATIC VISUAL ARCHIVE",
                             fontFamily = FontFamily.Monospace,
                             fontSize = 8.5.sp,
-                            letterSpacing = 2.0.sp,
+                            letterSpacing = 1.8.sp,
                             color = Color(0xFFB5B3AE)
                         )
                     }

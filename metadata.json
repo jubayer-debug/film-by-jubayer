@@ -1,6 +1,6 @@
 {
-  "name": "Film by Jubayer",
-  "description": "Minimalist visual archive, documentary photography portfolio, and journal by Jubayer.",
+  "name": "Khonchitro",
+  "description": "Minimalist visual archive, documentary photography portfolio, and journal by Khonchitro (ক্ষণচিত্র).",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

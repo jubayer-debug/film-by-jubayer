@@ -706,7 +706,7 @@ fun FooterSection(
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
-            text = "© 2026 FILM BY JUBAYER. ALL PHOTOGRAPHS ARCHIVED UNDER INTERNATIONAL COPYRIGHT.",
+            text = "© 2026 KHONCHITRO (ক্ষণচিত্র). ALL PHOTOGRAPHS ARCHIVED UNDER INTERNATIONAL COPYRIGHT.",
             fontFamily = FontFamily.SansSerif,
             fontSize = 8.5.sp,
             letterSpacing = 1.2.sp,

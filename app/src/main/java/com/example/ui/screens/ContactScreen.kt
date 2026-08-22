@@ -411,7 +411,7 @@ fun ContactScreen(
                             }
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(text = "ijubayer1071@gmail.com", fontSize = 13.sp, fontWeight = FontWeight.Medium, color = GoblinTextPrimary)
-                            Text(text = "hello@filmbyjubayer.com", fontSize = 12.sp, color = GoblinTextSecondary)
+                            Text(text = "hello@khonchitro.com", fontSize = 12.sp, color = GoblinTextSecondary)
                         }
 
                         Column(modifier = Modifier.weight(1f)) {

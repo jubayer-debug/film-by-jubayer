@@ -61,7 +61,7 @@ import com.example.ui.viewmodel.NavigationSection
 import com.example.ui.viewmodel.PortfolioUiState
 
 /**
- * Minimal, fixed Navigation component following 'Film by Jubayer' branding and monochromatic light gallery theme.
+ * Minimal, fixed Navigation component following 'Khonchitro' branding and monochromatic light gallery theme.
  * Adapts between a horizontal desktop layout and a clean compact mobile layout with full-screen overlay toggle.
  */
 @Composable
@@ -155,8 +155,8 @@ private fun DesktopNavigationRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left: Film by Jubayer Branding
-        JubayerBrandLogo(
+        // Left: Khonchitro Branding
+        KhonchitroBrandLogo(
             onClick = { onNavigate(NavigationSection.WORK) }
         )
 
@@ -296,8 +296,8 @@ private fun MobileNavigationRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Left: Film by Jubayer Monogram & Brand
-        JubayerBrandLogo(
+        // Left: Khonchitro Monogram & Brand
+        KhonchitroBrandLogo(
             onClick = { onNavigate(NavigationSection.WORK) }
         )
 
@@ -388,10 +388,10 @@ private fun MobileNavigationRow(
 }
 
 /**
- * Editorial 'Film by Jubayer' Brand Logo & Monogram
+ * Editorial 'Khonchitro' Brand Logo & Monogram
  */
 @Composable
-private fun JubayerBrandLogo(
+private fun KhonchitroBrandLogo(
     onClick: () -> Unit
 ) {
     Row(
@@ -412,7 +412,7 @@ private fun JubayerBrandLogo(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "J",
+                text = "K",
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
@@ -422,7 +422,7 @@ private fun JubayerBrandLogo(
         Spacer(modifier = Modifier.width(10.dp))
         Column {
             Text(
-                text = "FILM BY JUBAYER",
+                text = "KHONCHITRO",
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold,
                 fontSize = 13.sp,
@@ -430,10 +430,10 @@ private fun JubayerBrandLogo(
                 color = GoblinTextPrimary
             )
             Text(
-                text = "PHOTOGRAPHY ARCHIVE",
+                text = "ক্ষণচিত্র • PHOTOGRAPHY ARCHIVE",
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 8.sp,
-                letterSpacing = 1.6.sp,
+                letterSpacing = 1.4.sp,
                 color = GoblinTextTertiary
             )
         }

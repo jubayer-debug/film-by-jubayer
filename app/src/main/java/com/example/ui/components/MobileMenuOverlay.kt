@@ -51,7 +51,7 @@ import com.example.ui.viewmodel.NavigationSection
 
 /**
  * Minimal Full-Screen Overlay Navigation for Mobile devices,
- * following the 'Film by Jubayer' branding and monochromatic gallery white theme.
+ * following the 'Khonchitro' branding and monochromatic gallery white theme.
  */
 @Composable
 fun MobileMenuOverlay(
@@ -80,7 +80,7 @@ fun MobileMenuOverlay(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // Top Header: Film by Jubayer Branding + Minimal Close Action
+                // Top Header: Khonchitro Branding + Minimal Close Action
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -96,7 +96,7 @@ fun MobileMenuOverlay(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "J",
+                                text = "K",
                                 fontFamily = FontFamily.Serif,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 15.sp,
@@ -106,7 +106,7 @@ fun MobileMenuOverlay(
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
-                                text = "FILM BY JUBAYER",
+                                text = "KHONCHITRO",
                                 fontFamily = FontFamily.Serif,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 15.sp,
@@ -114,10 +114,10 @@ fun MobileMenuOverlay(
                                 color = GoblinTextPrimary
                             )
                             Text(
-                                text = "PHOTOGRAPHY ARCHIVE",
+                                text = "ক্ষণচিত্র • PHOTOGRAPHY ARCHIVE",
                                 fontFamily = FontFamily.SansSerif,
                                 fontSize = 8.5.sp,
-                                letterSpacing = 1.8.sp,
+                                letterSpacing = 1.4.sp,
                                 color = GoblinTextTertiary
                             )
                         }

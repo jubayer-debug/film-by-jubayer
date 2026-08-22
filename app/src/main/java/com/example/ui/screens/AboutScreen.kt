@@ -114,7 +114,7 @@ fun AboutScreen(
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "FILM BY JUBAYER • DHAKA, BANGLADESH",
+                        text = "KHONCHITRO (ক্ষণচিত্র) • DHAKA, BANGLADESH",
                         fontFamily = FontFamily.Monospace,
                         fontSize = 9.5.sp,
                         letterSpacing = 1.8.sp,

@@ -2647,10 +2647,10 @@ private fun AdminLoginGate(
 
             // Title & Subtitle
             Text(
-                text = "FILM BY JUBAYER",
+                text = "KHONCHITRO (ক্ষণচিত্র)",
                 fontFamily = FontFamily.Monospace,
                 fontSize = 11.sp,
-                letterSpacing = 3.sp,
+                letterSpacing = 2.5.sp,
                 fontWeight = FontWeight.Bold,
                 color = GoblinAccentWarm
             )
