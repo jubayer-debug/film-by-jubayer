@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.theme.GoblinTextPrimary
+import com.example.ui.theme.GoblinTextSecondary
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -129,16 +130,16 @@ fun HeroSection(
         label = "bounce"
     )
 
-    // Build the hero title with site's primary sans-serif font and underlined clickable "Jubayer Ahmed"
+    // Build the hero title with serif font and underlined clickable "Jubayer Ahmed"
     val annotatedHeading = remember {
         buildAnnotatedString {
             append("Here we go... With the clicks of ")
             pushStringAnnotation(tag = "ABOUT_LINK", annotation = "about")
             withStyle(
                 style = SpanStyle(
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 22.sp,
                     color = Color.Black,
                     textDecoration = TextDecoration.Underline
                 )
@@ -223,11 +224,11 @@ fun HeroSection(
                     ClickableText(
                         text = annotatedHeading,
                         style = TextStyle(
-                            fontFamily = FontFamily.SansSerif,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 28.sp,
-                            lineHeight = 36.sp,
-                            letterSpacing = (-0.3).sp,
+                            fontFamily = FontFamily.Serif,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 22.sp,
+                            lineHeight = 30.sp,
+                            letterSpacing = (-0.2).sp,
                             color = Color.Black
                         ),
                         modifier = Modifier.testTag("hero_heading_text"),
@@ -243,16 +244,16 @@ fun HeroSection(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-                // 3. DESCRIPTION (Unified single text block with site's primary sans-serif font)
+                // 3. DESCRIPTION (Clean, minimal, modern sans-serif text block)
                 Text(
                     text = "Landscapes, documentary, rural, wildlife, nature, and visual storytelling photography based in Habiganj, Bangladesh. Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving.",
                     fontFamily = FontFamily.SansSerif,
-                    fontSize = 14.sp,
-                    lineHeight = 22.sp,
+                    fontSize = 12.5.sp,
+                    lineHeight = 18.5.sp,
                     fontWeight = FontWeight.Normal,
-                    color = GoblinTextPrimary,
+                    color = GoblinTextSecondary,
                     modifier = Modifier
                         .fillMaxWidth()
                         .offset { IntOffset(0, descOffsetY.value.roundToInt()) }
