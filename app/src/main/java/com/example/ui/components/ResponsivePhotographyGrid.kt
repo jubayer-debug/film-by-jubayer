@@ -128,7 +128,7 @@ fun ResponsivePhotographyGrid(
     showFilmGrain: Boolean = true,
     initialMode: GridDisplayMode = GridDisplayMode.MASONRY,
     showFilteringSystem: Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(horizontal = 10.dp, vertical = 14.dp),
+    contentPadding: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 14.dp),
     headerContent: @Composable (() -> Unit)? = null
 ) {
     var displayMode by remember { mutableStateOf(initialMode) }
@@ -337,7 +337,7 @@ fun ResponsivePhotographyGridSection(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 10.dp),
+                                .padding(horizontal = 4.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             val chunked = photos.chunked(2)
@@ -402,7 +402,7 @@ fun ResponsivePhotographyGridSection(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 10.dp),
+                                .padding(horizontal = 4.dp),
                             verticalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
                             photos.forEach { photo ->
@@ -459,7 +459,7 @@ fun PhotographyFilteringSystem(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 10.dp, vertical = 6.dp),
+                .padding(horizontal = 4.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -528,7 +528,7 @@ fun PhotographyFilteringSystem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp, vertical = 4.dp),
+                .padding(horizontal = 4.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -725,7 +725,7 @@ fun PhotographyFilteringSystem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 6.dp)
+                    .padding(horizontal = 4.dp, vertical = 6.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .border(0.5.dp, GoblinAccentWarm.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
                     .background(Color.White)
@@ -788,7 +788,7 @@ fun PhotographyFilteringSystem(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    .padding(horizontal = 4.dp, vertical = 4.dp)
                     .animateContentSize(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically

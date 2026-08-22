@@ -232,7 +232,7 @@ fun ContactScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = if (isDesktop) 20.dp else 12.dp, vertical = 28.dp)
+                        .padding(horizontal = if (isDesktop) 10.dp else 6.dp, vertical = 28.dp)
                 ) {
                     Text(
                         text = "COMMISSIONS, PRINTS & DIALOGUE",
@@ -277,7 +277,7 @@ fun ContactScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 12.dp),
+                            .padding(horizontal = 10.dp, vertical = 12.dp),
                         horizontalArrangement = Arrangement.spacedBy(32.dp),
                         verticalAlignment = Alignment.Top
                     ) {
@@ -330,7 +330,7 @@ fun ContactScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 10.dp),
+                            .padding(horizontal = 4.dp),
                         verticalArrangement = Arrangement.spacedBy(28.dp)
                     ) {
                         BudgetCalculatorCard(
@@ -379,7 +379,7 @@ fun ContactScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = if (isDesktop) 20.dp else 12.dp, vertical = 32.dp)
+                        .padding(horizontal = if (isDesktop) 10.dp else 6.dp, vertical = 32.dp)
                 ) {
                     HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
                     Spacer(modifier = Modifier.height(28.dp))

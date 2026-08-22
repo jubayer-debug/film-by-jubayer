@@ -52,7 +52,7 @@ fun CurationScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 24.dp)
+                    .padding(horizontal = 6.dp, vertical = 24.dp)
             ) {
                 Text(
                     text = "PERSONAL EXHIBITION ARCHIVE",
@@ -88,7 +88,7 @@ fun CurationScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 12.dp, vertical = 48.dp),
+                        .padding(horizontal = 6.dp, vertical = 48.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(

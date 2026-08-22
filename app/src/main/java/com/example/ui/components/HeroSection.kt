@@ -162,7 +162,7 @@ fun HeroSection(
                 .fillMaxWidth()
                 .background(Color.White)
                 .statusBarsPadding()
-                .padding(horizontal = 10.dp, vertical = 16.dp)
+                .padding(horizontal = 4.dp, vertical = 16.dp)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()

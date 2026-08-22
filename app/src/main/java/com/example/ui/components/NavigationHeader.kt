@@ -97,7 +97,7 @@ fun NavigationHeader(
         BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 14.dp)
+                .padding(horizontal = 6.dp, vertical = 14.dp)
         ) {
             val isDesktop = maxWidth >= 680.dp
 
