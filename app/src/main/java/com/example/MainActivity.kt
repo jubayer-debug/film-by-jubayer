@@ -185,12 +185,7 @@ fun GoblinPortfolioApp(
                                 NavigationSection.ABOUT -> {
                                     AboutScreen(
                                         uiState = uiState,
-                                        onNavigate = { viewModel.navigateTo(it) },
-                                        onPhotoClick = { viewModel.openLightbox(it) },
-                                        onProjectClick = { projectId ->
-                                            val proj = com.example.data.PortfolioRepository.getProjectById(projectId)
-                                            if (proj != null) viewModel.openProject(proj)
-                                        }
+                                        onNavigate = { viewModel.navigateTo(it) }
                                     )
                                 }
 

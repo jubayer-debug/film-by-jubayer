@@ -509,8 +509,6 @@ object PortfolioRepository {
         Pair("Coastal Trees Horizon", "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=85")
     )
 
-    var aboutData: com.example.data.models.AboutData = com.example.data.models.AboutData()
-
     // Dynamic Random Discovery Helpers
     fun getRandomPhotograph(excludeId: String? = null): Photograph {
         val pool = if (excludeId != null) photographs.filter { it.id != excludeId } else photographs
