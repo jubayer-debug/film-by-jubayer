@@ -27,24 +27,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.GridOn
-import androidx.compose.material.icons.filled.Layers
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.ViewAgenda
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,7 +43,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.PortfolioRepository
@@ -65,10 +53,9 @@ import com.example.data.models.Photograph
 import com.example.data.models.Project
 import com.example.data.models.VisualMood
 import com.example.ui.components.PhotographicArtwork
-import com.example.ui.components.PhotographyGridCard
+import com.example.ui.screens.FooterSection
 import com.example.ui.theme.GoblinAccentWarm
 import com.example.ui.theme.GoblinBg
-import com.example.ui.theme.GoblinBgSecondary
 import com.example.ui.theme.GoblinBorderSubtle
 import com.example.ui.theme.GoblinTextPrimary
 import com.example.ui.theme.GoblinTextSecondary
@@ -77,9 +64,31 @@ import com.example.ui.viewmodel.NavigationSection
 import com.example.ui.viewmodel.PortfolioUiState
 import kotlinx.coroutines.launch
 
-enum class GalleryLayoutMode(val label: String, val iconDescription: String) {
-    TWO_COLUMN("2-COLUMN GRID", "Grid view"),
-    SINGLE_COLUMN("EXPANDED ESSAY", "Editorial list view")
+/**
+ * Represents a rhythmic gallery row layout configuration for varied photo sizes
+ */
+private sealed class GalleryRowLayout {
+    data class FullWidthHero(val frame: AlbumFrame, val aspect: Float = 1.55f) : GalleryRowLayout()
+    data class CenteredFeature(val frame: AlbumFrame, val aspect: Float = 1.35f) : GalleryRowLayout()
+    data class AsymmetricPair(
+        val frame1: AlbumFrame,
+        val aspect1: Float,
+        val weight1: Float,
+        val frame2: AlbumFrame,
+        val aspect2: Float,
+        val weight2: Float
+    ) : GalleryRowLayout()
+    data class TripleRow(
+        val frame1: AlbumFrame,
+        val frame2: AlbumFrame,
+        val frame3: AlbumFrame,
+        val aspect: Float = 0.95f
+    ) : GalleryRowLayout()
+    data class EqualPair(
+        val frame1: AlbumFrame,
+        val frame2: AlbumFrame,
+        val aspect: Float = 1.15f
+    ) : GalleryRowLayout()
 }
 
 @Composable
@@ -93,14 +102,12 @@ fun ProjectDetailScreen(
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-    var layoutMode by remember { mutableStateOf(GalleryLayoutMode.TWO_COLUMN) }
 
     // Ensure we have at least 20 frames to display
     val frames = remember(project, uiState.contentUpdateVersion) {
         val baseFrames = if (project.frameList.isNotEmpty()) {
             project.frameList
         } else {
-            // Fallback: build from photo IDs or presets
             val photos = project.photoIds.mapNotNull { PortfolioRepository.getPhotoById(it) }
             val presets = PortfolioRepository.photoPresets
             (0 until 20).map { i ->
@@ -148,9 +155,9 @@ fun ProjectDetailScreen(
         }
     }
 
-    val coverPhoto = remember(project, frames) {
-        val existingPhoto = PortfolioRepository.getPhotoById(project.coverPhotoId)
-        existingPhoto ?: frames.firstOrNull()?.toPhotograph(project, 0) ?: PortfolioRepository.photographs.first()
+    // Build varied size gallery rows
+    val galleryRows = remember(frames) {
+        buildVariedGalleryRows(frames)
     }
 
     LazyColumn(
@@ -161,12 +168,12 @@ fun ProjectDetailScreen(
             .statusBarsPadding()
             .testTag("album_detail_screen")
     ) {
-        // 1. Navigation Top Bar
+        // 1. Top Navigation Bar
         item(key = "nav_top_bar") {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 6.dp, vertical = 12.dp),
+                    .padding(horizontal = 8.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -223,9 +230,9 @@ fun ProjectDetailScreen(
                         .padding(horizontal = 10.dp, vertical = 6.dp)
                 ) {
                     Text(
-                        text = "${frames.size} FRAMES",
+                        text = "${frames.size} PHOTOGRAPHS",
                         fontFamily = FontFamily.Monospace,
-                        fontSize = 9.5.sp,
+                        fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 1.5.sp,
                         color = GoblinTextPrimary
@@ -234,12 +241,12 @@ fun ProjectDetailScreen(
             }
         }
 
-        // 2. Album Hero Header
+        // 2. Album Hero Header (Editorial Title & Curatorial Statement)
         item(key = "album_hero_header") {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 12.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -303,7 +310,7 @@ fun ProjectDetailScreen(
                     color = GoblinTextSecondary
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 // Curatorial Essay Text
                 Text(
@@ -315,7 +322,7 @@ fun ProjectDetailScreen(
                 )
 
                 if (project.quote.isNotBlank()) {
-                    Spacer(modifier = Modifier.height(18.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -348,219 +355,172 @@ fun ProjectDetailScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
+                Spacer(modifier = Modifier.height(12.dp))
             }
         }
 
-        // 3. Cover Hero Photo
-        item(key = "cover_hero_frame") {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-                    .clickable { onPhotoClick(coverPhoto) }
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1.6f)
-                        .clip(RoundedCornerShape(2.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(2.dp))
-                ) {
-                    PhotographicArtwork(
-                        photograph = coverPhoto,
-                        isMonochrome = uiState.isMonochromeMode,
-                        showFilmGrain = uiState.isFilmGrainEnabled,
-                        modifier = Modifier.fillMaxSize()
-                    )
-
-                    // Cover Tag
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .padding(10.dp)
-                            .clip(RoundedCornerShape(2.dp))
-                            .background(Color(0xCC000000))
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                    ) {
-                        Text(
-                            text = "PRIMARY COVER • LEICA M11-P",
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 8.5.sp,
-                            letterSpacing = 1.5.sp,
-                            color = Color.White
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column {
-                        Text(
-                            text = coverPhoto.title.uppercase(),
-                            fontFamily = FontFamily.Serif,
-                            fontSize = 12.sp,
-                            letterSpacing = 1.2.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = GoblinTextPrimary
-                        )
-                        Text(
-                            text = "${coverPhoto.location} • ${coverPhoto.caption}",
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 10.sp,
-                            color = GoblinTextSecondary
-                        )
-                    }
-
-                    Text(
-                        text = "VIEW FULL ↗",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 9.sp,
-                        letterSpacing = 1.5.sp,
-                        color = GoblinAccentWarm
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
-            }
-        }
-
-        // 4. Gallery Grid Section Header & Mode Toggle
-        item(key = "gallery_grid_controls") {
+        // 3. Gallery Header
+        item(key = "gallery_exhibition_heading") {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 14.dp),
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
-                    Text(
-                        text = "COMPLETE GALLERY ARCHIVE",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 9.5.sp,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 2.sp,
-                        color = GoblinAccentWarm
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = "20+ Contact Sheet Frames (${frames.size} cataloged)",
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 11.5.sp,
-                        color = GoblinTextSecondary
-                    )
-                }
+                Text(
+                    text = "GALLERY EXHIBITION",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.5.sp,
+                    color = GoblinAccentWarm
+                )
 
-                // Grid View Mode Selector
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(Color(0xFFEBEBE9))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(2.dp))
-                        .padding(2.dp),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(2.dp))
-                            .background(if (layoutMode == GalleryLayoutMode.TWO_COLUMN) GoblinTextPrimary else Color.Transparent)
-                            .clickable { layoutMode = GalleryLayoutMode.TWO_COLUMN }
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "GRID",
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (layoutMode == GalleryLayoutMode.TWO_COLUMN) Color.White else GoblinTextSecondary
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(2.dp))
-                            .background(if (layoutMode == GalleryLayoutMode.SINGLE_COLUMN) GoblinTextPrimary else Color.Transparent)
-                            .clickable { layoutMode = GalleryLayoutMode.SINGLE_COLUMN }
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "ESSAY",
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (layoutMode == GalleryLayoutMode.SINGLE_COLUMN) Color.White else GoblinTextSecondary
-                        )
-                    }
-                }
+                Text(
+                    text = "TAP TO EXPAND",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 8.5.sp,
+                    letterSpacing = 1.5.sp,
+                    color = GoblinTextTertiary
+                )
             }
         }
 
-        // 5. Gallery Grid Items (Modern Clean Minimal Layout - Minimum 20 Frames)
-        if (layoutMode == GalleryLayoutMode.TWO_COLUMN) {
-            // Group frames into pairs for 2-column grid layout
-            val chunkedFrames = frames.chunked(2)
-            itemsIndexed(chunkedFrames, key = { index, _ -> "grid_pair_$index" }) { rowIndex, pair ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    pair.forEachIndexed { itemIdx, frame ->
-                        val framePhoto = remember(frame) { frame.toPhotograph(project, rowIndex * 2 + itemIdx) }
-                        Box(modifier = Modifier.weight(1f)) {
-                            MinimalGridFrameCard(
-                                frame = frame,
-                                photo = framePhoto,
+        // 4. Pure Visual Gallery with Varied Sizes for Each Photo (NO METADATA ON PHOTOS)
+        itemsIndexed(galleryRows, key = { index, _ -> "gallery_row_$index" }) { rowIndex, rowLayout ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                when (rowLayout) {
+                    is GalleryRowLayout.FullWidthHero -> {
+                        val photo = remember(rowLayout.frame) { rowLayout.frame.toPhotograph(project) }
+                        PureGalleryPhotoItem(
+                            photo = photo,
+                            aspectRatio = rowLayout.aspect,
+                            uiState = uiState,
+                            onClick = { onPhotoClick(photo) }
+                        )
+                    }
+
+                    is GalleryRowLayout.CenteredFeature -> {
+                        val photo = remember(rowLayout.frame) { rowLayout.frame.toPhotograph(project) }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 14.dp)
+                        ) {
+                            PureGalleryPhotoItem(
+                                photo = photo,
+                                aspectRatio = rowLayout.aspect,
                                 uiState = uiState,
-                                onClick = { onPhotoClick(framePhoto) }
+                                onClick = { onPhotoClick(photo) }
                             )
                         }
                     }
-                    if (pair.size == 1) {
-                        Spacer(modifier = Modifier.weight(1f))
+
+                    is GalleryRowLayout.AsymmetricPair -> {
+                        val photo1 = remember(rowLayout.frame1) { rowLayout.frame1.toPhotograph(project) }
+                        val photo2 = remember(rowLayout.frame2) { rowLayout.frame2.toPhotograph(project) }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(modifier = Modifier.weight(rowLayout.weight1)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo1,
+                                    aspectRatio = rowLayout.aspect1,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo1) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(rowLayout.weight2)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo2,
+                                    aspectRatio = rowLayout.aspect2,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo2) }
+                                )
+                            }
+                        }
                     }
-                }
-            }
-        } else {
-            // Single Column Expanded Essay View
-            itemsIndexed(frames, key = { idx, frame -> frame.id }) { index, frame ->
-                val framePhoto = remember(frame) { frame.toPhotograph(project, index) }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 12.dp)
-                ) {
-                    PhotographyGridCard(
-                        photo = framePhoto,
-                        isFavorite = uiState.favoritePhotoIds.contains(framePhoto.id),
-                        aspectRatio = 1.45f,
-                        isMonochrome = uiState.isMonochromeMode,
-                        showFilmGrain = uiState.isFilmGrainEnabled,
-                        onClick = { onPhotoClick(framePhoto) },
-                        onToggleFavorite = {}
-                    )
+
+                    is GalleryRowLayout.EqualPair -> {
+                        val photo1 = remember(rowLayout.frame1) { rowLayout.frame1.toPhotograph(project) }
+                        val photo2 = remember(rowLayout.frame2) { rowLayout.frame2.toPhotograph(project) }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo1,
+                                    aspectRatio = rowLayout.aspect,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo1) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo2,
+                                    aspectRatio = rowLayout.aspect,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo2) }
+                                )
+                            }
+                        }
+                    }
+
+                    is GalleryRowLayout.TripleRow -> {
+                        val photo1 = remember(rowLayout.frame1) { rowLayout.frame1.toPhotograph(project) }
+                        val photo2 = remember(rowLayout.frame2) { rowLayout.frame2.toPhotograph(project) }
+                        val photo3 = remember(rowLayout.frame3) { rowLayout.frame3.toPhotograph(project) }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            Box(modifier = Modifier.weight(1f)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo1,
+                                    aspectRatio = rowLayout.aspect,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo1) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo2,
+                                    aspectRatio = rowLayout.aspect,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo2) }
+                                )
+                            }
+                            Box(modifier = Modifier.weight(1f)) {
+                                PureGalleryPhotoItem(
+                                    photo = photo3,
+                                    aspectRatio = rowLayout.aspect,
+                                    uiState = uiState,
+                                    onClick = { onPhotoClick(photo3) }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        // 6. Archival Hahnemühle & Print Inquiries Box
+        // 5. Archival Master Prints Box
         item(key = "archival_inquiry") {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 32.dp)
+                    .padding(horizontal = 8.dp, vertical = 24.dp)
             ) {
                 HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(18.dp))
 
                 Box(
                     modifier = Modifier
@@ -585,13 +545,13 @@ fun ProjectDetailScreen(
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "All ${frames.size} frames in this series are individually printed on Hahnemühle Photo Rag 308gsm archival pigment cotton paper with genuine carbon monochrome ink sets. Certified and signed with embossed provenance stamp.",
+                            text = "All ${frames.size} photographs in this series are individually printed on Hahnemühle Photo Rag 308gsm archival pigment cotton paper with genuine carbon monochrome ink sets. Certified and signed with embossed provenance stamp.",
                             fontFamily = FontFamily.SansSerif,
                             fontSize = 12.sp,
                             lineHeight = 18.sp,
                             color = GoblinTextSecondary
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(14.dp))
                         Row(
                             modifier = Modifier
                                 .clickable { onNavigate(NavigationSection.CONTACT) }
@@ -612,7 +572,7 @@ fun ProjectDetailScreen(
             }
         }
 
-        // 7. Footer
+        // 6. Footer
         item(key = "footer") {
             FooterSection(
                 onBackToTop = {
@@ -625,97 +585,161 @@ fun ProjectDetailScreen(
 }
 
 /**
- * Minimal Clean Gallery Grid Frame Card
+ * Pure Photo Item with NO metadata overlays or text underneath.
+ * Clean, modern gallery presentation with subtle rounded corners and fine border.
  */
 @Composable
-private fun MinimalGridFrameCard(
-    frame: AlbumFrame,
+private fun PureGalleryPhotoItem(
     photo: Photograph,
+    aspectRatio: Float,
     uiState: PortfolioUiState,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = Modifier
+    Box(
+        modifier = modifier
             .fillMaxWidth()
+            .aspectRatio(aspectRatio)
+            .clip(RoundedCornerShape(3.dp))
+            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(3.dp))
+            .background(Color(0xFF101010))
             .clickable { onClick() }
-            .testTag("frame_card_${frame.number}")
+            .testTag("gallery_photo_${photo.id}")
     ) {
-        // Image Container with subtle border & frame number overlay
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.25f)
-                .clip(RoundedCornerShape(2.dp))
-                .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(2.dp))
-                .background(Color(0xFF0F0F0F))
-        ) {
-            PhotographicArtwork(
-                photograph = photo,
-                isMonochrome = uiState.isMonochromeMode,
-                showFilmGrain = uiState.isFilmGrainEnabled,
-                modifier = Modifier.fillMaxSize()
-            )
+        PhotographicArtwork(
+            photograph = photo,
+            isMonochrome = uiState.isMonochromeMode,
+            showFilmGrain = uiState.isFilmGrainEnabled,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
 
-            // Minimalist Frame Number Pill
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(6.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(Color(0xB3000000))
-                    .padding(horizontal = 6.dp, vertical = 2.dp)
-            ) {
-                Text(
-                    text = "#${frame.number}",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 8.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
+/**
+ * Helper to build varied-size editorial gallery layouts from frames
+ */
+private fun buildVariedGalleryRows(frames: List<AlbumFrame>): List<GalleryRowLayout> {
+    val rows = mutableListOf<GalleryRowLayout>()
+    var i = 0
+    val total = frames.size
+
+    var patternIndex = 0
+    while (i < total) {
+        when (patternIndex % 7) {
+            0 -> {
+                // Wide Landscape Feature
+                rows.add(GalleryRowLayout.FullWidthHero(frames[i], aspect = 1.55f))
+                i += 1
+            }
+            1 -> {
+                // Asymmetric Pair: Tall portrait (left) + Standard landscape (right)
+                if (i + 1 < total) {
+                    rows.add(
+                        GalleryRowLayout.AsymmetricPair(
+                            frame1 = frames[i],
+                            aspect1 = 0.78f, // Tall portrait
+                            weight1 = 1.0f,
+                            frame2 = frames[i + 1],
+                            aspect2 = 1.30f, // Landscape
+                            weight2 = 1.25f
+                        )
+                    )
+                    i += 2
+                } else {
+                    rows.add(GalleryRowLayout.FullWidthHero(frames[i], aspect = 1.4f))
+                    i += 1
+                }
+            }
+            2 -> {
+                // Triple Compact Grid (3 in a frame)
+                if (i + 2 < total) {
+                    rows.add(
+                        GalleryRowLayout.TripleRow(
+                            frame1 = frames[i],
+                            frame2 = frames[i + 1],
+                            frame3 = frames[i + 2],
+                            aspect = 0.95f
+                        )
+                    )
+                    i += 3
+                } else if (i + 1 < total) {
+                    rows.add(GalleryRowLayout.EqualPair(frames[i], frames[i + 1], aspect = 1.15f))
+                    i += 2
+                } else {
+                    rows.add(GalleryRowLayout.FullWidthHero(frames[i], aspect = 1.4f))
+                    i += 1
+                }
+            }
+            3 -> {
+                // Asymmetric Pair: Standard landscape (left) + Tall portrait (right)
+                if (i + 1 < total) {
+                    rows.add(
+                        GalleryRowLayout.AsymmetricPair(
+                            frame1 = frames[i],
+                            aspect1 = 1.28f, // Landscape
+                            weight1 = 1.2f,
+                            frame2 = frames[i + 1],
+                            aspect2 = 0.82f, // Tall portrait
+                            weight2 = 0.95f
+                        )
+                    )
+                    i += 2
+                } else {
+                    rows.add(GalleryRowLayout.FullWidthHero(frames[i], aspect = 1.45f))
+                    i += 1
+                }
+            }
+            4 -> {
+                // Centered Cinematic Frame
+                rows.add(GalleryRowLayout.CenteredFeature(frames[i], aspect = 1.4f))
+                i += 1
+            }
+            5 -> {
+                // Equal Symmetrical Pair (e.g. square-ish / soft landscape)
+                if (i + 1 < total) {
+                    rows.add(
+                        GalleryRowLayout.EqualPair(
+                            frame1 = frames[i],
+                            frame2 = frames[i + 1],
+                            aspect = 1.12f
+                        )
+                    )
+                    i += 2
+                } else {
+                    rows.add(GalleryRowLayout.FullWidthHero(frames[i], aspect = 1.4f))
+                    i += 1
+                }
+            }
+            6 -> {
+                // Asymmetric Pair: Wide (left) + Square (right)
+                if (i + 1 < total) {
+                    rows.add(
+                        GalleryRowLayout.AsymmetricPair(
+                            frame1 = frames[i],
+                            aspect1 = 1.45f,
+                            weight1 = 1.3f,
+                            frame2 = frames[i + 1],
+                            aspect2 = 1.0f,
+                            weight2 = 1.0f
+                        )
+                    )
+                    i += 2
+                } else {
+                    rows.add(GalleryRowLayout.FullWidthHero(frames[i], aspect = 1.45f))
+                    i += 1
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        // Frame Title & Minimal Details
-        Text(
-            text = frame.title,
-            fontFamily = FontFamily.Serif,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Medium,
-            color = GoblinTextPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        if (frame.bengaliTitle.isNotBlank()) {
-            Text(
-                text = frame.bengaliTitle,
-                fontFamily = FontFamily.Serif,
-                fontSize = 9.sp,
-                color = GoblinAccentWarm,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        Text(
-            text = frame.location.ifBlank { "Bangladesh Delta" },
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 8.5.sp,
-            color = GoblinTextTertiary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
+        patternIndex++
     }
+
+    return rows
 }
 
 /**
  * Extension helper to convert an AlbumFrame into a Photograph object
  */
-private fun AlbumFrame.toPhotograph(project: Project, index: Int): Photograph {
+private fun AlbumFrame.toPhotograph(project: Project): Photograph {
     val photoCategory = when {
         project.title.contains("Padma", ignoreCase = true) || project.title.contains("Delta", ignoreCase = true) -> PhotoCategory.RIVER
         project.title.contains("Monsoon", ignoreCase = true) -> PhotoCategory.MONSOON
