@@ -57,11 +57,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.PortfolioRepository
@@ -587,26 +590,42 @@ fun FooterSection(
             .padding(horizontal = 6.dp, vertical = 36.dp)
             .navigationBarsPadding()
     ) {
+        // Top Monogram & Name Row + Back To Top
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            // Monogram Box and "Jubayer Ahmed" beside it with low opacity
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.testTag("footer_monogram_row")
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
+                        .background(Color(0xFF141414)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "K",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = Color.White
+                    )
+                }
+
                 Text(
-                    text = "FILM BY JUBAYER",
+                    text = "Jubayer Ahmed",
                     fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    letterSpacing = 2.0.sp,
-                    color = GoblinTextPrimary
-                )
-                Text(
-                    text = "DHAKA, BANGLADESH",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 9.sp,
-                    letterSpacing = 1.5.sp,
-                    color = GoblinTextTertiary
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    letterSpacing = 1.2.sp,
+                    color = GoblinTextPrimary.copy(alpha = 0.45f)
                 )
             }
 
@@ -637,6 +656,55 @@ fun FooterSection(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Text Under Monogram:
+        // "Jubayer Ahmed (in normal colour) and is a photographer from Dhaka, Bangladesh, driven by curiosity and a fascination with how ordinary moments take shape through light, perspective, and time. Exploring people, streets, architecture, and the quiet details of everyday life." (in low opacity)
+        val bioAnnotatedString = remember {
+            buildAnnotatedString {
+                withStyle(
+                    SpanStyle(
+                        color = GoblinTextPrimary,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                ) {
+                    append("Jubayer Ahmed")
+                }
+                withStyle(
+                    SpanStyle(
+                        color = GoblinTextPrimary.copy(alpha = 0.50f),
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                ) {
+                    append(" and is a photographer from Dhaka, Bangladesh, driven by curiosity and a fascination with how ordinary moments take shape through light, perspective, and time. Exploring people, streets, architecture, and the quiet details of everyday life.")
+                }
+            }
+        }
+
+        Text(
+            text = bioAnnotatedString,
+            fontSize = 12.sp,
+            lineHeight = 19.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("footer_bio_text")
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Total collection stats in low opacity:
+        // "Total collection of 163 frames and 4 albums . 1.5k total views"
+        Text(
+            text = "Total collection of 163 frames and 4 albums . 1.5k total views",
+            fontFamily = FontFamily.SansSerif,
+            fontSize = 11.sp,
+            lineHeight = 16.sp,
+            color = GoblinTextPrimary.copy(alpha = 0.45f),
+            modifier = Modifier.testTag("footer_collection_stats")
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
 

@@ -621,11 +621,13 @@ private fun ViewMorePhotosBar(
 
 /**
  * Top Filtering & Sorting System:
- * - Thematic Filter Chips with Icons and Photo Counts
- * - Sort Order Dropdown Pill
- * - Expandable Quick Search Bar
- * - Layout Mode Selector
- * - Active Filter Indicator
+ * - Section Header ("02 — ARCHIVED PHOTOGRAPHS")
+ * - Prominent Search Bar with Clear and Result Counter
+ * - Quick Search Metadata Suggestion Chips (Locations, Cameras, Lenses, Moods)
+ * - Thematic Category Filter Chips with Icons and Photo Counts
+ * - Sort Order Dropdown Pill & Serendipity Shuffle
+ * - Layout Mode Selector (Gallery, 2-Col, Cinematic)
+ * - Active Filter Indicator & Reset Button
  */
 @Composable
 fun PhotographyFilteringSystem(
@@ -639,23 +641,260 @@ fun PhotographyFilteringSystem(
     onSearchQueryChange: (String) -> Unit,
     onResetFilters: () -> Unit,
     onModeChange: (GridDisplayMode) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showHeader: Boolean = true
 ) {
-    var isSearchExpanded by remember { mutableStateOf(searchQuery.isNotBlank()) }
     var isSortMenuOpen by remember { mutableStateOf(false) }
 
     val allPhotos = PortfolioRepository.photographs
     val totalCount = allPhotos.size
 
+    // Quick filter suggestion tags for location and EXIF metadata
+    val quickSuggestions = remember {
+        listOf(
+            "Old Dhaka",
+            "Meghna",
+            "Sylhet",
+            "Sreemangal",
+            "Kuakata",
+            "Leica",
+            "Hasselblad",
+            "35mm",
+            "50mm",
+            "f/1.4",
+            "ISO 100",
+            "Monsoon"
+        )
+    }
+
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
-        // 1. THEMATIC FILTER CHIPS (Scrollable Row with category icons and counters)
+        // 1. SECTION TITLE & EDITORIAL HEADER
+        if (showHeader) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp, vertical = 8.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "02 — ARCHIVED PHOTOGRAPHS",
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.5.sp,
+                        color = GoblinAccentWarm
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(Color(0x18E2A860))
+                            .padding(horizontal = 7.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "$totalCount WORKS",
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 8.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.sp,
+                            color = GoblinAccentWarm
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row(
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "ARCHIVED PHOTOGRAPHS",
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 24.sp,
+                        letterSpacing = 1.2.sp,
+                        color = GoblinTextPrimary
+                    )
+
+                    Text(
+                        text = "আর্কাইভ আলোকচিত্র",
+                        fontFamily = FontFamily.Serif,
+                        fontSize = 13.sp,
+                        color = GoblinTextTertiary,
+                        modifier = Modifier.padding(bottom = 3.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Search and explore medium format & 35mm visual records across Bangladesh by title, location, or camera metadata.",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp,
+                    color = GoblinTextSecondary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        // 2. PROMINENT SEARCH BAR AT TOP OF ARCHIVED PHOTOGRAPHS
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp, vertical = 4.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .border(
+                    width = if (searchQuery.isNotBlank()) 1.2.dp else 0.8.dp,
+                    color = if (searchQuery.isNotBlank()) GoblinAccentWarm else GoblinBorderSubtle,
+                    shape = RoundedCornerShape(10.dp)
+                )
+                .background(Color(0xFFFCFCFB))
+                .padding(horizontal = 12.dp, vertical = 10.dp)
+                .testTag("archived_photos_search_bar")
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search archive",
+                    tint = if (searchQuery.isNotBlank()) GoblinAccentWarm else GoblinTextSecondary,
+                    modifier = Modifier.size(18.dp)
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Box(modifier = Modifier.weight(1f)) {
+                    if (searchQuery.isEmpty()) {
+                        Text(
+                            text = "Search title, location, camera, lens, ISO, mood...",
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 12.5.sp,
+                            color = GoblinTextTertiary
+                        )
+                    }
+                    BasicTextField(
+                        value = searchQuery,
+                        onValueChange = onSearchQueryChange,
+                        textStyle = TextStyle(
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 12.5.sp,
+                            color = GoblinTextPrimary
+                        ),
+                        cursorBrush = SolidColor(GoblinAccentWarm),
+                        singleLine = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("search_input_field")
+                    )
+                }
+
+                if (searchQuery.isNotEmpty()) {
+                    // Match counter badge inside search bar
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(GoblinAccentWarm.copy(alpha = 0.15f))
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "$photoCount found",
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = GoblinAccentWarm
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(6.dp))
+
+                    IconButton(
+                        onClick = { onSearchQueryChange("") },
+                        modifier = Modifier
+                            .size(24.dp)
+                            .testTag("clear_search_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "Clear search",
+                            tint = GoblinTextSecondary,
+                            modifier = Modifier.size(15.dp)
+                        )
+                    }
+                }
+            }
+        }
+
+        // 3. QUICK METADATA & LOCATION SUGGESTION CHIPS (Horizontal Scroll)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 4.dp, vertical = 6.dp),
+                .padding(horizontal = 4.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "SUGGESTIONS:",
+                fontFamily = FontFamily.Monospace,
+                fontSize = 8.5.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 1.sp,
+                color = GoblinTextTertiary,
+                modifier = Modifier.padding(end = 2.dp)
+            )
+
+            quickSuggestions.forEach { suggestion ->
+                val isSelected = searchQuery.equals(suggestion, ignoreCase = true)
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(14.dp))
+                        .border(
+                            width = 0.5.dp,
+                            color = if (isSelected) GoblinAccentWarm else Color(0x30000000),
+                            shape = RoundedCornerShape(14.dp)
+                        )
+                        .background(if (isSelected) Color(0xFF1E1E1E) else Color(0xFFF3F3F1))
+                        .clickable {
+                            if (isSelected) {
+                                onSearchQueryChange("")
+                            } else {
+                                onSearchQueryChange(suggestion)
+                            }
+                        }
+                        .padding(horizontal = 9.dp, vertical = 4.dp)
+                        .testTag("suggestion_chip_$suggestion"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = suggestion,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 9.sp,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        color = if (isSelected) Color.White else GoblinTextPrimary
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // 4. THEMATIC FILTER CHIPS (Scrollable Row with category icons and counters)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+                .padding(horizontal = 4.dp, vertical = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -718,9 +957,9 @@ fun PhotographyFilteringSystem(
             }
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
-        // 2. SORTING, SEARCH, AND LAYOUT CONTROL TOOLBAR
+        // 5. SORTING & LAYOUT CONTROL TOOLBAR
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -728,7 +967,7 @@ fun PhotographyFilteringSystem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left: Sort Selection & Search Toggle
+            // Left: Sort Selection & Serendipity Shuffle
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -837,37 +1076,6 @@ fun PhotographyFilteringSystem(
                         )
                     }
                 }
-
-                // Search Toggle Pill
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(16.dp))
-                        .background(if (isSearchExpanded || searchQuery.isNotBlank()) Color(0xFFEDE9E3) else Color(0xFFF7F7F6))
-                        .clickable { isSearchExpanded = !isSearchExpanded }
-                        .padding(horizontal = 8.dp, vertical = 6.dp)
-                        .testTag("toggle_search_button"),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search archive",
-                            tint = if (searchQuery.isNotBlank()) GoblinAccentWarm else GoblinTextSecondary,
-                            modifier = Modifier.size(13.dp)
-                        )
-                        if (searchQuery.isNotBlank()) {
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "\"$searchQuery\"",
-                                fontFamily = FontFamily.SansSerif,
-                                fontSize = 8.5.sp,
-                                color = GoblinAccentWarm,
-                                maxLines = 1
-                            )
-                        }
-                    }
-                }
             }
 
             // Right: Display Mode Switcher (Masonry, 2-Col, Cinematic)
@@ -912,73 +1120,7 @@ fun PhotographyFilteringSystem(
             }
         }
 
-        // 3. EXPANDABLE SEARCH BAR
-        AnimatedVisibility(
-            visible = isSearchExpanded,
-            enter = expandVertically() + fadeIn(),
-            exit = shrinkVertically() + fadeOut()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp, vertical = 6.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .border(0.5.dp, GoblinAccentWarm.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
-                    .background(Color.White)
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null,
-                        tint = GoblinAccentWarm,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Box(modifier = Modifier.weight(1f)) {
-                        if (searchQuery.isEmpty()) {
-                            Text(
-                                text = "Search locations, cameras, lenses, or essays...",
-                                fontFamily = FontFamily.SansSerif,
-                                fontSize = 12.sp,
-                                color = GoblinTextTertiary
-                            )
-                        }
-                        BasicTextField(
-                            value = searchQuery,
-                            onValueChange = onSearchQueryChange,
-                            textStyle = TextStyle(
-                                fontFamily = FontFamily.SansSerif,
-                                fontSize = 12.sp,
-                                color = GoblinTextPrimary
-                            ),
-                            cursorBrush = SolidColor(GoblinAccentWarm),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .testTag("search_input_field")
-                        )
-                    }
-                    if (searchQuery.isNotEmpty()) {
-                        IconButton(
-                            onClick = { onSearchQueryChange("") },
-                            modifier = Modifier.size(24.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear search",
-                                tint = GoblinTextTertiary,
-                                modifier = Modifier.size(14.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        // 4. ACTIVE FILTER & SORT STATUS BREADCRUMB
+        // 6. ACTIVE FILTER & SORT STATUS BREADCRUMB
         val hasActiveFilter = selectedCategory != PhotoCategory.ALL || sortOrder != PhotoSortOrder.CURATED || searchQuery.isNotBlank()
         if (hasActiveFilter) {
             Row(
@@ -1013,6 +1155,15 @@ fun PhotographyFilteringSystem(
                         fontSize = 9.sp,
                         color = GoblinTextSecondary
                     )
+                    if (searchQuery.isNotBlank()) {
+                        Text(
+                            text = "• \"$searchQuery\"",
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = GoblinAccentWarm
+                        )
+                    }
                     if (sortOrder != PhotoSortOrder.CURATED) {
                         Text(
                             text = "• ${sortOrder.shortLabel}",

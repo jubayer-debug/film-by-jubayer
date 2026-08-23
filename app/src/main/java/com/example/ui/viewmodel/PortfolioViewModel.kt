@@ -710,17 +710,27 @@ class PortfolioViewModel : ViewModel() {
             list = list.filter { it.category == state.selectedCategory }
         }
 
-        // Filter by Search Query
+        // Filter by Search Query (title, location, EXIF metadata, camera, lens, ISO, etc.)
         if (state.searchQuery.isNotBlank()) {
             val q = state.searchQuery.trim().lowercase()
-            list = list.filter {
-                it.title.lowercase().contains(q) ||
-                it.bengaliTitle.contains(q) ||
-                it.location.lowercase().contains(q) ||
-                it.caption.lowercase().contains(q) ||
-                it.category.label.lowercase().contains(q) ||
-                it.exif.camera.lowercase().contains(q) ||
-                it.exif.lens.lowercase().contains(q)
+            list = list.filter { photo ->
+                photo.title.lowercase().contains(q) ||
+                photo.bengaliTitle.lowercase().contains(q) ||
+                photo.location.lowercase().contains(q) ||
+                photo.year.contains(q) ||
+                photo.caption.lowercase().contains(q) ||
+                photo.story.lowercase().contains(q) ||
+                photo.category.label.lowercase().contains(q) ||
+                photo.category.name.lowercase().contains(q) ||
+                photo.orientation.name.lowercase().contains(q) ||
+                photo.mood.name.lowercase().replace("_", " ").contains(q) ||
+                photo.exif.camera.lowercase().contains(q) ||
+                photo.exif.lens.lowercase().contains(q) ||
+                photo.exif.aperture.lowercase().contains(q) ||
+                photo.exif.shutter.lowercase().contains(q) ||
+                photo.exif.iso.lowercase().contains(q) ||
+                photo.exif.focalLength.lowercase().contains(q) ||
+                photo.exif.format.lowercase().contains(q)
             }
         }
 
