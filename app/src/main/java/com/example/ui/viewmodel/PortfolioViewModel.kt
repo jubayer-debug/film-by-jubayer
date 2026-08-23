@@ -17,12 +17,16 @@ import kotlinx.coroutines.launch
 
 enum class NavigationSection(val label: String, val routeKey: String) {
     WORK("PHOTOS", "work"),
-    PROJECTS("PROJECTS", "projects"),
+    ALBUMS("ALBUMS", "albums"),
     JOURNAL("JOURNAL", "journal"),
     ABOUT("ABOUT", "about"),
     CONTACT("CONTACT", "contact"),
     CURATION("SAVED", "curation"),
-    ADMIN("ADMIN", "admin")
+    ADMIN("ADMIN", "admin");
+
+    companion object {
+        val PROJECTS: NavigationSection get() = ALBUMS
+    }
 }
 
 enum class AdminTab(val label: String, val iconLabel: String) {
@@ -556,7 +560,7 @@ class PortfolioViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 selectedProject = project,
-                activeSection = NavigationSection.PROJECTS,
+                activeSection = NavigationSection.ALBUMS,
                 isMobileMenuOpen = false
             )
         }

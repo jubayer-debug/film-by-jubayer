@@ -181,7 +181,7 @@ private fun DesktopNavigationRow(
             ) {
                 val sections = listOf(
                     NavigationSection.WORK,
-                    NavigationSection.PROJECTS,
+                    NavigationSection.ALBUMS,
                     NavigationSection.JOURNAL,
                     NavigationSection.ABOUT,
                     NavigationSection.CONTACT,

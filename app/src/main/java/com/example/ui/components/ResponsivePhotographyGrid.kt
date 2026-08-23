@@ -186,6 +186,20 @@ fun ResponsivePhotographyGrid(
                 )
             } else {
                 when (displayMode) {
+                    GridDisplayMode.CAROUSEL -> {
+                        PhotographyCarouselSlider(
+                            photos = photos,
+                            favoritePhotoIds = favoritePhotoIds,
+                            onPhotoClick = onPhotoClick,
+                            onToggleFavorite = onToggleFavorite,
+                            isMonochrome = isMonochrome,
+                            showFilmGrain = showFilmGrain,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(contentPadding)
+                        )
+                    }
+
                     GridDisplayMode.MASONRY -> {
                         LazyVerticalStaggeredGrid(
                             columns = StaggeredGridCells.Fixed(masonryColumns),
@@ -342,6 +356,20 @@ fun ResponsivePhotographyGridSection(
                 label = "grid_mode_anim"
             ) { mode ->
                 when (mode) {
+                    GridDisplayMode.CAROUSEL -> {
+                        PhotographyCarouselSlider(
+                            photos = photos,
+                            favoritePhotoIds = favoritePhotoIds,
+                            onPhotoClick = onPhotoClick,
+                            onToggleFavorite = onToggleFavorite,
+                            isMonochrome = isMonochrome,
+                            showFilmGrain = showFilmGrain,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp)
+                        )
+                    }
+
                     GridDisplayMode.MASONRY, GridDisplayMode.BALANCED -> {
                         // 2-Column Balanced / Staggered Layout for parent scroll
                         Column(
@@ -1224,6 +1252,267 @@ private fun EmptyGalleryState(
                     color = GoblinAccentWarm
                 )
             }
+        }
+    }
+}
+
+/**
+ * Interactive Horizontal Carousel & Image Slider with Left (<) and Right (>) Arrow Controls
+ */
+@Composable
+fun PhotographyCarouselSlider(
+    photos: List<Photograph>,
+    favoritePhotoIds: Set<String>,
+    onPhotoClick: (Photograph) -> Unit,
+    onToggleFavorite: (String) -> Unit,
+    isMonochrome: Boolean,
+    showFilmGrain: Boolean,
+    modifier: Modifier = Modifier
+) {
+    if (photos.isEmpty()) return
+
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
+    val canScrollBackward by remember { derivedStateOf { listState.canScrollBackward } }
+    val canScrollForward by remember { derivedStateOf { listState.canScrollForward } }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag("photography_carousel_slider")
+    ) {
+        // Carousel Header with Item Index Counter and Left/Right (< / >) Arrow Buttons
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 6.dp, vertical = 6.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ViewCarousel,
+                    contentDescription = null,
+                    tint = GoblinAccentWarm,
+                    modifier = Modifier.size(16.dp)
+                )
+                Text(
+                    text = "CAROUSEL SLIDER",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.8.sp,
+                    color = GoblinTextPrimary
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color(0x15000000))
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "${firstVisibleIndex + 1} / ${photos.size}",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = GoblinTextSecondary
+                    )
+                }
+            }
+
+            // Left (<) and Right (>) Navigation Arrows
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val targetIndex = (firstVisibleIndex - 1).coerceAtLeast(0)
+                            listState.animateScrollToItem(targetIndex)
+                        }
+                    },
+                    enabled = canScrollBackward,
+                    modifier = Modifier
+                        .size(34.dp)
+                        .clip(CircleShape)
+                        .background(if (canScrollBackward) Color.Black else Color(0x10000000))
+                        .border(0.5.dp, if (canScrollBackward) Color.Black else Color(0x20000000), CircleShape)
+                        .testTag("carousel_prev_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ChevronLeft,
+                        contentDescription = "Previous photograph",
+                        tint = if (canScrollBackward) Color.White else Color(0x40000000),
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        coroutineScope.launch {
+                            val targetIndex = (firstVisibleIndex + 1).coerceAtMost(photos.size - 1)
+                            listState.animateScrollToItem(targetIndex)
+                        }
+                    },
+                    enabled = canScrollForward,
+                    modifier = Modifier
+                        .size(34.dp)
+                        .clip(CircleShape)
+                        .background(if (canScrollForward) Color.Black else Color(0x10000000))
+                        .border(0.5.dp, if (canScrollForward) Color.Black else Color(0x20000000), CircleShape)
+                        .testTag("carousel_next_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = "Next photograph",
+                        tint = if (canScrollForward) Color.White else Color(0x40000000),
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Horizontal LazyRow Carousel
+        LazyRow(
+            state = listState,
+            contentPadding = PaddingValues(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            itemsIndexed(
+                items = photos,
+                key = { _, photo -> photo.id }
+            ) { _, photo ->
+                CarouselPhotoCard(
+                    photo = photo,
+                    isFavorite = favoritePhotoIds.contains(photo.id),
+                    isMonochrome = isMonochrome,
+                    showFilmGrain = showFilmGrain,
+                    onClick = { onPhotoClick(photo) },
+                    onToggleFavorite = { onToggleFavorite(photo.id) },
+                    modifier = Modifier.width(280.dp)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Clean photographic card designed for carousel / slider presentation
+ */
+@Composable
+fun CarouselPhotoCard(
+    photo: Photograph,
+    isFavorite: Boolean,
+    isMonochrome: Boolean,
+    showFilmGrain: Boolean,
+    onClick: () -> Unit,
+    onToggleFavorite: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(8.dp))
+            .background(Color.White)
+            .clickable { onClick() }
+            .testTag("carousel_card_${photo.id}")
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.25f)
+        ) {
+            PhotographicArtwork(
+                photograph = photo,
+                isMonochrome = isMonochrome,
+                showFilmGrain = showFilmGrain,
+                modifier = Modifier.fillMaxSize()
+            )
+
+            // Bookmark button
+            IconButton(
+                onClick = onToggleFavorite,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(Color(0x99000000))
+                    .border(0.5.dp, Color(0x33FFFFFF), CircleShape)
+            ) {
+                Icon(
+                    imageVector = if (isFavorite) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                    contentDescription = "Bookmark",
+                    tint = if (isFavorite) Color(0xFFE2A860) else Color.White,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+
+            // Category Pill
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(Color(0xCC000000))
+                    .padding(horizontal = 6.dp, vertical = 2.dp)
+            ) {
+                Text(
+                    text = photo.category.label,
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 8.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp,
+                    color = GoblinAccentWarm
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
+            Text(
+                text = "${photo.location} • ${photo.year}",
+                fontFamily = FontFamily.Monospace,
+                fontSize = 8.5.sp,
+                letterSpacing = 1.2.sp,
+                color = GoblinTextTertiary
+            )
+
+            Spacer(modifier = Modifier.height(3.dp))
+
+            Text(
+                text = photo.title,
+                fontFamily = FontFamily.Serif,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = GoblinTextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = photo.caption,
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 11.sp,
+                lineHeight = 15.sp,
+                color = GoblinTextSecondary,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }

@@ -169,7 +169,7 @@
         <!-- Desktop Nav Links (Right-Aligned) -->
         <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-xs font-medium tracking-[0.18em] uppercase text-neutral-700">
           <a href="#work" onclick="navigateTo('work')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="work">PHOTOS</a>
-          <a href="#projects" onclick="navigateTo('projects')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="projects">Projects</a>
+          <a href="#albums" onclick="navigateTo('albums')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="albums">Albums</a>
           <a href="#journal" onclick="navigateTo('journal')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent" data-section="journal">Journal</a>
           <a href="#curation" onclick="navigateTo('curation')" class="nav-link hover:text-black transition-colors py-2 border-b-2 border-transparent flex items-center gap-1.5" data-section="curation">
             <span>Saved</span>
@@ -285,7 +285,7 @@
 
       <nav class="flex flex-col gap-5 text-lg font-serif tracking-wide py-6">
         <a href="#work" onclick="navigateTo('work'); toggleMobileMenu()" class="hover:text-black">PHOTOS</a>
-        <a href="#projects" onclick="navigateTo('projects'); toggleMobileMenu()" class="hover:text-black">Project Series</a>
+        <a href="#albums" onclick="navigateTo('albums'); toggleMobileMenu()" class="hover:text-black">Albums</a>
         <a href="#journal" onclick="navigateTo('journal'); toggleMobileMenu()" class="hover:text-black">Field Journal</a>
         <a href="#curation" onclick="navigateTo('curation'); toggleMobileMenu()" class="hover:text-black">Saved Curation</a>
         <a href="#about" onclick="navigateTo('about'); toggleMobileMenu()" class="hover:text-black">About & Exhibitions</a>
@@ -331,147 +331,371 @@
     </div>
   </header>
 
-  <!-- MAIN VIEWPORT CONTAINER -->
+  <!-- MAIN VIEWPORT CONTAINER (Individual Linked Landing Pages) -->
   <main class="flex-grow bg-white">
     
-    <!-- 1. HERO SECTION (Decreased Height & Primary Font System & Unified Alignment) -->
-    <section id="hero" class="relative border-b border-neutral-200 bg-white text-black">
-      <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-8 sm:py-10 md:py-12">
-        <div class="max-w-4xl text-left">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="w-2 h-2 rounded-full bg-black animate-pulse"></span>
-            <span class="font-mono text-[11px] tracking-[0.2em] text-black uppercase font-medium">Habiganj, Bangladesh • Visual Archive</span>
+    <!-- ========================================================================= -->
+    <!-- 1. PHOTOS LANDING PAGE (Archive Catalog, Carousel & Grid) -->
+    <!-- ========================================================================= -->
+    <div id="view-work" class="landing-page-view">
+      <!-- Hero Masthead -->
+      <section class="relative border-b border-neutral-200 bg-white text-black">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-8 sm:py-10 md:py-12">
+          <div class="max-w-4xl text-left">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 rounded-full bg-black animate-pulse"></span>
+              <span class="font-mono text-[11px] tracking-[0.2em] text-black uppercase font-medium">Habiganj, Bangladesh • Visual Archive</span>
+            </div>
+            
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-serif font-normal tracking-tight leading-snug mb-3 text-black text-left">
+              Here we go... With the clicks of <a href="#about" onclick="navigateTo('about')" class="font-serif font-semibold text-black underline underline-offset-4 decoration-neutral-400 hover:decoration-black hover:opacity-80 transition-all cursor-pointer inline-block">Jubayer Ahmed</a>.
+            </h1>
+
+            <p class="max-w-2xl text-left font-sans text-xs sm:text-sm md:text-[15px] text-neutral-600 leading-relaxed font-normal">
+              Landscapes, documentary, rural, wildlife, nature, and visual storytelling photography based in Habiganj, Bangladesh. Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving.
+            </p>
+
+            <!-- Quick Landing Page Switchers / Highlights -->
+            <div class="flex flex-wrap items-center gap-3 pt-6 font-mono text-xs">
+              <button onclick="navigateTo('albums')" class="px-3.5 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-neutral-50 text-neutral-800 flex items-center gap-1.5 transition-all">
+                <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                <span>5 Photo Albums</span>
+              </button>
+              <button onclick="navigateTo('journal')" class="px-3.5 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-neutral-50 text-neutral-800 flex items-center gap-1.5 transition-all">
+                <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                <span>Field Journal & Essays</span>
+              </button>
+              <button onclick="navigateTo('curation')" class="px-3.5 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-neutral-50 text-neutral-800 flex items-center gap-1.5 transition-all">
+                <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
+                <span>Personal Saved Curation</span>
+              </button>
+            </div>
           </div>
-          
-          <h1 class="text-2xl sm:text-3xl md:text-4xl font-serif font-normal tracking-tight leading-snug mb-3 text-black text-left">
-            Here we go... With the clicks of <a href="#about" onclick="navigateTo('about')" class="font-serif font-semibold text-black underline underline-offset-4 decoration-neutral-400 hover:decoration-black hover:opacity-80 transition-all cursor-pointer inline-block">Jubayer Ahmed</a>.
-          </h1>
-
-          <p class="max-w-2xl text-left font-sans text-xs sm:text-sm md:text-[15px] text-neutral-600 leading-relaxed font-normal">
-            Landscapes, documentary, rural, wildlife, nature, and visual storytelling photography based in Habiganj, Bangladesh. Exploring fleeting light, rural textures, candid people, greenery, rivers, traditions, and everyday moments—archiving.
-          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 2. ARCHIVE WORK SECTION (CAROUSEL / IMAGE SLIDER) -->
-    <section id="work" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-14 bg-white">
-      
-      <!-- Section Header & Filter Controls + Arrow Controls -->
-      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 pb-4 border-b border-neutral-200 gap-4">
-        <div>
-          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Exhibition Catalog</span>
-          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Archived Photographs</h2>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-between lg:justify-end gap-3 sm:gap-4">
-          <!-- Filter Chips -->
-          <div class="flex flex-wrap gap-2 text-xs font-mono">
-            <button onclick="filterCategory('ALL')" class="category-btn px-3 py-1.5 rounded-full border border-black bg-black text-white transition-all shadow-sm" data-cat="ALL">All (16)</button>
-            <button onclick="filterCategory('RIVER')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="RIVER">River</button>
-            <button onclick="filterCategory('MONSOON')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="MONSOON">Monsoon</button>
-            <button onclick="filterCategory('STREET')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="STREET">Old Town</button>
-            <button onclick="filterCategory('PORTRAIT')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="PORTRAIT">Portraits</button>
-            <button onclick="filterCategory('LANDSCAPE')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="LANDSCAPE">Landscape</button>
+      <!-- Exhibition Catalog Section -->
+      <section id="work" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-12 sm:py-14 bg-white">
+        <!-- Section Header & Filter Controls + Arrow Controls -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 pb-4 border-b border-neutral-200 gap-4">
+          <div>
+            <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Exhibition Catalog</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Archived Photographs</h2>
           </div>
 
-          <!-- Carousel Arrow Navigation (< & >) -->
-          <div class="flex items-center gap-2 bg-neutral-50 border border-neutral-200 rounded-full px-3 py-1.5 shadow-sm">
-            <span id="carousel-counter" class="font-mono text-xs font-medium text-neutral-600 tracking-wider mr-1 select-none">01 / 16</span>
-            <button id="carousel-prev-btn" onclick="slideCarousel(-1)" aria-label="Previous photograph" title="Previous photo (<)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
-              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          <div class="flex flex-wrap items-center justify-between lg:justify-end gap-3 sm:gap-4">
+            <!-- Filter Chips -->
+            <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <button onclick="filterCategory('ALL')" class="category-btn px-3 py-1.5 rounded-full border border-black bg-black text-white transition-all shadow-sm" data-cat="ALL">All (16)</button>
+              <button onclick="filterCategory('RIVER')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="RIVER">River</button>
+              <button onclick="filterCategory('MONSOON')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="MONSOON">Monsoon</button>
+              <button onclick="filterCategory('STREET')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="STREET">Old Town</button>
+              <button onclick="filterCategory('PORTRAIT')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="PORTRAIT">Portraits</button>
+              <button onclick="filterCategory('LANDSCAPE')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="LANDSCAPE">Landscape</button>
+            </div>
+
+            <!-- Carousel Arrow Navigation (< & >) -->
+            <div class="flex items-center gap-2 bg-neutral-50 border border-neutral-200 rounded-full px-3 py-1.5 shadow-sm">
+              <span id="carousel-counter" class="font-mono text-xs font-medium text-neutral-600 tracking-wider mr-1 select-none">01 / 16</span>
+              <button id="carousel-prev-btn" onclick="slideCarousel(-1)" aria-label="Previous photograph" title="Previous photo (<)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              </button>
+              <button id="carousel-next-btn" onclick="slideCarousel(1)" aria-label="Next photograph" title="Next photo (>)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Track Container with Floating Left/Right Arrow Buttons -->
+        <div class="relative group">
+          <!-- Floating Left Arrow (<) Button -->
+          <button onclick="slideCarousel(-1)" aria-label="Scroll left" title="Previous (<)" class="hidden sm:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-lg items-center justify-center transition-all opacity-85 hover:opacity-100 hover:scale-105 active:scale-95">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+
+          <!-- Carousel Track (Horizontal Scroll Slider) -->
+          <div id="photos-grid" class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar pb-6 pt-2 px-1 focus:outline-none" tabindex="0">
+            <!-- Rendered dynamically by JavaScript -->
+          </div>
+
+          <!-- Floating Right Arrow (>) Button -->
+          <button onclick="slideCarousel(1)" aria-label="Scroll right" title="Next (>)" class="hidden sm:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-lg items-center justify-center transition-all opacity-85 hover:opacity-100 hover:scale-105 active:scale-95">
+            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Carousel Pagination Indicator Dots & Hint -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 pt-2 border-t border-neutral-100">
+          <div class="flex items-center gap-1.5 overflow-x-auto max-w-full py-1" id="carousel-dots">
+            <!-- Dots rendered by JS -->
+          </div>
+          <div class="flex items-center gap-2 text-[11px] font-mono text-neutral-400">
+            <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-neutral-400"></i>
+            <span>Use <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&lt;</kbd> and <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&gt;</kbd> arrows or swipe horizontally</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. ALBUMS LANDING PAGE (Dedicated Linked Individual Page) -->
+    <!-- ========================================================================= -->
+    <div id="view-albums" class="landing-page-view hidden">
+      <!-- Dedicated Landing Page Masthead -->
+      <section class="border-b border-neutral-200 bg-neutral-50/50 py-10 sm:py-14">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+          <!-- Breadcrumb Navigation -->
+          <div class="flex items-center gap-2 font-mono text-[11px] text-neutral-500 uppercase tracking-widest mb-4">
+            <button onclick="navigateTo('work')" class="hover:text-black transition-colors">ARCHIVE</button>
+            <span>/</span>
+            <span class="text-black font-semibold">ALBUMS</span>
+          </div>
+
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div class="max-w-3xl">
+              <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">ফটো অ্যালবাম • CURATED PHOTO ALBUMS & MONOGRAPHS</span>
+              <h1 class="text-3xl sm:text-4xl font-serif font-bold text-black mt-1">Albums</h1>
+              <p class="text-neutral-700 text-sm sm:text-base mt-3 leading-relaxed font-serif">
+                Multi-year documentary explorations into specific geographic topologies, seasonal transitions, human resilience, and deltaic living across Bangladesh. Each album presents an extensive photographic body of work (minimum 20 frames per collection).
+              </p>
+            </div>
+
+            <!-- Series Metrics Summary & Format Badges -->
+            <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-neutral-200 shadow-sm font-mono text-xs">
+              <div>
+                <div class="text-lg font-serif font-bold text-black">05</div>
+                <div class="text-[10px] text-neutral-500 uppercase">Albums</div>
+              </div>
+              <div class="h-8 w-px bg-neutral-200"></div>
+              <div>
+                <div class="text-lg font-serif font-bold text-black">120+</div>
+                <div class="text-[10px] text-neutral-500 uppercase">Archived Frames</div>
+              </div>
+              <div class="h-8 w-px bg-neutral-200"></div>
+              <div>
+                <div class="text-lg font-serif font-bold text-black">35mm & 120</div>
+                <div class="text-[10px] text-neutral-500 uppercase">Medium & Format</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Albums Section Container -->
+      <section id="albums" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-10 sm:py-14 bg-white">
+        
+        <!-- 1. Horizontal Carousel / Image Slider Section -->
+        <div class="mb-14">
+          <!-- Carousel Header & Arrow Navigation Controls -->
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 pb-4 border-b border-neutral-200 gap-4">
+            <div>
+              <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Featured Visual Series • Horizontal Slider</span>
+              <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Featured Albums Slider</h2>
+            </div>
+
+            <!-- Carousel Arrow Navigation (< & >) & Series Counter -->
+            <div class="flex items-center gap-3 bg-neutral-50 border border-neutral-200 rounded-full px-4 py-1.5 shadow-sm self-start sm:self-auto">
+              <span id="projects-carousel-counter" class="font-mono text-xs font-bold text-neutral-700 tracking-wider select-none">01 / 05</span>
+              <div class="h-4 w-px bg-neutral-300"></div>
+              <button id="projects-carousel-prev-btn" onclick="slideProjectsCarousel(-1)" aria-label="Previous series" title="Previous series (<)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              </button>
+              <button id="projects-carousel-next-btn" onclick="slideProjectsCarousel(1)" aria-label="Next series" title="Next series (>)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Carousel Track Container with Floating Left/Right Arrow Buttons -->
+          <div class="relative group">
+            <!-- Floating Left Arrow (<) Button -->
+            <button onclick="slideProjectsCarousel(-1)" aria-label="Scroll series left" title="Previous (<)" class="hidden md:flex absolute -left-4 lg:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-2xl items-center justify-center transition-all opacity-90 hover:opacity-100 hover:scale-105 active:scale-95">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button id="carousel-next-btn" onclick="slideCarousel(1)" aria-label="Next photograph" title="Next photo (>)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
-              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+
+            <!-- Carousel Track (Horizontal Scroll Slider) -->
+            <div id="projects-grid" class="flex gap-6 sm:gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar pb-6 pt-2 px-1 focus:outline-none" tabindex="0">
+              <!-- Rendered dynamically by JavaScript -->
+            </div>
+
+            <!-- Floating Right Arrow (>) Button -->
+            <button onclick="slideProjectsCarousel(1)" aria-label="Scroll series right" title="Next (>)" class="hidden md:flex absolute -right-4 lg:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-2xl items-center justify-center transition-all opacity-90 hover:opacity-100 hover:scale-105 active:scale-95">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
           </div>
-        </div>
-      </div>
 
-      <!-- Carousel Track Container with Floating Left/Right Arrow Buttons -->
-      <div class="relative group">
-        <!-- Floating Left Arrow (<) Button -->
-        <button onclick="slideCarousel(-1)" aria-label="Scroll left" title="Previous (<)" class="hidden sm:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-lg items-center justify-center transition-all opacity-85 hover:opacity-100 hover:scale-105 active:scale-95">
-          <i data-lucide="chevron-left" class="w-5 h-5"></i>
-        </button>
-
-        <!-- Carousel Track (Horizontal Scroll Slider) -->
-        <div id="photos-grid" class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar pb-6 pt-2 px-1 focus:outline-none" tabindex="0">
-          <!-- Rendered dynamically by JavaScript -->
+          <!-- Carousel Pagination Indicator Dots & Hint -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t border-neutral-100">
+            <div class="flex items-center gap-2 overflow-x-auto max-w-full py-1" id="projects-carousel-dots">
+              <!-- Dots rendered by JS -->
+            </div>
+            <div class="flex items-center gap-2 text-[11px] font-mono text-neutral-500">
+              <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-neutral-400"></i>
+              <span>Click any card or use <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&lt;</kbd> <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&gt;</kbd> arrows to explore 20+ frames per album</span>
+            </div>
+          </div>
         </div>
 
-        <!-- Floating Right Arrow (>) Button -->
-        <button onclick="slideCarousel(1)" aria-label="Scroll right" title="Next (>)" class="hidden sm:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-lg items-center justify-center transition-all opacity-85 hover:opacity-100 hover:scale-105 active:scale-95">
-          <i data-lucide="chevron-right" class="w-5 h-5"></i>
-        </button>
-      </div>
+        <!-- 2. Clean & Minimal Albums Gallery Catalog (Minimum 20 Frames Grid Overview) -->
+        <div class="pt-6 border-t border-neutral-200">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Archive Overview • Minimum 20 Frames Each</span>
+              <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">All Albums & Collections</h2>
+              <p class="text-neutral-600 text-xs sm:text-sm mt-1.5 font-serif max-w-2xl">
+                Every photo card is linked to its full gallery collection with at least 20 photographic frames, documentary narratives, and technical EXIF details.
+              </p>
+            </div>
+            <div class="font-mono text-xs text-neutral-500 bg-neutral-50 px-3 py-1.5 rounded border border-neutral-200">
+              <span class="font-bold text-black">5</span> COMPLETE MONOGRAPHS
+            </div>
+          </div>
 
-      <!-- Carousel Pagination Indicator Dots & Hint -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 pt-2 border-t border-neutral-100">
-        <div class="flex items-center gap-1.5 overflow-x-auto max-w-full py-1" id="carousel-dots">
-          <!-- Dots rendered by JS -->
-        </div>
-        <div class="flex items-center gap-2 text-[11px] font-mono text-neutral-400">
-          <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-neutral-400"></i>
-          <span>Use <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&lt;</kbd> and <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&gt;</kbd> arrows or swipe horizontally</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. PROJECT SERIES SECTION -->
-    <section id="projects" class="bg-white border-t border-neutral-200 py-16">
-      <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
-        <div class="max-w-xl mb-10">
-          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Long-Term Bodies of Work</span>
-          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Curated Series & Essays</h2>
-          <p class="text-neutral-600 text-sm mt-2 leading-relaxed font-serif">
-            Multi-year documentary explorations into specific geographic topologies, seasonal transitions, and human ecology.
-          </p>
+          <!-- Albums Grid List Container -->
+          <div id="albums-catalog-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Rendered dynamically by JavaScript with modern minimal cards and 20+ frame previews -->
+          </div>
         </div>
 
-        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Series Exploration Footer Banner -->
+        <div class="mt-14 p-8 rounded-2xl bg-neutral-900 text-white flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <div class="font-mono text-xs text-[#E2A860] uppercase tracking-widest mb-1">MONOGRAPH ACQUISITIONS</div>
+            <h3 class="text-2xl font-serif font-bold">Inquire for Limited Fine-Art Folios</h3>
+            <p class="text-neutral-400 text-xs sm:text-sm font-serif mt-1 max-w-xl">
+              All album collections are available as archival pigment box sets and silver gelatin portfolios for institutional and private collectors.
+            </p>
+          </div>
+          <button onclick="navigateTo('contact')" class="px-6 py-3 bg-white text-black font-mono text-xs uppercase tracking-widest rounded-lg hover:bg-neutral-200 transition-colors flex-shrink-0">
+            Commission Inquiry
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 3. JOURNAL LANDING PAGE (Dedicated Field Journal & Notes View) -->
+    <!-- ========================================================================= -->
+    <div id="view-journal" class="landing-page-view hidden">
+      <!-- Dedicated Landing Page Masthead -->
+      <section class="border-b border-neutral-200 bg-neutral-50/50 py-10 sm:py-14">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+          <!-- Breadcrumb Navigation -->
+          <div class="flex items-center gap-2 font-mono text-[11px] text-neutral-500 uppercase tracking-widest mb-4">
+            <button onclick="navigateTo('work')" class="hover:text-black transition-colors">ARCHIVE</button>
+            <span>/</span>
+            <span class="text-black font-semibold">FIELD JOURNAL</span>
+          </div>
+
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div class="max-w-3xl">
+              <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">মাঠের দিনলিপি • FIELD NOTES & ESSAYS</span>
+              <h1 class="text-3xl sm:text-4xl font-serif font-bold text-black mt-1">Darkroom Meditations & Analog Philosophy</h1>
+              <p class="text-neutral-700 text-sm sm:text-base mt-3 leading-relaxed font-serif">
+                Essays on analog patience, lighting techniques in riparian geographies, darkroom development chemistry, and the slower way of seeing.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-3 font-mono text-xs text-neutral-600 bg-white p-3 rounded-lg border border-neutral-200">
+              <i data-lucide="feather" class="w-4 h-4 text-black"></i>
+              <span>Curated by Jubayer Ahmed</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Journal Grid Section -->
+      <section id="journal" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-12 sm:py-16 bg-white">
+        <div id="journal-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Rendered dynamically -->
         </div>
-      </div>
-    </section>
 
-    <!-- 4. JOURNAL SECTION -->
-    <section id="journal" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-16 bg-white border-t border-neutral-200">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-neutral-200 gap-4">
-        <div>
-          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Notes & Technical Meditations</span>
-          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Field Journal</h2>
+        <!-- Featured Technical Meditation Card -->
+        <div class="mt-12 p-6 sm:p-8 bg-neutral-50 rounded-xl border border-neutral-200">
+          <div class="flex items-center gap-2 font-mono text-xs text-neutral-500 uppercase tracking-wider mb-2">
+            <i data-lucide="sliders" class="w-3.5 h-3.5 text-black"></i>
+            <span>DARKROOM SPECIFICATION NOTICE</span>
+          </div>
+          <h4 class="text-lg font-serif font-bold text-black mb-2">Film Processing Methodology</h4>
+          <p class="text-xs sm:text-sm text-neutral-700 font-serif leading-relaxed max-w-3xl">
+            All black and white photographs are developed by hand using Kodak D-76 diluted 1:1 at 20°C with gentle intermittent agitation to preserve delicate shadow gradation and fine grain structure across Tri-X 400 and Ilford HP5+ negatives.
+          </p>
         </div>
-        <p class="text-xs font-mono text-neutral-500 uppercase tracking-widest">
-          Darkroom logs • Analog philosophy
-        </p>
-      </div>
+      </section>
+    </div>
 
-      <div id="journal-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Rendered dynamically -->
-      </div>
-    </section>
+    <!-- ========================================================================= -->
+    <!-- 4. SAVED CURATION LANDING PAGE (Dedicated Personal Collection View) -->
+    <!-- ========================================================================= -->
+    <div id="view-curation" class="landing-page-view hidden">
+      <!-- Dedicated Landing Page Masthead -->
+      <section class="border-b border-neutral-200 bg-neutral-50/50 py-10 sm:py-14">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+          <!-- Breadcrumb Navigation -->
+          <div class="flex items-center gap-2 font-mono text-[11px] text-neutral-500 uppercase tracking-widest mb-4">
+            <button onclick="navigateTo('work')" class="hover:text-black transition-colors">ARCHIVE</button>
+            <span>/</span>
+            <span class="text-black font-semibold">SAVED CURATION</span>
+          </div>
 
-    <!-- 5. SAVED CURATION SECTION -->
-    <section id="curation" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-16 border-t border-neutral-200 bg-white">
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Personal Collection</span>
-          <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black">Your Bookmarked Photographs</h2>
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">সংরক্ষিত সংকলন • PERSONAL COLLECTION</span>
+              <h1 class="text-3xl sm:text-4xl font-serif font-bold text-black mt-1">Your Bookmarked Photographs</h1>
+              <p class="text-neutral-700 text-sm sm:text-base mt-2 leading-relaxed font-serif">
+                Review your curated selection of archival plates. Use this collection to request custom prints or discuss collaborative assignments.
+              </p>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-3">
+              <button onclick="clearSavedPhotos()" class="px-4 py-2 text-xs font-mono border border-neutral-300 rounded-lg hover:border-black text-neutral-700 hover:text-black bg-white transition-all">
+                Clear Selection
+              </button>
+              <button onclick="navigateTo('contact')" class="px-4 py-2 text-xs font-mono bg-black text-white rounded-lg hover:bg-neutral-800 transition-all flex items-center gap-2">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>Inquire on Collection</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <button onclick="clearSavedPhotos()" class="text-xs font-mono text-neutral-500 hover:text-black transition-colors">
-          Clear All
-        </button>
-      </div>
+      </section>
 
-      <div id="curation-container">
-        <!-- Empty state or bookmarked photo grid -->
-      </div>
-    </section>
+      <!-- Curation Content Section -->
+      <section id="curation" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-12 sm:py-16 bg-white">
+        <div id="curation-container">
+          <!-- Empty state or bookmarked photo grid -->
+        </div>
+      </section>
+    </div>
 
-    <!-- 6. ABOUT SECTION -->
-    <section id="about" class="bg-white border-t border-neutral-200 py-16">
-      <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+    <!-- ========================================================================= -->
+    <!-- 5. ABOUT LANDING PAGE (Dedicated Artist Bio & Exhibitions View) -->
+    <!-- ========================================================================= -->
+    <div id="view-about" class="landing-page-view hidden">
+      <!-- Dedicated Landing Page Masthead -->
+      <section class="border-b border-neutral-200 bg-neutral-50/50 py-10 sm:py-14">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+          <!-- Breadcrumb Navigation -->
+          <div class="flex items-center gap-2 font-mono text-[11px] text-neutral-500 uppercase tracking-widest mb-4">
+            <button onclick="navigateTo('work')" class="hover:text-black transition-colors">ARCHIVE</button>
+            <span>/</span>
+            <span class="text-black font-semibold">ABOUT & PRACTICE</span>
+          </div>
+
+          <div>
+            <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">শিল্পী ও দর্শন • ARTIST PROFILE</span>
+            <h1 class="text-3xl sm:text-4xl font-serif font-bold text-black mt-1">Jubayer Ahmed • Khonchitro (ক্ষণচিত্র)</h1>
+            <p class="text-neutral-700 text-sm sm:text-base mt-2 leading-relaxed font-serif max-w-2xl">
+              Documentary photography, visual archives, and environmental portraits examining human ecology and fleeting light across Bengal.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Content Section -->
+      <section id="about" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-12 sm:py-16 bg-white">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           <!-- Artist Photo & Credentials -->
@@ -479,15 +703,18 @@
             <div class="relative rounded-lg overflow-hidden border border-neutral-200 shadow-sm bg-white">
               <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=85" alt="Khonchitro Studio Profile" class="w-full h-96 object-cover object-top" />
               <div class="p-4 bg-white border-t border-neutral-200">
-                <div class="font-serif font-bold text-base text-black">Khonchitro (ক্ষণচিত্র)</div>
+                <div class="font-serif font-bold text-base text-black">Jubayer Ahmed (জুবায়ের আহমেদ)</div>
                 <div class="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mt-0.5">Habiganj & Dhaka, Bangladesh • Documentary & Visual Arts</div>
               </div>
             </div>
 
             <!-- Primary Gear & Medium -->
-            <div class="mt-6 p-4 rounded-lg bg-white border border-neutral-200">
-              <div class="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-3">Primary Equipment</div>
-              <ul class="text-xs font-mono text-neutral-700 space-y-1.5">
+            <div class="mt-6 p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div class="font-mono text-[10px] text-neutral-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                <i data-lucide="camera" class="w-3.5 h-3.5 text-black"></i>
+                <span>Primary Equipment & Medium</span>
+              </div>
+              <ul class="text-xs font-mono text-neutral-700 space-y-2">
                 <li>• Leica M11-P + Summilux 35mm f/1.4</li>
                 <li>• Leica Q3 (Summilux 28mm f/1.7)</li>
                 <li>• Hasselblad 907X 50C + XCD 45mm</li>
@@ -539,197 +766,365 @@
               </div>
             </div>
 
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. CONTACT & BUDGET CALCULATOR SECTION -->
-    <section id="contact" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-16 border-t border-neutral-200 bg-white">
-      
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Commission & Print Acquisitions</span>
-        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-black mt-2">Project Inquiries</h2>
-        <p class="text-neutral-600 font-serif text-base sm:text-lg mt-2">
-          Available for international documentary assignments, fine-art museum prints, and editorial commissions.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        <!-- Interactive Budget Calculator (Left 5 Cols) -->
-        <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-neutral-200 shadow-sm space-y-6">
-          <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
-            <div>
-              <h3 class="font-serif font-bold text-lg text-black">Budget Estimator</h3>
-              <p class="text-[11px] font-mono text-neutral-500 uppercase tracking-wider">Transparent Assignment Pricing</p>
-            </div>
-            <!-- Currency Selector -->
-            <select id="currency-select" onchange="calculateBudget()" class="text-xs font-mono bg-white border border-neutral-300 rounded px-2 py-1 text-black">
-              <option value="USD">USD ($)</option>
-              <option value="BDT" selected>BDT (৳)</option>
-              <option value="EUR">EUR (€)</option>
-              <option value="GBP">GBP (£)</option>
-            </select>
-          </div>
-
-          <!-- Project Tier -->
-          <div>
-            <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-2">Commission Tier</label>
-            <select id="tier-select" onchange="calculateBudget()" class="w-full text-sm font-serif bg-white border border-neutral-300 rounded-lg p-2.5 text-black focus:outline-none focus:border-black">
-              <option value="editorial">Editorial & Documentary Story (3–5 Days)</option>
-              <option value="commercial">Commercial Campaign & Brand Narrative</option>
-              <option value="print">Museum-Grade Silver Gelatin Fine Art Print</option>
-              <option value="portrait">Archival Environmental Portraiture</option>
-            </select>
-          </div>
-
-          <!-- Scope Addons -->
-          <div class="space-y-2">
-            <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Deliverables & Formats</label>
-            
-            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
-              <input type="checkbox" id="addon-analog" onchange="calculateBudget()" checked class="rounded text-black focus:ring-0">
-              <span class="flex-grow">35mm & Medium Format Film Darkroom Scans</span>
-              <span class="font-mono text-neutral-600" id="price-addon-analog">+৳18,000</span>
-            </label>
-
-            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
-              <input type="checkbox" id="addon-rights" onchange="calculateBudget()" class="rounded text-black focus:ring-0">
-              <span class="flex-grow">Worldwide Full Commercial Copyright Buyout</span>
-              <span class="font-mono text-neutral-600" id="price-addon-rights">+৳45,000</span>
-            </label>
-
-            <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
-              <input type="checkbox" id="addon-rush" onchange="calculateBudget()" class="rounded text-black focus:ring-0">
-              <span class="flex-grow">Expedited 48-Hour Curation Delivery</span>
-              <span class="font-mono text-neutral-600" id="price-addon-rush">+৳25,000</span>
-            </label>
-          </div>
-
-          <!-- Live Total Display -->
-          <div class="p-4 bg-white rounded-lg border border-neutral-200 flex items-center justify-between">
-            <div>
-              <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Estimated Total</div>
-              <div id="budget-total" class="text-xl sm:text-2xl font-serif font-bold text-black">৳85,000</div>
-            </div>
-            <button onclick="applyBudgetToForm()" class="px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded text-xs font-mono uppercase tracking-wider transition-colors">
-              Apply to Form
-            </button>
-          </div>
-        </div>
-
-        <!-- Contact Form (Right 7 Cols) -->
-        <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
-          <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Your Name *</label>
-                <input type="text" id="form-name" required placeholder="e.g. Maya Rahman" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
-              </div>
-              <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Email Address *</label>
-                <input type="email" id="form-email" required placeholder="name@domain.com" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Project Category</label>
-                <input type="text" id="form-category" placeholder="Editorial, Commercial, Fine Art" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
-              </div>
-              <div>
-                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Estimated Budget</label>
-                <input type="text" id="form-budget" placeholder="e.g. ৳85,000 or $1,200" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Assignment Scope & Narrative *</label>
-              <textarea id="form-message" rows="4" required placeholder="Describe your visual concept, location, dates, and desired deliverables..." class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white"></textarea>
-            </div>
-
-            <div class="flex items-center justify-between pt-2">
-              <div class="text-xs text-neutral-500 font-mono">
-                Direct: <a href="mailto:ijubayer1071@gmail.com" class="underline hover:text-black">ijubayer1071@gmail.com</a>
-              </div>
-              <button type="submit" class="px-6 py-2.5 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-[0.18em] rounded-lg transition-all shadow-sm">
-                Send Inquiry
+            <!-- Direct Contact CTA -->
+            <div class="pt-4">
+              <button onclick="navigateTo('contact')" class="px-6 py-3 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest rounded-lg transition-colors flex items-center gap-2 shadow-sm">
+                <span>Initiate Assignment Inquiry</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
               </button>
             </div>
-            
-            <div id="form-success" class="hidden p-3 rounded-lg bg-green-50 text-green-800 border border-green-200 text-xs font-sans">
-              Thank you! Your assignment inquiry has been recorded and an email dispatch is prepared.
+
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 6. CONTACT & BUDGET ESTIMATOR LANDING PAGE -->
+    <!-- ========================================================================= -->
+    <div id="view-contact" class="landing-page-view hidden">
+      <!-- Dedicated Landing Page Masthead -->
+      <section class="border-b border-neutral-200 bg-neutral-50/50 py-10 sm:py-14">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+          <!-- Breadcrumb Navigation -->
+          <div class="flex items-center gap-2 font-mono text-[11px] text-neutral-500 uppercase tracking-widest mb-4">
+            <button onclick="navigateTo('work')" class="hover:text-black transition-colors">ARCHIVE</button>
+            <span>/</span>
+            <span class="text-black font-semibold">CONTACT & INQUIRIES</span>
+          </div>
+
+          <div class="max-w-2xl">
+            <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">যোগাযোগ ও বরাদ্দ • COMMISSION & ACQUISITIONS</span>
+            <h1 class="text-3xl sm:text-4xl font-serif font-bold text-black mt-1">Project Inquiries & Commission Estimator</h1>
+            <p class="text-neutral-700 text-sm sm:text-base mt-2 leading-relaxed font-serif">
+              Available for international documentary assignments, museum-grade fine art prints, and editorial commissions. Use our interactive estimator to calculate transparent assignment scopes.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Form & Budget Calculator Section -->
+      <section id="contact" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-12 sm:py-16 bg-white">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Interactive Budget Calculator (Left 5 Cols) -->
+          <div class="lg:col-span-5 bg-white p-6 rounded-xl border border-neutral-200 shadow-sm space-y-6">
+            <div class="flex items-center justify-between border-b border-neutral-200 pb-4">
+              <div>
+                <h3 class="font-serif font-bold text-lg text-black">Budget Estimator</h3>
+                <p class="text-[11px] font-mono text-neutral-500 uppercase tracking-wider">Transparent Assignment Pricing</p>
+              </div>
+              <!-- Currency Selector -->
+              <select id="currency-select" onchange="calculateBudget()" class="text-xs font-mono bg-white border border-neutral-300 rounded px-2 py-1 text-black">
+                <option value="USD">USD ($)</option>
+                <option value="BDT" selected>BDT (৳)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+              </select>
             </div>
+
+            <!-- Project Tier -->
+            <div>
+              <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-2">Commission Tier</label>
+              <select id="tier-select" onchange="calculateBudget()" class="w-full text-sm font-serif bg-white border border-neutral-300 rounded-lg p-2.5 text-black focus:outline-none focus:border-black">
+                <option value="editorial">Editorial & Documentary Story (3–5 Days)</option>
+                <option value="commercial">Commercial Campaign & Brand Narrative</option>
+                <option value="print">Museum-Grade Silver Gelatin Fine Art Print</option>
+                <option value="portrait">Archival Environmental Portraiture</option>
+              </select>
+            </div>
+
+            <!-- Scope Addons -->
+            <div class="space-y-2">
+              <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Deliverables & Formats</label>
+              
+              <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
+                <input type="checkbox" id="addon-analog" onchange="calculateBudget()" checked class="rounded text-black focus:ring-0">
+                <span class="flex-grow">35mm & Medium Format Film Darkroom Scans</span>
+                <span class="font-mono text-neutral-600" id="price-addon-analog">+৳18,000</span>
+              </label>
+
+              <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
+                <input type="checkbox" id="addon-rights" onchange="calculateBudget()" class="rounded text-black focus:ring-0">
+                <span class="flex-grow">Worldwide Full Commercial Copyright Buyout</span>
+                <span class="font-mono text-neutral-600" id="price-addon-rights">+৳45,000</span>
+              </label>
+
+              <label class="flex items-center gap-3 p-2.5 rounded-lg border border-neutral-200 hover:bg-neutral-50 cursor-pointer text-xs font-sans">
+                <input type="checkbox" id="addon-rush" onchange="calculateBudget()" class="rounded text-black focus:ring-0">
+                <span class="flex-grow">Expedited 48-Hour Curation Delivery</span>
+                <span class="font-mono text-neutral-600" id="price-addon-rush">+৳25,000</span>
+              </label>
+            </div>
+
+            <!-- Live Total Display -->
+            <div class="p-4 bg-white rounded-lg border border-neutral-200 flex items-center justify-between">
+              <div>
+                <div class="text-[10px] font-mono uppercase tracking-widest text-neutral-500">Estimated Total</div>
+                <div id="budget-total" class="text-xl sm:text-2xl font-serif font-bold text-black">৳85,000</div>
+              </div>
+              <button onclick="applyBudgetToForm()" class="px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded text-xs font-mono uppercase tracking-wider transition-colors">
+                Apply to Form
+              </button>
+            </div>
+          </div>
+
+          <!-- Contact Form (Right 7 Cols) -->
+          <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+            <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Your Name *</label>
+                  <input type="text" id="form-name" required placeholder="e.g. Maya Rahman" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
+                </div>
+                <div>
+                  <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Email Address *</label>
+                  <input type="email" id="form-email" required placeholder="name@domain.com" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Project Category</label>
+                  <input type="text" id="form-category" placeholder="Editorial, Commercial, Fine Art" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
+                </div>
+                <div>
+                  <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Estimated Budget</label>
+                  <input type="text" id="form-budget" placeholder="e.g. ৳85,000 or $1,200" class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-mono uppercase tracking-wider text-neutral-600 mb-1">Assignment Scope & Narrative *</label>
+                <textarea id="form-message" rows="4" required placeholder="Describe your visual concept, location, dates, and desired deliverables..." class="w-full px-3 py-2 rounded-lg border border-neutral-300 text-sm focus:border-black focus:outline-none bg-white"></textarea>
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <div class="text-xs text-neutral-500 font-mono">
+                  Direct: <a href="mailto:ijubayer1071@gmail.com" class="underline hover:text-black">ijubayer1071@gmail.com</a>
+                </div>
+                <button type="submit" class="px-6 py-2.5 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-[0.18em] rounded-lg transition-all shadow-sm">
+                  Send Inquiry
+                </button>
+              </div>
+              
+              <div id="form-success" class="hidden p-3 rounded-lg bg-green-50 text-green-800 border border-green-200 text-xs font-sans">
+                Thank you! Your assignment inquiry has been recorded and an email dispatch is prepared.
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 7. ADMIN CMS LANDING PAGE -->
+    <!-- ========================================================================= -->
+    <div id="view-admin" class="landing-page-view hidden">
+      <!-- Dedicated Landing Page Masthead -->
+      <section class="border-b border-neutral-200 bg-neutral-50/50 py-10 sm:py-14">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3">
+          <!-- Breadcrumb Navigation -->
+          <div class="flex items-center gap-2 font-mono text-[11px] text-neutral-500 uppercase tracking-widest mb-4">
+            <button onclick="navigateTo('work')" class="hover:text-black transition-colors">ARCHIVE</button>
+            <span>/</span>
+            <span class="text-black font-semibold">ADMIN CMS</span>
+          </div>
+
+          <div>
+            <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">নিয়ন্ত্রণ কক্ষ • ARCHIVE MANAGEMENT</span>
+            <h1 class="text-3xl sm:text-4xl font-serif font-bold text-black mt-1">Khonchitro Studio CMS</h1>
+            <p class="text-neutral-700 text-sm sm:text-base mt-2 leading-relaxed font-serif max-w-2xl">
+              Internal editorial panel for managing archived photographs, EXIF camera metadata, Bengali captions, and curated exhibitions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin CMS Content Section -->
+      <section id="admin" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-12 sm:py-16 bg-white">
+        <!-- Admin Login Gate -->
+        <div id="admin-gate" class="max-w-md mx-auto p-6 rounded-xl bg-white border border-neutral-200 shadow-sm text-center">
+          <div class="w-10 h-10 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3">
+            <i data-lucide="lock" class="w-5 h-5"></i>
+          </div>
+          <h2 class="text-xl font-serif font-bold text-black">Studio Authentication</h2>
+          <p class="text-[11px] font-mono text-neutral-500 uppercase tracking-widest mt-1 mb-5">Archive Management & EXIF Editor</p>
+          
+          <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+            <input type="password" id="admin-pass" placeholder="Enter admin password (jubayer2026)" class="w-full px-3 py-2 rounded border border-neutral-300 text-sm font-mono focus:border-black focus:outline-none bg-white" />
+            <button type="submit" class="w-full py-2 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest rounded transition-colors">
+              Access CMS
+            </button>
+            <p id="admin-error" class="hidden text-xs text-red-600 font-mono">Invalid password. Default is: jubayer2026</p>
           </form>
         </div>
 
-      </div>
-    </section>
-
-    <!-- 8. ADMIN CMS SECTION (Password-gated) -->
-    <section id="admin" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-16 border-t border-neutral-200 bg-white">
-      
-      <!-- Admin Login Gate -->
-      <div id="admin-gate" class="max-w-md mx-auto p-6 rounded-xl bg-white border border-neutral-200 shadow-sm text-center">
-        <div class="w-10 h-10 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto mb-3">
-          <i data-lucide="lock" class="w-5 h-5"></i>
-        </div>
-        <h2 class="text-xl font-serif font-bold text-black">Khonchitro Studio CMS</h2>
-        <p class="text-[11px] font-mono text-neutral-500 uppercase tracking-widest mt-1 mb-5">Archive Management & EXIF Editor</p>
-        
-        <form onsubmit="handleAdminLogin(event)" class="space-y-3">
-          <input type="password" id="admin-pass" placeholder="Enter admin password (jubayer2026)" class="w-full px-3 py-2 rounded border border-neutral-300 text-sm font-mono focus:border-black focus:outline-none bg-white" />
-          <button type="submit" class="w-full py-2 bg-black hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest rounded transition-colors">
-            Access CMS
-          </button>
-          <p id="admin-error" class="hidden text-xs text-red-600 font-mono">Invalid password. Default is: jubayer2026</p>
-        </form>
-      </div>
-
-      <!-- Admin Panel Dashboard (Shown upon login) -->
-      <div id="admin-dashboard" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 pb-4 gap-4">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-green-500"></span>
-              <span class="font-mono text-xs text-green-700 font-semibold uppercase tracking-wider">Live CMS Connected</span>
+        <!-- Admin Panel Dashboard (Shown upon login) -->
+        <div id="admin-dashboard" class="hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-200 pb-4 gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span class="font-mono text-xs text-green-700 font-semibold uppercase tracking-wider">Live CMS Connected</span>
+              </div>
+              <h2 class="text-2xl font-serif font-bold text-black mt-1">Photo Archive Editor</h2>
             </div>
-            <h2 class="text-2xl font-serif font-bold text-black mt-1">Photo Archive Editor</h2>
+            <div class="flex gap-2">
+              <button onclick="addNewPhotoPrompt()" class="px-3 py-1.5 bg-black text-white rounded text-xs font-mono uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                Add New Photo
+              </button>
+              <button onclick="adminLogout()" class="px-3 py-1.5 border border-neutral-300 bg-white text-neutral-700 rounded text-xs font-mono uppercase tracking-wider hover:bg-neutral-50 transition-colors">
+                Lock & Logout
+              </button>
+            </div>
           </div>
-          <div class="flex gap-2">
-            <button onclick="addNewPhotoPrompt()" class="px-3 py-1.5 bg-black text-white rounded text-xs font-mono uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center gap-1.5">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-              Add New Photo
-            </button>
-            <button onclick="adminLogout()" class="px-3 py-1.5 border border-neutral-300 bg-white text-neutral-700 rounded text-xs font-mono uppercase tracking-wider hover:bg-neutral-50 transition-colors">
-              Lock & Logout
-            </button>
+
+          <div class="overflow-x-auto bg-white rounded-xl border border-neutral-200 shadow-sm">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-white border-b border-neutral-200 text-neutral-500 uppercase">
+                <tr>
+                  <th class="p-3">Thumbnail</th>
+                  <th class="p-3">Title & Bengali</th>
+                  <th class="p-3">Location & Year</th>
+                  <th class="p-3">Category</th>
+                  <th class="p-3">Camera & EXIF</th>
+                  <th class="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-table-body" class="divide-y divide-neutral-100">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
           </div>
         </div>
-
-        <div class="overflow-x-auto bg-white rounded-xl border border-neutral-200 shadow-sm">
-          <table class="w-full text-left text-xs font-mono">
-            <thead class="bg-white border-b border-neutral-200 text-neutral-500 uppercase">
-              <tr>
-                <th class="p-3">Thumbnail</th>
-                <th class="p-3">Title & Bengali</th>
-                <th class="p-3">Location & Year</th>
-                <th class="p-3">Category</th>
-                <th class="p-3">Camera & EXIF</th>
-                <th class="p-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="admin-table-body" class="divide-y divide-neutral-100">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </section>
+      </section>
+    </div>
 
   </main>
+
+  <!-- ========================================================================= -->
+  <!-- ALBUM GALLERY GRID & ESSAY MODAL (20+ Photographic Frames Viewer) -->
+  <!-- ========================================================================= -->
+  <div id="project-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md overflow-y-auto p-2 sm:p-4 md:p-8 flex items-start justify-center">
+    <div class="bg-white rounded-2xl max-w-6xl w-full max-h-[94vh] overflow-y-auto shadow-2xl border border-neutral-200 p-5 sm:p-8 md:p-10 relative my-auto">
+      
+      <!-- Top Sticky Navigation & Action Bar -->
+      <div class="flex items-center justify-between pb-5 border-b border-neutral-200 sticky -top-5 sm:-top-8 md:-top-10 bg-white/95 backdrop-blur-md z-30 pt-1">
+        <div class="flex items-center gap-3">
+          <button onclick="closeProjectModal()" class="px-3.5 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-neutral-50 text-neutral-800 text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 transition-all">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>Back to Albums</span>
+          </button>
+          <span id="pm-meta" class="font-mono text-xs text-[#E2A860] uppercase tracking-widest bg-neutral-900 px-3 py-1 rounded-full font-semibold">ALBUM 01 • 26 FRAMES</span>
+        </div>
+        <button onclick="closeProjectModal()" class="p-2 rounded-full hover:bg-neutral-100 text-neutral-700 hover:text-black transition-colors" aria-label="Close">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Album Header & Narrative Overview -->
+      <div class="mt-6 mb-8">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+          <div>
+            <div class="flex items-baseline gap-3 flex-wrap">
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-black" id="pm-title">Project Title</h2>
+              <span class="text-xl sm:text-2xl font-serif text-[#9E6930]" id="pm-bengali">বাংলা শিরোনাম</span>
+            </div>
+            <p class="text-sm sm:text-base font-serif text-neutral-600 italic mt-1" id="pm-subtitle">Terracotta Kilns, Folk Artisans & Pahela Boishakh</p>
+          </div>
+          <div class="flex items-center gap-4 text-xs font-mono text-neutral-500 bg-neutral-50 p-3 rounded-xl border border-neutral-200">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-neutral-400"></i>
+              <span id="pm-loc" class="uppercase">Dhaka, Bangladesh</span>
+            </div>
+            <div class="h-3.5 w-px bg-neutral-300"></div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="calendar" class="w-3.5 h-3.5 text-neutral-400"></i>
+              <span id="pm-date">April 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curatorial Narrative Statement -->
+        <div class="mt-6 p-5 sm:p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+          <span class="font-mono text-[10px] tracking-[0.2em] text-neutral-500 uppercase block mb-1">CURATORIAL ESSAY & STATEMENT</span>
+          <p id="pm-desc" class="text-neutral-800 font-serif text-sm sm:text-base leading-relaxed">
+            Comprehensive documentary statement regarding this geographic and cultural survey.
+          </p>
+        </div>
+      </div>
+
+      <!-- Gallery Grid Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between pb-4 mb-6 border-b border-neutral-200 gap-2">
+        <div>
+          <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Gallery Grid Style • Minimum 20 Frames</span>
+          <h3 class="text-xl sm:text-2xl font-serif font-bold text-black mt-0.5">Archived Photographic Plates</h3>
+        </div>
+        <div class="text-xs font-mono text-neutral-500">
+          Click any frame to view in full Lightbox & EXIF
+        </div>
+      </div>
+
+      <!-- 20+ Photographic Frames Gallery Grid (Modern Clean Minimal Look) -->
+      <div id="pm-frames-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <!-- Rendered dynamically by JavaScript with 20+ frame items -->
+      </div>
+
+      <!-- Bottom Action Footer -->
+      <div class="mt-12 pt-6 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <button onclick="closeProjectModal()" class="px-5 py-2.5 border border-neutral-300 rounded-lg text-xs font-mono uppercase tracking-wider hover:border-black transition-colors w-full sm:w-auto">
+          ← Return to Albums Catalog
+        </button>
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <button onclick="closeProjectModal(); navigateTo('work')" class="px-5 py-2.5 bg-neutral-100 text-neutral-800 rounded-lg text-xs font-mono uppercase tracking-wider hover:bg-neutral-200 transition-colors w-full sm:w-auto">
+            All Archive Photos
+          </button>
+          <button onclick="closeProjectModal(); navigateTo('contact')" class="px-5 py-2.5 bg-black text-white rounded-lg text-xs font-mono uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center gap-1.5 w-full sm:w-auto">
+            <span>Acquire Folio</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- JOURNAL ESSAY READER MODAL (Interactive Longform Essay Viewer) -->
+  <!-- ========================================================================= -->
+  <div id="journal-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md overflow-y-auto p-4 sm:p-6 md:p-10 flex items-center justify-center">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-neutral-200 p-6 sm:p-8 relative">
+      <button onclick="closeJournalModal()" class="absolute top-5 right-5 p-2 rounded-full hover:bg-neutral-100 text-neutral-700 hover:text-black transition-colors" aria-label="Close">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center justify-between font-mono text-xs text-neutral-400 mb-3 pr-8">
+        <span id="jm-date">OCT 14, 2025</span>
+        <span id="jm-readtime">4 MIN READ</span>
+      </div>
+
+      <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black leading-snug" id="jm-title">On Analog Patience: Why 35mm Still Matters</h2>
+      <div class="text-sm font-serif text-neutral-500 italic mb-6" id="jm-bengali">ফিল্মের ধৈর্য ও অনুভূতির অনুসন্ধান</div>
+
+      <div class="prose prose-neutral max-w-none text-sm sm:text-base font-serif text-neutral-800 leading-relaxed space-y-4 border-t border-b border-neutral-200 py-6 mb-6">
+        <p id="jm-body">
+          When you only have 36 exposures on a roll of Tri-X, the shutter press ceases to be a reaction and becomes an act of deliberate listening.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button onclick="closeJournalModal()" class="px-5 py-2.5 border border-neutral-300 rounded-lg text-xs font-mono uppercase tracking-wider hover:border-black transition-colors">
+          Close Essay
+        </button>
+        <button onclick="closeJournalModal(); navigateTo('work')" class="px-5 py-2.5 bg-black text-white rounded-lg text-xs font-mono uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center gap-1.5">
+          <span>View Archive</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- LIGHTBOX MODAL -->
   <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-black/95 text-white flex flex-col justify-between p-4 sm:p-8 backdrop-blur-sm">
@@ -789,8 +1184,8 @@
         </div>
 
         <div class="flex flex-wrap gap-5 font-mono text-[11px] uppercase tracking-wider text-neutral-600">
-          <a href="#work" onclick="navigateTo('work')" class="hover:text-black">Archive</a>
-          <a href="#projects" onclick="navigateTo('projects')" class="hover:text-black">Projects</a>
+          <a href="#work" onclick="navigateTo('work')" class="hover:text-black">Photos</a>
+          <a href="#albums" onclick="navigateTo('albums')" class="hover:text-black">Albums</a>
           <a href="#journal" onclick="navigateTo('journal')" class="hover:text-black">Journal</a>
           <a href="#about" onclick="navigateTo('about')" class="hover:text-black">About</a>
           <a href="#contact" onclick="navigateTo('contact')" class="hover:text-black">Contact</a>
@@ -1065,16 +1460,95 @@
       requestAnimationFrame(tick);
     }
 
-    // Navigation & Section Highlighting
+    // Navigation & Section Highlighting (Individual Linked Landing Pages)
     function navigateTo(sectionId) {
+      // Normalize section IDs
+      let target = sectionId.replace('#', '').replace('/', '').toLowerCase();
+      if (target === 'photos' || target === 'home' || target === 'work' || !target) {
+        target = 'work';
+      } else if (target === 'saved') {
+        target = 'curation';
+      } else if (target === 'projects' || target === 'albums') {
+        target = 'albums';
+      }
+
+      // Update URL hash for direct bookmarking & shareable deep links
+      if (window.location.hash !== `#${target}`) {
+        window.history.pushState(null, '', `#${target}`);
+      }
+
+      // Switch Visible Landing Page View
+      const allViews = document.querySelectorAll('.landing-page-view');
+      allViews.forEach(view => {
+        view.classList.add('hidden');
+      });
+
+      const activeView = document.getElementById(`view-${target}`);
+      if (activeView) {
+        activeView.classList.remove('hidden');
+      } else {
+        // Fallback to work archive
+        const defaultView = document.getElementById('view-work');
+        if (defaultView) defaultView.classList.remove('hidden');
+        target = 'work';
+      }
+
+      // Update Desktop & Mobile Navigation Links Highlight
       document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.dataset.section === sectionId) {
-          link.classList.add('border-gallery-900', 'text-gallery-950');
+        const linkSec = link.dataset.section;
+        if (linkSec === target || (target === 'albums' && (linkSec === 'albums' || linkSec === 'projects')) || (target === 'work' && linkSec === 'work') || (target === 'curation' && linkSec === 'curation')) {
+          link.classList.add('border-black', 'text-black', 'font-semibold');
+          link.classList.remove('border-transparent', 'text-neutral-700');
         } else {
-          link.classList.remove('border-gallery-900', 'text-gallery-950');
+          link.classList.remove('border-black', 'text-black', 'font-semibold');
+          link.classList.add('border-transparent', 'text-neutral-700');
         }
       });
+
+      // Close mobile menu if open
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+
+      // Re-trigger layout-specific updates
+      if (target === 'curation') {
+        renderCuration();
+      } else if (target === 'work') {
+        renderPhotos();
+      } else if (target === 'albums' || target === 'projects') {
+        renderProjects();
+        renderAlbumsCatalog();
+      } else if (target === 'journal') {
+        renderJournal();
+      }
+
+      // Scroll smoothly to top of page
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Refresh Lucide Icons
+      setTimeout(() => {
+        if (window.lucide) lucide.createIcons();
+      }, 50);
     }
+
+    // Listen to Browser Back / Forward and Hash Changes
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '').replace('/', '');
+      if (hash) {
+        navigateTo(hash);
+      } else {
+        navigateTo('work');
+      }
+    });
+
+    // Check initial hash on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const initialHash = window.location.hash.replace('#', '').replace('/', '');
+      if (initialHash) {
+        navigateTo(initialHash);
+      }
+    });
 
     function toggleDropdown(id) {
       const el = document.getElementById(id);
@@ -1380,72 +1854,527 @@
       });
     }
 
-    // Render Project Series
-    function renderProjects() {
-      const projects = [
-        {
-          id: "proj_01",
-          number: "01",
-          title: "MONSOON",
-          bengali: "বর্ষাযাপন",
-          subtitle: "The Season of Silver Water & Endless Rain",
-          location: "Munshiganj & Sylhet",
-          count: "14 Photographs",
-          img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1200&q=80",
-          desc: "A multi-year visual chronicle examining how the monsoon reorganizes geography, light, and domestic life across the delta."
-        },
-        {
-          id: "proj_02",
-          number: "02",
-          title: "RIVER COUNTRY",
-          bengali: "নদীমাতৃক",
-          subtitle: "Life Along the Restless Banks of the Meghna",
-          location: "Chandpur & Bhola",
-          count: "18 Photographs",
-          img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
-          desc: "Documenting the eternal relationship between deltaic communities and the shifting watercourses that give and take away."
-        },
-        {
-          id: "proj_03",
-          number: "03",
-          title: "AFTER RAIN",
-          bengali: "বৃষ্টির পর",
-          subtitle: "Quietude, Wet Silt & Soft Evening Horizon",
-          location: "Faridpur & Munshiganj",
-          count: "12 Photographs",
-          img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
-          desc: "The fragile stillness that lingers in village paths immediately after hours of torrential downpour."
-        },
-        {
-          id: "proj_04",
-          number: "04",
-          title: "OLD TOWN SHADOWS",
-          bengali: "পুরান ঢাকা",
-          subtitle: "Three Centuries of Indigo Twilight and Tungsten Glow",
-          location: "Shankhari Bazar & Sadarghat",
-          count: "22 Photographs",
-          img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80",
-          desc: "A nocturnal study of Old Dhaka's historic alleys, traditional artisans, and timeless communal architecture."
-        }
-      ];
+    // Global Curated Albums List (Minimum 20 Frames Per Album Collection)
+    const curatedProjectsList = [
+      {
+        id: "proj_01",
+        number: "01",
+        title: "BOISHAKH 1433",
+        bengali: "বৈশাখ ১৪৩৩",
+        subtitle: "Terracotta Kilns, Folk Artisans & Pahela Boishakh",
+        frames: "26",
+        views: "185",
+        count: "26 Photographs",
+        location: "DHAKA, BANGLADESH",
+        date: "APRIL 2026",
+        img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80",
+        desc: "A photographic exploration into the artisanal terracotta studios and earthen kiln workshops preparing for Pahela Boishakh 1433 celebrations across Dhaka. Master clay sculptors shape traditional motifs, terracotta figurines, and ceremonial lamps in the vibrant weeks before the Bengali New Year.",
+        frameList: [
+          { id: "b1433_01", num: "01", title: "Potter's Wheel at Dawn", bn: "ভোরের চাকা", loc: "Dhamrai, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/1.4 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "Raw clay centering upon the spinning wheel under soft morning skylight." },
+          { id: "b1433_02", num: "02", title: "Terracotta Masks in Row", bn: "মাটির মুখোশ", loc: "Rayer Bazar, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", caption: "Handcrafted traditional owl and tiger folk masks drying on bamboo racks." },
+          { id: "b1433_03", num: "03", title: "Straw and Earth Kiln", bn: "খড় ও মাটির ভাঁটি", loc: "Savar, Dhaka", year: "2026", exif: "Hasselblad 503CW • 80mm f/2.8 • 1/125s • ISO 400", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Dense smoke billowing from the traditional wood-fired earthen furnace." },
+          { id: "b1433_04", num: "04", title: "Hands of the Master Sculptor", bn: "শিল্পীর হাত", loc: "Dhamrai, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/320s • ISO 160", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Decades of artisan devotion etched into the clay-covered fingertips." },
+          { id: "b1433_05", num: "05", title: "Drying Courtyard", bn: "রোদে শুকানো উঠোন", loc: "Rayer Bazar, Dhaka", year: "2026", exif: "Leica M11-P • 28mm f/4.0 • 1/640s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Over four hundred unbaked terracotta cups bathing in the midday April heat." },
+          { id: "b1433_06", num: "06", title: "Red Ochre Pigment", bn: "গেরুয়া রঙের প্রলেপ", loc: "Dhamrai, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "Natural river silt mixed with crimson oxide for ceremonial painting." },
+          { id: "b1433_07", num: "07", title: "Folk Motifs in Relief", bn: "লোকশিল্পের কারুকাজ", loc: "Savar, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/200s • ISO 200", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "Intricate floral incisions pressed into the leather-hard vessel surface." },
+          { id: "b1433_08", num: "08", title: "Pahela Boishakh Procession", bn: "মঙ্গল শোভাযাত্রা", loc: "Dhaka University", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/1000s • ISO 200", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Towering folk effigies carried through the festive sunlit avenues." },
+          { id: "b1433_09", num: "09", title: "Earthen Lamps for Dusk", bn: "সন্ধ্যার প্রদীপ", loc: "Rayer Bazar, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/160s • ISO 800", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Tiny clay diyas stacked in woven wicker baskets awaiting the evening river ritual." },
+          { id: "b1433_10", num: "10", title: "Apprentice in Focus", bn: "নবীন শিক্ষানবিস", loc: "Dhamrai, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/320s • ISO 200", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "A third-generation young artisan learning the delicate art of vessel trimming." },
+          { id: "b1433_11", num: "11", title: "Firing the Night Kiln", bn: "রাতের ভাটি", loc: "Savar, Dhaka", year: "2026", exif: "Hasselblad 503CW • 80mm f/2.8 • 1/60s • ISO 1600", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Glowing orange embers illuminating the silhouettes of tireless kiln tenders." },
+          { id: "b1433_12", num: "12", title: "Cooling Ware at Sunrise", bn: "ভোরের শীতল মৃতশিল্প", loc: "Savar, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "The transformation from dark gray river mud to warm reddish terracotta." },
+          { id: "b1433_13", num: "13", title: "Market Morning Bazaar", bn: "বৈশাখী মেলা", loc: "Dhaka", year: "2026", exif: "Leica M11-P • 28mm f/2.8 • 1/500s • ISO 200", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80", caption: "Crowds gathering around the artisan stalls at the traditional Boishakhi Mela." },
+          { id: "b1433_14", num: "14", title: "Miniature Clay Horses", bn: "মাটির ঘোড়া", loc: "Dhamrai, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/250s • ISO 100", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80", caption: "Traditional folk toy figurines crafted for children across rural Bengal." },
+          { id: "b1433_15", num: "15", title: "Silt Filtration Pit", bn: "পলিমাটি পরিশোধন", loc: "Turag Riverbank", year: "2026", exif: "Leica M11-P • 35mm f/4.0 • 1/800s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Fine river silt washed and filtered to achieve silky sculpting consistency." },
+          { id: "b1433_16", num: "16", title: "Festive Red Border Saree", bn: "লাল পাড়ের শাড়ি", loc: "Ramna Batamul, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/640s • ISO 100", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Women celebrating the dawn of the new year in traditional white and red attire." },
+          { id: "b1433_17", num: "17", title: "Dhol Drummer at Sunrise", bn: "ঢোলের তাল", loc: "Ramna Park, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/500s • ISO 200", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Rhythmic beats welcoming the arrival of Baishakh under ancient banyan trees." },
+          { id: "b1433_18", num: "18", title: "Glazing the Folk Pitchers", bn: "কলসির প্রলেপ", loc: "Rayer Bazar, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/2.8 • 1/200s • ISO 160", img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", caption: "Applying smooth natural mica mineral slip before the second kiln firing." },
+          { id: "b1433_19", num: "19", title: "Stacking the Charcoal", bn: "কাঠকয়লা সাজানো", loc: "Savar, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/320s • ISO 400", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Careful masonry of fuel and clay plates to prevent temperature collapse." },
+          { id: "b1433_20", num: "20", title: "Panta Ilish Tradition", bn: "পান্তা ইলিশের আয়োজন", loc: "Old Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/250s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Traditional fermented rice served in handcrafted earthen bowls." },
+          { id: "b1433_21", num: "21", title: "The Senior Potter's Gaze", bn: "প্রবীণ মৃৎশিল্পীর দৃষ্টি", loc: "Dhamrai, Dhaka", year: "2026", exif: "Leica M11-P • 75mm f/2.0 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Seventy years of wisdom shaping the terracotta legacy of Bengal." },
+          { id: "b1433_22", num: "22", title: "Temple Terracotta Plaque", bn: "টেরাকোটা ফলক", loc: "Kantajew Temple Archive", year: "2026", exif: "Leica M11-P • 50mm f/2.8 • 1/160s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "Restoration of intricate epic terracotta scenes by local sculptors." },
+          { id: "b1433_23", num: "23", title: "Children with Earthen Toys", bn: "মাটির খেলনা ও শিশু", loc: "Ramna, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/640s • ISO 100", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Joyous laughter echoing through the festival fairgrounds." },
+          { id: "b1433_24", num: "24", title: "River Transportation of Pottery", bn: "নৌকা বোঝাই হাঁড়িপাতিল", loc: "Buriganga River, Dhaka", year: "2026", exif: "Leica M11-P • 28mm f/4.0 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Cargo boats navigating riverways to supply rural bazaars across the country." },
+          { id: "b1433_25", num: "25", title: "Sunset over Kiln Chimneys", bn: "ভাঁটির ওপর সূর্যাস্ত", loc: "Savar, Dhaka", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "Golden hour haze settling across the historic clay potteries." },
+          { id: "b1433_26", num: "26", title: "New Year Benediction", bn: "নববর্ষের আশীর্বাদ", loc: "Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/1.4 • 1/200s • ISO 400", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "An unbroken chain of craftsmanship and cultural rebirth entering 1433." }
+        ]
+      },
+      {
+        id: "proj_02",
+        number: "02",
+        title: "MONSOON ARCHIVE",
+        bengali: "বর্ষার দলিল",
+        subtitle: "The Season of Silver Water & Endless Rain",
+        frames: "24",
+        views: "240",
+        count: "24 Photographs",
+        location: "MUNSHIGANJ, BANGLADESH",
+        date: "JULY 2025",
+        img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=1200&q=80",
+        desc: "A multi-year visual chronicle examining how the monsoon reorganizes geography, light, and domestic life across the delta. In Bengal, water is not simply an element; it is an architect of time, solitude, and communal rhythm.",
+        frameList: [
+          { id: "mon_01", num: "01", title: "First Rain on Lotus Basin", bn: "পদ্মপাতায় প্রথম বৃষ্টি", loc: "Munshiganj", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/250s • ISO 100", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Heavy droplets rebounding off the silver water surface of the wetlands." },
+          { id: "mon_02", num: "02", title: "Monsoon Sky over Delta", bn: "বর্ষার মেঘমেদুর আকাশ", loc: "Bikrampur", year: "2025", exif: "Leica M11-P • 28mm f/5.6 • 1/800s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Indigo storm clouds gathering over the vast emerald floodplains." },
+          { id: "mon_03", num: "03", title: "Single Oar in Downpour", bn: "বৃষ্টিতে একাকী মাঝি", loc: "Dhaleshwari River", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/320s • ISO 400", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "A solitary boatman slicing through torrential silver sheets of rain." },
+          { id: "mon_04", num: "04", title: "Submerged Jute Field", bn: "জলে ডোবা পাটখেত", loc: "Munshiganj", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/500s • ISO 200", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Farmers harvesting golden fiber while neck-deep in monsoon currents." },
+          { id: "mon_05", num: "05", title: "Courtyard Under Water", bn: "উঠোনে বর্ষার পানি", loc: "Sirajdikhan", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/200s • ISO 160", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "Reflections of betel nut palms trembling in the inundated front yard." },
+          { id: "mon_06", num: "06", title: "The Rain Veil at Noon", bn: "মধ্যাহ্নের বৃষ্টিজাল", loc: "Padma Outskirts", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "Horizon dissolving completely into a translucent veil of pure moisture." },
+          { id: "mon_07", num: "07", title: "Children in Palm Boat", bn: "তালপাতার ভেলা ও শৈশব", loc: "Louhajang", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/640s • ISO 200", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Navigating shallow flood channels on homemade banana-stem rafts." },
+          { id: "mon_08", num: "08", title: "Water Hyacinth Migration", bn: "কচুরিপানার স্রোত", loc: "Munshiganj Canal", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80", caption: "Lilac blossoms drifting effortlessly downstream with the monsoon swell." },
+          { id: "mon_09", num: "09", title: "Fishing with Bamboo Traps", bn: "বাঁশের চাঁই দিয়ে মাছ ধরা", loc: "Bikrampur", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Traditional woven bamboo fish traps anchored in flooded paddy fields." },
+          { id: "mon_10", num: "10", title: "Tea Stall in the Squall", bn: "ঝড়ের মুখে চায়ের দোকান", loc: "Mawa Ghat", year: "2025", exif: "Leica M11-P • 35mm f/1.4 • 1/125s • ISO 800", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Steam rising from boiling kettles while wind lashes tin-sheet roofs." },
+          { id: "mon_11", num: "11", title: "Silver Hilsa Harvest", bn: "রূপালি ইলিশের আগমন", loc: "Padma River", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/1000s • ISO 200", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Glistening silver scales pulled from the turbulent deep river currents." },
+          { id: "mon_12", num: "12", title: "Tin Roof Symphony", bn: "টিনের চালে বৃষ্টির গান", loc: "Sirajdikhan", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/200s • ISO 400", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "The rhythmic roar of unceasing rain creating a blanket of deep tranquility." },
+          { id: "mon_13", num: "13", title: "Cattle on High Mound", bn: "উঁচু ভিটেয় আশ্রয়", loc: "Munshiganj", year: "2025", exif: "Leica M11-P • 50mm f/2.8 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Villagers herding livestock to safety as river water levels rise overnight." },
+          { id: "mon_14", num: "14", title: "Old Wooden Mosque by Water", bn: "জলাশয়ের পাড়ে কাঠের মসজিদ", loc: "Bikrampur", year: "2025", exif: "Leica M11-P • 28mm f/4.0 • 1/320s • ISO 100", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80", caption: "Centuries-old timber joinery standing gracefully amid the seasonal tide." },
+          { id: "mon_15", num: "15", title: "Umbrella in Green Mist", bn: "সবুজ কুয়াশায় ছাতা", loc: "Louhajang", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "A lone black umbrella walking through the lush overgrown village trail." },
+          { id: "mon_16", num: "16", title: "Sinking Sun Behind Storm", bn: "মেঘের আড়ালে অস্তগামী সূর্য", loc: "Padma Estuary", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "A brief gap in the monsoon clouds painting the horizon in purple and amber." },
+          { id: "mon_17", num: "17", title: "Woman Gathering Rainwater", bn: "বৃষ্টির জল সঞ্চয়", loc: "Munshiganj", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Catching sweet, pristine rainwater in large earthen jars for the household." },
+          { id: "mon_18", num: "18", title: "Submerged Pathway", bn: "নিমজ্জিত মেঠোপথ", loc: "Sirajdikhan", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/320s • ISO 160", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80", caption: "A familiar walking path turned into a clear mirrored channel for small dinghies." },
+          { id: "mon_19", num: "19", title: "The Weaver's Loom in Monsoon", bn: "বর্ষায় তাঁতিগৃহ", loc: "Bikrampur", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/160s • ISO 400", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Cotton threads absorbing the ambient moisture inside the artisan's workshop." },
+          { id: "mon_20", num: "20", title: "Kadam Flower Blossom", bn: "কদম ফুলের শোভা", loc: "Munshiganj", year: "2025", exif: "Leica M11-P • 75mm f/2.0 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "The quintessential golden orb of the Kadam flower announcing Asharh." },
+          { id: "mon_21", num: "21", title: "Night Lightning Over Char", bn: "চরে রাতের বজ্রপাত", loc: "Padma Char", year: "2025", exif: "Hasselblad 503CW • 50mm f/4.0 • 8s • ISO 100", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Electric forks ripping across the midnight delta sky in total silence." },
+          { id: "mon_22", num: "22", title: "Morning Mist on Bamboo Grove", bn: "বাঁশঝাড়ে ভোরের বাষ্প", loc: "Louhajang", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/320s • ISO 200", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Warm steam rising from saturated earth as the sun breaks through." },
+          { id: "mon_23", num: "23", title: "Repairing the Net", bn: "জাল মেরামত", loc: "Dhaleshwari", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/250s • ISO 100", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Mending nylon mesh while waiting for the squall to subside on the riverbank." },
+          { id: "mon_24", num: "24", title: "The Endless Silver Delta", bn: "রূপালি নদীমাতৃক বাংলা", loc: "Munshiganj", year: "2025", exif: "Leica M11-P • 28mm f/5.6 • 1/1000s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "A timeless landscape where earth and water blend in perpetual harmony." }
+        ]
+      },
+      {
+        id: "proj_03",
+        number: "03",
+        title: "RIVER COUNTRY",
+        bengali: "নদীমাতৃক",
+        subtitle: "Life Along the Restless Banks of the Meghna",
+        frames: "20",
+        views: "310",
+        count: "20 Photographs",
+        location: "CHANDPUR, BANGLADESH",
+        date: "SEPTEMBER 2025",
+        img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+        desc: "Documenting the eternal relationship between deltaic communities and the shifting watercourses that give and take away. From early dawn boatmen navigating misty shoals to seasonal migrations along the riverbanks.",
+        frameList: [
+          { id: "riv_01", num: "01", title: "Confluence of Three Waters", bn: "ত্রিবেণীর মোহনা", loc: "Chandpur", year: "2025", exif: "Leica M11-P • 28mm f/5.6 • 1/1000s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Where the mighty Padma, Meghna, and Dakatia merge into an inland sea." },
+          { id: "riv_02", num: "02", title: "Dawn Cast of the Net", bn: "ভোরের জাল নিক্ষেপ", loc: "Meghna Estuary", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/1200s • ISO 100", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "The circular throw net opening like an eagle's wing against the sunrise." },
+          { id: "riv_03", num: "03", title: "Char Island Settlers", bn: "চরের বাসিন্দা", loc: "Rajrajeshwar Char", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Erecting corrugated tin homes on temporary fertile silt shoals." },
+          { id: "riv_04", num: "04", title: "Wooden Boat Builder's Yard", bn: "নৌকা তৈরির ঘাট", loc: "Haimchar", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Curving mahogany and garjan timber with fire and iron clamps." },
+          { id: "riv_05", num: "05", title: "Sailing Against the Current", bn: "উজান স্রোতে পালতোলা নৌকা", loc: "Chandpur", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/800s • ISO 100", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "Patchwork jute sails catching the brisk southern estuary breeze." },
+          { id: "riv_06", num: "06", title: "River Erosion Watch", bn: "নদীভাঙন ও নিঃশব্দ প্রতীক্ষা", loc: "Boro Station", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Watching large chunks of fertile riverbank slip silently into the whirlpools." },
+          { id: "riv_07", num: "07", title: "Evening Ferry Passage", bn: "সন্ধ্যার খেয়াপারাপার", loc: "Meghna Ghat", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/125s • ISO 800", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Commuters crossing the vast horizon under blazing sunset gradients." },
+          { id: "riv_08", num: "08", title: "Char Children Playing in Silt", bn: "চরের ধুলায় শৈশব", loc: "Haimchar", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/640s • ISO 100", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Running barefoot across untrodden sandy beaches of the river island." },
+          { id: "riv_09", num: "09", title: "Wholesale Fish Ghat", bn: "চাঁদপুরের মাছের আড়ত", loc: "Boro Station Ghat", year: "2025", exif: "Leica M11-P • 28mm f/2.8 • 1/400s • ISO 400", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "Bustling auctions of fresh silver catches right at the river landing." },
+          { id: "riv_10", num: "10", title: "The Veteran Helm Master", bn: "অভিজ্ঞ সারেং", loc: "Chandpur", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/320s • ISO 200", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Navigating shifting shoals without compass or sonar for over fifty years." },
+          { id: "riv_11", num: "11", title: "Kashful on the Riverbank", bn: "নদীর তীরে কাশবন", loc: "Meghna Bank", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/800s • ISO 100", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80", caption: "White feathery wild reeds dancing in the crisp autumn river air." },
+          { id: "riv_12", num: "12", title: "Midnight Lantern on Water", bn: "মাঝনদীতে হারিকেনের আলো", loc: "Dakatia Channel", year: "2025", exif: "Hasselblad 503CW • 80mm f/2.8 • 1/30s • ISO 1600", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Kerosene lanterns dangling from wooden prows signaling river positions." },
+          { id: "riv_13", num: "13", title: "Unloading the Sand Barges", bn: "বাল্কহেড থেকে বালু খালাস", loc: "Chandpur Ghat", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/500s • ISO 200", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "Heavy labor moving riverbed sand to build growing urban foundations." },
+          { id: "riv_14", num: "14", title: "Resting Boats at Low Tide", bn: "ভাটায় স্থির নৌকা", loc: "Haimchar", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "Wooden hulls tilted gently in the deep, glistening river mud." },
+          { id: "riv_15", num: "15", title: "Smoke from Riverside Kitchen", bn: "নদীর ধারের উনুনে ধোঁয়া", loc: "Char Rajrajeshwar", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Cooking fresh rice and river greens on clay hearths open to the sky." },
+          { id: "riv_16", num: "16", title: "Cormorant and Lone Fisherman", bn: "মাছরাঙা ও একা মাঝি", loc: "Meghna", year: "2025", exif: "Leica M11-P • 75mm f/2.0 • 1/1000s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "A shared silence between wild hunter and patient human observer." },
+          { id: "riv_17", num: "17", title: "Tethered Buffalo in River", bn: "নদীতে মহিষের স্নান", loc: "Char Haimchar", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Water buffalo cooling off in the shallow sandbar lagoons at noon." },
+          { id: "riv_18", num: "18", title: "The Estuary Horizon", bn: "অনন্ত মোহনা", loc: "Chandpur", year: "2025", exif: "Leica M11-P • 28mm f/5.6 • 1/1200s • ISO 100", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "Where the sky curves downward to meet kilometers of uninterrupted water." },
+          { id: "riv_19", num: "19", title: "River Prayer at Dusk", bn: "নদীর ঘাটে সন্ধ্যার প্রার্থনা", loc: "Boro Station", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/160s • ISO 400", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Offering quiet gratitude for another safe journey across the waters." },
+          { id: "riv_20", num: "20", title: "The Flow Remains", bn: "চিরবহমান স্রোতধারা", loc: "Meghna Basin", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Generations pass, but the sacred deltaic currents continue unhindered." }
+        ]
+      },
+      {
+        id: "proj_04",
+        number: "04",
+        title: "AFTER RAIN",
+        bengali: "বৃষ্টির পর",
+        subtitle: "Quietude, Wet Silt & Soft Evening Horizon",
+        frames: "22",
+        views: "195",
+        count: "22 Photographs",
+        location: "FARIDPUR, BANGLADESH",
+        date: "AUGUST 2025",
+        img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
+        desc: "The fragile stillness that lingers in village paths immediately after hours of torrential downpour. Soft light returns to the emerald fields, carrying the aroma of damp earth, renewed vitality, and mirrored skies in village courtyards.",
+        frameList: [
+          { id: "ar_01", num: "01", title: "Mirrored Courtyard Puddle", bn: "উঠোনের জলে আকাশের প্রতিবিম্ব", loc: "Faridpur", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Rainwater holding the entire blue sky in a shallow courtyard depression." },
+          { id: "ar_02", num: "02", title: "Wet Paddy Blades", bn: "বৃষ্টিভেজা ধানের শিষ", loc: "Bhanga", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/800s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Diamond water droplets clinging to radiant emerald stalks." },
+          { id: "ar_03", num: "03", title: "Drying Fishing Nets", bn: "রোদে শুকানো জাল", loc: "Padma Bank", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/500s • ISO 160", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Nets strung between bamboo poles catching the first rays of returned sun." },
+          { id: "ar_04", num: "04", title: "Village Path After Deluge", bn: "বৃষ্টির পরের মেঠোপথ", loc: "Faridpur", year: "2025", exif: "Leica M11-P • 28mm f/4.0 • 1/320s • ISO 100", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80", caption: "Fresh footprints stamped into glistening brown silt." },
+          { id: "ar_05", num: "05", title: "Dragonfly on Wet Bamboo", bn: "বাঁশপাতায় ফড়িং", loc: "Nagarkanda", year: "2025", exif: "Leica M11-P • 75mm f/2.0 • 1/640s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "Wings vibrating dry in the clean, ozone-rich post-storm atmosphere." },
+          { id: "ar_06", num: "06", title: "Vapour Over the Marsh", bn: "জলাভূমির ওপর বাষ্প", loc: "Faridpur Haor", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "Gentle mist evaporating from warm wetland waters into the cool evening." },
+          { id: "ar_07", num: "07", title: "Emerging into the Light", bn: "আলোতে ফেরা", loc: "Bhanga", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Children stepping out onto porches after hours sheltering indoors." },
+          { id: "ar_08", num: "08", title: "Duck Flock in Fresh Water", bn: "বৃষ্টির জলে হাঁসের দল", loc: "Nagarkanda", year: "2025", exif: "Leica M11-P • 50mm f/2.8 • 1/600s • ISO 100", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "Splashing through clean accumulated rainwater in the village pond." },
+          { id: "ar_09", num: "09", title: "Soft Amber Horizon", bn: "মুগ্ধ গোধূলি", loc: "Faridpur", year: "2025", exif: "Leica M11-P • 35mm f/1.4 • 1/250s • ISO 200", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Golden light filtering through washed eucalyptus and betel canopies." },
+          { id: "ar_10", num: "10", title: "Tin Roof Reflections", bn: "টিনের চালে গোধূলি আলো", loc: "Bhanga", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/320s • ISO 100", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Silvery metal roofs shining like polished mirrors under sunset skies." },
+          { id: "ar_11", num: "11", title: "Wet Bark of Ancient Banyan", bn: "বটবৃক্ষের ভিজে কাণ্ড", loc: "Faridpur Ghat", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/160s • ISO 400", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80", caption: "Deep dark textural grooves saturated with natural river moisture." },
+          { id: "ar_12", num: "12", title: "Fresh Tea at Sundown", bn: "সন্ধ্যার গরম চা", loc: "Bhanga Bazaar", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/200s • ISO 400", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "Gathering around the warm tea kettle as the rain clouds disperse." },
+          { id: "ar_13", num: "13", title: "Calm Water Channel", bn: "শান্ত খালের প্রবাহ", loc: "Nagarkanda", year: "2025", exif: "Leica M11-P • 28mm f/4.0 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Glassy stillness settling over the village canal after hours of turbulence." },
+          { id: "ar_14", num: "14", title: "The Farmer's Return", bn: "ঘরে ফেরা", loc: "Faridpur", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/320s • ISO 100", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Carrying tools over shoulder along the glowing mud bund." },
+          { id: "ar_15", num: "15", title: "Lilies in Fresh Pool", bn: "শাপলার কুঁড়ি", loc: "Bhanga", year: "2025", exif: "Leica M11-P • 75mm f/2.0 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "White water lilies opening their petals to the pristine twilight air." },
+          { id: "ar_16", num: "16", title: "Cattle Grazing in Wet Pasture", bn: "ভেজা মাঠে চরে বেড়ানো", loc: "Nagarkanda", year: "2025", exif: "Leica M11-P • 35mm f/2.8 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Lush clover grass glowing under the soft post-rain sunlight." },
+          { id: "ar_17", num: "17", title: "Evening Lamp Lit in Courtyard", bn: "উঠোনে সন্ধ্যার প্রদীপ", loc: "Faridpur", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/125s • ISO 800", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "A small flame piercing the dark humid night air." },
+          { id: "ar_18", num: "18", title: "Rainwashed Clay Pots", bn: "বৃষ্টিতে ধোয়া মাটির পাত্র", loc: "Bhanga", year: "2025", exif: "Leica M11-P • 50mm f/2.0 • 1/250s • ISO 100", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "Terracotta surfaces glowing with rich wet earthen saturation." },
+          { id: "ar_19", num: "19", title: "Silhouette on the Embankment", bn: "বাঁধের ওপর ছায়ামূর্তি", loc: "Padma Embankment", year: "2025", exif: "Leica M11-P • 35mm f/2.0 • 1/640s • ISO 100", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Solitary figure outlined against the glowing indigo rain horizon." },
+          { id: "ar_20", num: "20", title: "Frog Chorus at Dusk", bn: "সন্ধ্যার ব্যাঙের ডাক", loc: "Faridpur Haor", year: "2025", exif: "Leica M11-P • 50mm f/1.4 • 1/160s • ISO 400", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "The symphony of rural amphibians filling the quiet dusk." },
+          { id: "ar_21", num: "21", title: "Stars Emerging Through Mist", bn: "মেঘ ভেদ করে তারার আলো", loc: "Faridpur", year: "2025", exif: "Hasselblad 503CW • 50mm f/4.0 • 15s • ISO 400", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Constellations revealing themselves over the peaceful delta." },
+          { id: "ar_22", num: "22", title: "Night Peace in Faridpur", bn: "শান্ত ফরিদপুরের রাত", loc: "Faridpur", year: "2025", exif: "Leica M11-P • 35mm f/1.4 • 1/60s • ISO 1600", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "The earth rests, nourished by hours of generous rainfall." }
+        ]
+      },
+      {
+        id: "proj_05",
+        number: "05",
+        title: "OLD TOWN SHADOWS",
+        bengali: "পুরান ঢাকা",
+        subtitle: "Three Centuries of Indigo Twilight and Tungsten Glow",
+        frames: "28",
+        views: "420",
+        count: "28 Photographs",
+        location: "OLD DHAKA, BANGLADESH",
+        date: "JANUARY 2026",
+        img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=1200&q=80",
+        desc: "A nocturnal and architectural study of Old Dhaka's historic alleys, traditional conch-shell artisans, spice markets, and timeless communal architecture. Three centuries of layered heritage captured under warm tungsten street lamps and blue evening skies.",
+        frameList: [
+          { id: "ots_01", num: "01", title: "Shankhari Bazar in Tungsten", bn: "শাঁখারীবাজারের সান্ধ্য আলো", loc: "Shankhari Bazar, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/1.4 • 1/125s • ISO 800", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Narrow alleys framed by historic 18th-century facades and incandescent filaments." },
+          { id: "ots_02", num: "02", title: "Conch Shell Artisan", bn: "শাঁখা কারিগর", loc: "Shankhari Bazar", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/250s • ISO 400", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Master artisan slicing sacred conch shells with traditional crescent saws." },
+          { id: "ots_03", num: "03", title: "Colonial Balcony Shadows", bn: "ঔপনিবেশিক বারান্দার ছায়া", loc: "Farashganj, Dhaka", year: "2026", exif: "Leica M11-P • 28mm f/2.8 • 1/160s • ISO 400", img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", caption: "Intricate cast-iron railings casting geometric silhouettes against peeling plaster." },
+          { id: "ots_04", num: "04", title: "Spice Market Dust at Sunset", bn: "মৌলভীবাজারে মশলার গন্ধ", loc: "Chawk Bazar", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/400s • ISO 200", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "Golden dust motes suspended in sunbeams carrying aromas of cardamom and clove." },
+          { id: "ots_05", num: "05", title: "Bakarkhani Baker's Oven", bn: "বাকরখানির তন্দুর", loc: "Nazira Bazar", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/200s • ISO 1200", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Crisp layered breads slapped against glowing terracotta tandoor walls." },
+          { id: "ots_06", num: "06", title: "Ahsan Manzil Twilight", bn: "আহসান মঞ্জিলে গোধূলি", loc: "Kumartoli, Dhaka", year: "2026", exif: "Leica M11-P • 28mm f/5.6 • 1/60s • ISO 200", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "The Pink Palace glowing under deep indigo skies along the Buriganga." },
+          { id: "ots_07", num: "07", title: "Tara Masjid Star Mosaics", bn: "তারা মসজিদের চিনির টুকরো মোজাইক", loc: "Armanitola, Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/200s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "Chini-tikri porcelain star patterns reflecting midday light." },
+          { id: "ots_08", num: "08", title: "Midnight Tea in Nazira Bazar", bn: "নাজিরাবাজারে গভীর রাতের চা", loc: "Nazira Bazar", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/125s • ISO 1600", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Old Dhaka never sleeps; stories shared over condensed milk tea at 2 AM." },
+          { id: "ots_09", num: "09", title: "Copper Smith of Tanti Bazar", bn: "তাঁতীবাজারের কাঁসা কারিগর", loc: "Tanti Bazar", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/250s • ISO 400", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Rhythmic hammer blows shaping lustrous brass ceremonial platters." },
+          { id: "ots_10", num: "10", title: "Rickshaw Art Studio", bn: "রিকশা পেইন্টারের তুলি", loc: "Sadarghat", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/320s • ISO 200", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Enamel colors depicting film stars, peacocks, and pastoral delta scenes." },
+          { id: "ots_11", num: "11", title: "Rooftop Pigeon Keepers", bn: "ছাদে কবুতর ওড়ানো", loc: "Chawk Bazar", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/1000s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Whistles echoing across rooftops as flocks circle in the golden afternoon." },
+          { id: "ots_12", num: "12", title: "Wooden Door of Ruplal House", bn: "রূপলাল হাউসের প্রাচীন কপাট", loc: "Farashganj", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/160s • ISO 200", img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80", caption: "Carved teak portals bearing witness to two centuries of river commerce." },
+          { id: "ots_13", num: "13", title: "Attar Perfume Blending", bn: "আতর মিশ্রণ", loc: "Chawk Circular Road", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/200s • ISO 400", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "Distilling pure rose, agarwood, and jasmine oils in glass crystal flacons." },
+          { id: "ots_14", num: "14", title: "Sadarghat Ferry Swarm", bn: "সদরঘাটের ব্যস্ত ট্রলার", loc: "Sadarghat Terminal", year: "2026", exif: "Leica M11-P • 28mm f/4.0 • 1/800s • ISO 100", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", caption: "A thousand small wooden sampans ferrying passengers across the Buriganga." },
+          { id: "ots_15", num: "15", title: "Kite Festival on Sakrain", bn: "সাকরাইনের ঘুড়ি উৎসব", loc: "Old Dhaka Rooftops", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/1500s • ISO 100", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=800&q=80", caption: "Fierce aerial duels with glass-coated threads over the crowded city skyline." },
+          { id: "ots_16", num: "16", title: "Night Firebreathers of Sakrain", bn: "সাকরাইনে আগুনের খেলা", loc: "Shankhari Bazar", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/500s • ISO 800", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Spectacular flames lighting up the historic brick facades during winter." },
+          { id: "ots_17", num: "17", title: "Historic Armenian Church", bn: "আর্মেনিয়ান চার্চ", loc: "Armanitola", year: "2026", exif: "Leica M11-P • 35mm f/2.8 • 1/250s • ISO 100", img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80", caption: "A quiet sanctuary of 1781 marble tombstones sheltered from urban commotion." },
+          { id: "ots_18", num: "18", title: "Sweetmeat Masters of Goalghat", bn: "গোলঘাটের মিষ্টি কারিগর", loc: "Goalghat", year: "2026", exif: "Leica M11-P • 50mm f/1.4 • 1/200s • ISO 400", img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80", caption: "Simmering sweetened curd and thickened milk in wide cast-iron woks." },
+          { id: "ots_19", num: "19", title: "Indigo Alleys at Dusk", bn: "নীল গোধূলির অলিগলি", loc: "Tanti Bazar", year: "2026", exif: "Leica M11-P • 35mm f/1.4 • 1/125s • ISO 800", img: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=800&q=80", caption: "Electric cables and clotheslines framing the twilight corridor above." },
+          { id: "ots_20", num: "20", title: "The Old Clockmaker", bn: "প্রাচীন ঘড়ি মেরামতকারী", loc: "Patuatuly", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/160s • ISO 400", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "Magnifying loupe fixed to eye, adjusting mechanical Swiss balance wheels." },
+          { id: "ots_21", num: "21", title: "Lalbagh Fort Shadows", bn: "লালবাগ কেল্লার ছায়া", loc: "Lalbagh, Dhaka", year: "2026", exif: "Leica M11-P • 28mm f/5.6 • 1/400s • ISO 100", img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", caption: "Mughal red sandstone bastions glowing against the winter afternoon." },
+          { id: "ots_22", num: "22", title: "Old Bookbinder's Workshop", bn: "বাংলাবাজারের বাঁধাইখানা", loc: "Bangla Bazar", year: "2026", exif: "Leica M11-P • 50mm f/2.0 • 1/200s • ISO 200", img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=800&q=80", caption: "Hand-stitching leather spine bindings with waxed linen thread." },
+          { id: "ots_23", num: "23", title: "Winter Morning Mustard Oil Bath", bn: "শীতের সকালে সর্ষের তেল", loc: "Kumartoli Ghat", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/500s • ISO 100", img: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", caption: "Warming the body with cold-pressed mustard oil before river ablutions." },
+          { id: "ots_24", num: "24", title: "Peeling Plaster & History", bn: "স্মৃতির চুনকাম", loc: "Farashganj", year: "2026", exif: "Leica M11-P • 50mm f/2.8 • 1/320s • ISO 100", img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", caption: "Generations of lime wash revealing terracotta brick beneath." },
+          { id: "ots_25", num: "25", title: "Evening Prayer in Ancient Mosque", bn: "প্রাচীন মসজিদে মাগরিবের নামাজ", loc: "Chawk Mosque", year: "2026", exif: "Leica M11-P • 35mm f/1.4 • 1/100s • ISO 800", img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", caption: "Reverent devotion under 17th-century vaulted brick arches." },
+          { id: "ots_26", num: "26", title: "Buriganga Night Barges", bn: "বুড়িগঙ্গার রাতের নৌযান", loc: "Sadarghat", year: "2026", exif: "Hasselblad 503CW • 80mm f/2.8 • 1/15s • ISO 1600", img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", caption: "Green and red navigation lanterns reflected in the dark river waters." },
+          { id: "ots_27", num: "27", title: "Morning Fog over Chawk", bn: "চকের ভোরের কুয়াশা", loc: "Chawk Bazar", year: "2026", exif: "Leica M11-P • 35mm f/2.0 • 1/320s • ISO 200", img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", caption: "Silhouettes of porters and pushcarts cutting through thick winter mist." },
+          { id: "ots_28", num: "28", title: "The Soul of Dhaka", bn: "ঢাকার প্রাণ", loc: "Old Dhaka", year: "2026", exif: "Leica M11-P • 35mm f/1.4 • 1/250s • ISO 400", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80", caption: "An unbroken human spirit enduring gracefully across three centuries." }
+        ]
+      }
+    ];
 
+    let currentProjectIndex = 0;
+
+    // Render Project Series Carousel
+    function renderProjects() {
       const container = document.getElementById('projects-grid');
-      container.innerHTML = projects.map(proj => `
-        <div class="bg-white rounded-xl border border-gallery-200 overflow-hidden shadow-sm hover:shadow-md transition-all group">
-          <div class="relative h-64 overflow-hidden bg-gallery-900">
-            <img src="${proj.img}" alt="${proj.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 right-4 text-white">
-              <span class="font-mono text-[10px] text-accent-warm uppercase tracking-widest">Series ${proj.number} • ${proj.count}</span>
-              <h3 class="text-2xl font-serif font-bold">${proj.title} <span class="text-sm font-normal italic opacity-80">(${proj.bengali})</span></h3>
+      if (!container) return;
+
+      container.innerHTML = curatedProjectsList.map((proj, idx) => `
+        <div onclick="openProjectDetail('${proj.id}')" data-project-idx="${idx}" class="project-carousel-card snap-center flex-shrink-0 w-[310px] sm:w-[500px] md:w-[620px] lg:w-[720px] aspect-[16/10] sm:aspect-[16/9.5] relative rounded-2xl overflow-hidden border border-neutral-800/80 shadow-2xl cursor-pointer group select-none bg-neutral-950 transition-all duration-300 hover:border-neutral-500">
+          <!-- Full-Bleed Background Photograph with Gentle Hover Scale -->
+          <img src="${proj.img}" alt="${proj.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.90] group-hover:brightness-100" />
+          
+          <!-- Subtle Overall Scrim Vignette -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30 pointer-events-none"></div>
+
+          <!-- Top Badges / Pill Bar (Frames Count & Views Count) -->
+          <div class="absolute top-4 left-4 right-4 sm:top-5 sm:left-5 sm:right-5 flex items-center justify-between pointer-events-none z-10">
+            <!-- Top Left Pill Badge: "[N] FRAMES" with Layers Icon -->
+            <div class="bg-neutral-950/85 backdrop-blur-md px-3 sm:px-3.5 py-1.5 rounded-lg border border-white/15 flex items-center gap-2 shadow-lg">
+              <i data-lucide="layers" class="w-4 h-4 text-neutral-200"></i>
+              <span class="font-mono text-xs font-bold text-white tracking-wider">${proj.frames} FRAMES</span>
+            </div>
+
+            <!-- Top Right Pill Badge: "[VIEWS]" with Eye Icon -->
+            <div class="bg-neutral-950/85 backdrop-blur-md px-3 sm:px-3.5 py-1.5 rounded-lg border border-white/15 flex items-center gap-2 shadow-lg">
+              <i data-lucide="eye" class="w-4 h-4 text-[#E2A860]"></i>
+              <span class="font-mono text-xs font-bold text-white tracking-wider">${proj.views}</span>
             </div>
           </div>
-          <div class="p-6">
-            <p class="text-xs font-mono text-gallery-500 uppercase tracking-wider mb-2">${proj.location}</p>
-            <p class="text-sm text-gallery-700 font-serif leading-relaxed">${proj.desc}</p>
+
+          <!-- Bottom Details Overlay -->
+          <div class="absolute inset-x-0 bottom-0 p-5 sm:p-7 pt-24 bg-gradient-to-t from-black via-black/85 to-transparent z-10">
+            <!-- Series Title in Bold Sans-Serif Capital Letters -->
+            <h3 class="text-2xl sm:text-3xl font-sans font-black tracking-wide text-white uppercase mb-1 drop-shadow-md">
+              ${proj.title}
+            </h3>
+
+            <!-- Thin Divider Line -->
+            <div class="border-t border-white/20 my-2.5 sm:my-3 w-full"></div>
+
+            <!-- Bottom Meta Row: Location Pin & Calendar Date -->
+            <div class="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-mono text-neutral-300 uppercase tracking-widest">
+              <div class="flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-4 h-4 text-neutral-400"></i>
+                <span class="font-medium">${proj.location}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i data-lucide="calendar" class="w-4 h-4 text-neutral-400"></i>
+                <span class="font-medium">${proj.date}</span>
+              </div>
+            </div>
           </div>
         </div>
       `).join('');
+
+      renderProjectsDots();
+      updateProjectsCarouselState();
+      attachProjectsCarouselScrollListener();
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Render Albums Catalog Overview Grid (With 4-Thumbnail Preview Strips)
+    function renderAlbumsCatalog() {
+      const container = document.getElementById('albums-catalog-grid');
+      if (!container) return;
+
+      container.innerHTML = curatedProjectsList.map(proj => {
+        const previewThumbs = (proj.frameList || []).slice(0, 4);
+        return `
+          <div onclick="openProjectDetail('${proj.id}')" class="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm hover:border-black hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+            
+            <!-- Album Card Banner with Frame Badge -->
+            <div class="relative aspect-[16/9] overflow-hidden bg-neutral-900">
+              <img src="${proj.img}" alt="${proj.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+              
+              <!-- Badges -->
+              <div class="absolute top-4 left-4 flex items-center gap-2">
+                <span class="bg-neutral-950/85 backdrop-blur-md text-white font-mono text-xs font-bold px-3 py-1 rounded-full border border-white/20 flex items-center gap-1.5">
+                  <i data-lucide="layers" class="w-3.5 h-3.5 text-neutral-200"></i>
+                  ${proj.frames} FRAMES
+                </span>
+                <span class="bg-black/60 backdrop-blur-md text-[#E2A860] font-mono text-xs font-semibold px-2.5 py-1 rounded-full border border-white/10">
+                  SERIES ${proj.number}
+                </span>
+              </div>
+
+              <div class="absolute bottom-4 left-4 right-4 text-white">
+                <div class="font-serif text-xs text-neutral-300 italic mb-0.5">${proj.bengali}</div>
+                <h3 class="font-sans font-black text-xl sm:text-2xl uppercase tracking-wider">${proj.title}</h3>
+              </div>
+            </div>
+
+            <!-- Card Body & Narrative -->
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between text-xs font-mono text-neutral-500 mb-3">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-neutral-400"></i>
+                    ${proj.location}
+                  </span>
+                  <span>${proj.date}</span>
+                </div>
+                <p class="text-xs sm:text-sm text-neutral-700 font-serif line-clamp-2 leading-relaxed mb-4">
+                  ${proj.desc}
+                </p>
+              </div>
+
+              <!-- 4-Frame Thumbnail Strip Preview (Gallery Grid Teaser) -->
+              <div class="pt-4 border-t border-neutral-100">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-mono text-[10px] text-neutral-400 uppercase tracking-wider">Frames Preview</span>
+                  <span class="font-mono text-[10px] text-neutral-600 font-semibold">${proj.frames} Total Plates</span>
+                </div>
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                  ${previewThumbs.map((f, i) => `
+                    <div class="aspect-square rounded-lg overflow-hidden border border-neutral-200 bg-neutral-100 relative group/thumb">
+                      <img src="${f.img}" alt="${f.title}" class="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-300" />
+                      <span class="absolute bottom-1 right-1 font-mono text-[8px] bg-black/70 text-white px-1 rounded">0${i+1}</span>
+                    </div>
+                  `).join('')}
+                </div>
+
+                <!-- Minimal Action Button -->
+                <button onclick="event.stopPropagation(); openProjectDetail('${proj.id}')" class="w-full py-2.5 px-4 bg-neutral-50 hover:bg-black text-neutral-800 hover:text-white border border-neutral-200 hover:border-black rounded-xl font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 group/btn">
+                  <span>Open Album (${proj.frames} Frames Grid)</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderProjectsDots() {
+      const dotsContainer = document.getElementById('projects-carousel-dots');
+      if (!dotsContainer) return;
+
+      dotsContainer.innerHTML = curatedProjectsList.map((_, idx) => `
+        <button onclick="scrollToProjectSlide(${idx})" aria-label="Go to series slide ${idx + 1}" title="Series 0${idx + 1}" class="project-dot-btn h-2.5 rounded-full transition-all duration-300 ${idx === currentProjectIndex ? 'w-8 bg-black' : 'w-2.5 bg-neutral-300 hover:bg-neutral-500'}">
+        </button>
+      `).join('');
+    }
+
+    function updateProjectsCarouselState() {
+      const counter = document.getElementById('projects-carousel-counter');
+      if (counter) {
+        const total = curatedProjectsList.length;
+        const currentFormatted = String(currentProjectIndex + 1).padStart(2, '0');
+        const totalFormatted = String(total).padStart(2, '0');
+        counter.innerText = `${currentFormatted} / ${totalFormatted}`;
+      }
+
+      // Update dot states
+      const dots = document.querySelectorAll('.project-dot-btn');
+      dots.forEach((dot, idx) => {
+        if (idx === currentProjectIndex) {
+          dot.className = 'project-dot-btn h-2.5 rounded-full transition-all duration-300 w-8 bg-black';
+        } else {
+          dot.className = 'project-dot-btn h-2.5 rounded-full transition-all duration-300 w-2.5 bg-neutral-300 hover:bg-neutral-500';
+        }
+      });
+    }
+
+    function slideProjectsCarousel(direction) {
+      const container = document.getElementById('projects-grid');
+      if (!container) return;
+
+      const cards = container.querySelectorAll('.project-carousel-card');
+      if (!cards.length) return;
+
+      const cardWidth = cards[0].offsetWidth + 24; // Card width + gap
+      let newIndex = currentProjectIndex + direction;
+
+      if (newIndex < 0) newIndex = 0;
+      if (newIndex >= curatedProjectsList.length) newIndex = curatedProjectsList.length - 1;
+
+      currentProjectIndex = newIndex;
+      container.scrollTo({
+        left: currentProjectIndex * cardWidth,
+        behavior: 'smooth'
+      });
+
+      updateProjectsCarouselState();
+    }
+
+    function scrollToProjectSlide(index) {
+      const container = document.getElementById('projects-grid');
+      if (!container) return;
+
+      const cards = container.querySelectorAll('.project-carousel-card');
+      if (!cards.length) return;
+
+      const cardWidth = cards[0].offsetWidth + 24;
+      currentProjectIndex = Math.max(0, Math.min(index, curatedProjectsList.length - 1));
+
+      container.scrollTo({
+        left: currentProjectIndex * cardWidth,
+        behavior: 'smooth'
+      });
+
+      updateProjectsCarouselState();
+    }
+
+    let isProjectsScrollListening = false;
+    function attachProjectsCarouselScrollListener() {
+      const container = document.getElementById('projects-grid');
+      if (!container || isProjectsScrollListening) return;
+
+      isProjectsScrollListening = true;
+      let scrollTimeout;
+
+      container.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const cards = container.querySelectorAll('.project-carousel-card');
+          if (!cards.length) return;
+          const cardWidth = cards[0].offsetWidth + 24;
+          const newIdx = Math.round(container.scrollLeft / cardWidth);
+          if (newIdx !== currentProjectIndex && newIdx >= 0 && newIdx < curatedProjectsList.length) {
+            currentProjectIndex = newIdx;
+            updateProjectsCarouselState();
+          }
+        }, 60);
+      });
+
+      container.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          slideProjectsCarousel(-1);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          slideProjectsCarousel(1);
+        }
+      });
+    }
+
+    // Open Album and Render its Minimum 20 Frames Gallery Grid Style
+    function openProjectDetail(projId) {
+      const proj = curatedProjectsList.find(p => p.id === projId) || curatedProjectsList[0];
+      
+      document.getElementById('pm-meta').innerText = `ALBUM ${proj.number} • ${proj.frames} PHOTOGRAPHIC FRAMES`;
+      document.getElementById('pm-title').innerText = proj.title;
+      document.getElementById('pm-bengali').innerText = proj.bengali;
+      document.getElementById('pm-subtitle').innerText = proj.subtitle;
+      document.getElementById('pm-desc').innerText = proj.desc;
+      document.getElementById('pm-loc').innerText = proj.location;
+      document.getElementById('pm-date').innerText = proj.date;
+
+      // Render the 20+ photographic frames in gallery grid style
+      const gridContainer = document.getElementById('pm-frames-grid');
+      if (gridContainer && proj.frameList) {
+        gridContainer.innerHTML = proj.frameList.map(frame => `
+          <div onclick="openAlbumFrameLightbox('${proj.id}', '${frame.id}')" class="bg-white rounded-xl border border-neutral-200/90 overflow-hidden shadow-sm hover:border-black hover:shadow-lg transition-all duration-300 flex flex-col justify-between group cursor-pointer">
+            
+            <!-- Photo Frame Artwork -->
+            <div class="relative aspect-[4/3] bg-neutral-100 overflow-hidden">
+              <img src="${frame.img}" alt="${frame.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
+              
+              <!-- Frame Sequence Badge -->
+              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 bg-neutral-950/80 backdrop-blur-sm text-white font-mono text-[9px] font-bold uppercase tracking-wider rounded">
+                FRAME ${frame.num} / ${proj.frames}
+              </span>
+
+              <!-- Hover Zoom Indicator -->
+              <span class="absolute bottom-2.5 right-2.5 p-1.5 bg-black/60 backdrop-blur-sm text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+              </span>
+            </div>
+
+            <!-- Minimal Frame Caption & EXIF -->
+            <div class="p-3.5 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-baseline justify-between mb-1">
+                  <h4 class="font-serif font-bold text-sm text-neutral-900 group-hover:text-black line-clamp-1">${frame.title}</h4>
+                  <span class="font-serif text-[11px] text-[#9E6930] italic ml-1 flex-shrink-0">${frame.bn}</span>
+                </div>
+                <p class="text-[11px] text-neutral-600 font-serif line-clamp-2 leading-relaxed mb-2">${frame.caption}</p>
+              </div>
+
+              <div class="pt-2 border-t border-neutral-100 flex items-center justify-between text-[10px] font-mono text-neutral-500">
+                <span class="truncate max-w-[170px]" title="${frame.exif}">${frame.exif.split('•')[0] || 'Leica M'}</span>
+                <span class="text-neutral-400 font-semibold">${frame.loc.split(',')[0]}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('project-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openAlbumFrameLightbox(albumId, frameId) {
+      const album = curatedProjectsList.find(p => p.id === albumId);
+      if (!album || !album.frameList) return;
+      const frame = album.frameList.find(f => f.id === frameId);
+      if (!frame) return;
+
+      // Populate Lightbox with frame details
+      document.getElementById('lb-img').src = frame.img;
+      document.getElementById('lb-title').innerText = frame.title;
+      document.getElementById('lb-bn').innerText = frame.bn;
+      document.getElementById('lb-caption').innerText = `"${frame.caption}"`;
+      document.getElementById('lb-exif').innerText = `${frame.exif} • ${frame.loc} (${frame.year})`;
+      document.getElementById('lb-index').innerText = frame.num;
+      document.getElementById('lb-total').innerText = album.frames;
+
+      document.getElementById('lightbox-modal').classList.remove('hidden');
+    }
+
+    function closeProjectModal() {
+      document.getElementById('project-modal').classList.add('hidden');
     }
 
     // Render Field Journal
@@ -1454,47 +2383,94 @@
         {
           id: "journal_01",
           title: "On Analog Patience: Why 35mm Still Matters",
-          bengali: "ফিল্মের ধৈর্য",
+          bengali: "ফিল্মের ধৈর্য ও অনুভূতির অনুসন্ধান",
           date: "OCT 14, 2025",
           time: "4 MIN READ",
-          excerpt: "When you only have 36 exposures on a roll of Tri-X, the shutter press ceases to be a reaction and becomes an act of deliberate listening."
+          excerpt: "When you only have 36 exposures on a roll of Tri-X, the shutter press ceases to be a reaction and becomes an act of deliberate listening.",
+          body: "When you only have 36 exposures on a roll of Tri-X, the shutter press ceases to be a reaction and becomes an act of deliberate listening. In an era dominated by instantaneous digital capture, the constraints of silver halide emulsion force a return to fundamental photography values: observation, anticipation, and respect for the fleeting light."
         },
         {
           id: "journal_02",
           title: "The Architecture of River Mist",
-          bengali: "নদীর কুয়াশা",
+          bengali: "নদীর কুয়াশা ও নীরব দৃশ্যপট",
           date: "NOV 28, 2025",
           time: "6 MIN READ",
-          excerpt: "Mist is not an obstruction of vision; it is a simplifier of space. It strips the world down to essential silhouettes and soft tonal gradients."
+          excerpt: "Mist is not an obstruction of vision; it is a simplifier of space. It strips the world down to essential silhouettes and soft tonal gradients.",
+          body: "Mist is not an obstruction of vision; it is a simplifier of space. Standing on the southern sandbars of Chandpur before sunrise, the Meghna River disappears into an unbroken white gradient. Without background distractions, a lone fisherman, an ancient banyan branch, or the curve of a wooden boat turns into pure graphic poetry."
         },
         {
           id: "journal_03",
           title: "Tungsten and Memory in Shankhari Bazar",
-          bengali: "শাঁখারীবাজারের স্মৃতি",
+          bengali: "শাঁখারীবাজারের স্মৃতি ও প্রাচীন আলো",
           date: "JAN 08, 2026",
           time: "5 MIN READ",
-          excerpt: "The 2700 Kelvin glow of incandescent bulbs preserves a visual warmth that modern cool LEDs have erased from contemporary cities."
+          excerpt: "The 2700 Kelvin glow of incandescent bulbs preserves a visual warmth that modern cool LEDs have erased from contemporary cities.",
+          body: "The 2700 Kelvin glow of incandescent bulbs preserves a visual warmth that modern cool LEDs have erased from contemporary cities. Walking through Shankhari Bazar during the evening Puja preparations, every wooden doorway becomes a miniature theater lit by warm amber filaments, honoring artisanal craft that has endured for three hundred years."
         }
       ];
 
       const container = document.getElementById('journal-grid');
       container.innerHTML = journalEntries.map(item => `
-        <article class="p-6 bg-white rounded-xl border border-gallery-200/90 shadow-sm hover:border-gallery-400 transition-all flex flex-col justify-between">
+        <article onclick="openJournalDetail('${item.id}')" class="p-6 bg-white rounded-xl border border-neutral-200 shadow-sm hover:border-black hover:shadow-lg transition-all flex flex-col justify-between cursor-pointer group">
           <div>
-            <div class="flex items-center justify-between font-mono text-[10px] text-gallery-400 mb-3">
+            <div class="flex items-center justify-between font-mono text-[10px] text-neutral-400 mb-3">
               <span>${item.date}</span>
               <span>${item.time}</span>
             </div>
-            <h3 class="font-serif font-bold text-xl text-gallery-900 mb-1 leading-snug">${item.title}</h3>
-            <div class="text-xs font-serif text-gallery-500 italic mb-4">${item.bengali}</div>
-            <p class="text-xs text-gallery-600 font-serif leading-relaxed">${item.excerpt}</p>
+            <h3 class="font-serif font-bold text-xl text-black mb-1 leading-snug group-hover:text-neutral-800">${item.title}</h3>
+            <div class="text-xs font-serif text-neutral-500 italic mb-4">${item.bengali}</div>
+            <p class="text-xs text-neutral-600 font-serif leading-relaxed">${item.excerpt}</p>
           </div>
-          <div class="pt-4 mt-6 border-t border-gallery-100 font-mono text-[10px] text-accent-warm uppercase tracking-wider flex items-center gap-1">
+          <div class="pt-4 mt-6 border-t border-neutral-100 font-mono text-[10px] text-black font-semibold uppercase tracking-wider flex items-center gap-1.5 group-hover:underline">
             <span>Read Complete Essay</span>
-            <i data-lucide="arrow-right" class="w-3 h-3"></i>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
           </div>
         </article>
       `).join('');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openJournalDetail(journalId) {
+      const journalEntries = [
+        {
+          id: "journal_01",
+          title: "On Analog Patience: Why 35mm Still Matters",
+          bengali: "ফিল্মের ধৈর্য ও অনুভূতির অনুসন্ধান",
+          date: "OCT 14, 2025",
+          time: "4 MIN READ",
+          body: "When you only have 36 exposures on a roll of Tri-X, the shutter press ceases to be a reaction and becomes an act of deliberate listening. In an era dominated by instantaneous digital capture, the constraints of silver halide emulsion force a return to fundamental photography values: observation, anticipation, and respect for the fleeting light. Each mechanical actuation carries weight, and developing the negatives by hand under amber safe-lights teaches an irreplaceable patience."
+        },
+        {
+          id: "journal_02",
+          title: "The Architecture of River Mist",
+          bengali: "নদীর কুয়াশা ও নীরব দৃশ্যপট",
+          date: "NOV 28, 2025",
+          time: "6 MIN READ",
+          body: "Mist is not an obstruction of vision; it is a simplifier of space. Standing on the southern sandbars of Chandpur before sunrise, the Meghna River disappears into an unbroken white gradient. Without background distractions, a lone fisherman, an ancient banyan branch, or the curve of a wooden boat turns into pure graphic poetry. The atmospheric depth of the delta is unlike any other terrain."
+        },
+        {
+          id: "journal_03",
+          title: "Tungsten and Memory in Shankhari Bazar",
+          bengali: "শাঁখারীবাজারের স্মৃতি ও প্রাচীন আলো",
+          date: "JAN 08, 2026",
+          time: "5 MIN READ",
+          body: "The 2700 Kelvin glow of incandescent bulbs preserves a visual warmth that modern cool LEDs have erased from contemporary cities. Walking through Shankhari Bazar during the evening Puja preparations, every wooden doorway becomes a miniature theater lit by warm amber filaments, honoring artisanal craft that has endured for three hundred years across Old Dhaka."
+        }
+      ];
+
+      const item = journalEntries.find(j => j.id === journalId) || journalEntries[0];
+      document.getElementById('jm-date').innerText = item.date;
+      document.getElementById('jm-readtime').innerText = item.time;
+      document.getElementById('jm-title').innerText = item.title;
+      document.getElementById('jm-bengali').innerText = item.bengali;
+      document.getElementById('jm-body').innerText = item.body;
+
+      document.getElementById('journal-modal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeJournalModal() {
+      document.getElementById('journal-modal').classList.add('hidden');
     }
 
     // Saved Bookmarks / Curation

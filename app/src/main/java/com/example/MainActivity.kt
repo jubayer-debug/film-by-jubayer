@@ -152,7 +152,7 @@ fun GoblinPortfolioApp(
                                     )
                                 }
 
-                                NavigationSection.PROJECTS -> {
+                                NavigationSection.ALBUMS -> {
                                     ProjectsScreen(
                                         uiState = uiState,
                                         onProjectClick = { viewModel.openProject(it) },

@@ -150,7 +150,7 @@ fun MobileMenuOverlay(
                 ) {
                     val navItems = listOf(
                         NavigationSection.WORK to "01",
-                        NavigationSection.PROJECTS to "02",
+                        NavigationSection.ALBUMS to "02",
                         NavigationSection.JOURNAL to "03",
                         NavigationSection.ABOUT to "04",
                         NavigationSection.CONTACT to "05",

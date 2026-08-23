@@ -171,14 +171,14 @@ fun HomeScreen(
             PhilosophyQuoteSection()
         }
 
-        // 6. FEATURED PROJECTS PREVIEW SECTION
+        // 6. FEATURED ALBUMS PREVIEW SECTION
         item(key = "featured_projects") {
             FeaturedProjectsPreview(
                 projects = PortfolioRepository.projects.take(4),
                 isMonochrome = uiState.isMonochromeMode,
                 showFilmGrain = uiState.isFilmGrainEnabled,
                 onProjectClick = onProjectClick,
-                onViewAllProjects = { onNavigate(NavigationSection.PROJECTS) }
+                onViewAllProjects = { onNavigate(NavigationSection.ALBUMS) }
             )
         }
 
@@ -502,7 +502,7 @@ private fun FeaturedProjectsPreview(
         ) {
             Column {
                 Text(
-                    text = "PROJECTS",
+                    text = "ALBUMS",
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
@@ -671,7 +671,7 @@ fun FooterSection(
         ) {
             val footerNavs = listOf(
                 NavigationSection.WORK to "PHOTOS",
-                NavigationSection.PROJECTS to "PROJECTS",
+                NavigationSection.ALBUMS to "ALBUMS",
                 NavigationSection.JOURNAL to "JOURNAL",
                 NavigationSection.ABOUT to "ABOUT",
                 NavigationSection.CONTACT to "CONTACT",
