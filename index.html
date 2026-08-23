@@ -68,7 +68,15 @@
       transition: filter 0.4s ease;
     }
 
-    /* Custom thin scrollbar */
+    /* Custom thin scrollbar & Hide scrollbar utilities */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -346,30 +354,67 @@
       </div>
     </section>
 
-    <!-- 2. ARCHIVE WORK SECTION -->
+    <!-- 2. ARCHIVE WORK SECTION (CAROUSEL / IMAGE SLIDER) -->
     <section id="work" class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-14 bg-white">
       
-      <!-- Section Header & Filter Controls -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-neutral-200 gap-4">
+      <!-- Section Header & Filter Controls + Arrow Controls -->
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 pb-4 border-b border-neutral-200 gap-4">
         <div>
           <span class="font-mono text-xs tracking-[0.2em] text-neutral-500 uppercase">Exhibition Catalog</span>
           <h2 class="text-2xl sm:text-3xl font-serif font-bold text-black mt-1">Archived Photographs</h2>
         </div>
 
-        <!-- Filter Chips -->
-        <div class="flex flex-wrap gap-2 text-xs font-mono">
-          <button onclick="filterCategory('ALL')" class="category-btn px-3 py-1 rounded-full border border-black bg-black text-white transition-all" data-cat="ALL">All (16)</button>
-          <button onclick="filterCategory('RIVER')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="RIVER">River</button>
-          <button onclick="filterCategory('MONSOON')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="MONSOON">Monsoon</button>
-          <button onclick="filterCategory('STREET')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="STREET">Old Town</button>
-          <button onclick="filterCategory('PORTRAIT')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="PORTRAIT">Portraits</button>
-          <button onclick="filterCategory('LANDSCAPE')" class="category-btn px-3 py-1 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="LANDSCAPE">Landscape</button>
+        <div class="flex flex-wrap items-center justify-between lg:justify-end gap-3 sm:gap-4">
+          <!-- Filter Chips -->
+          <div class="flex flex-wrap gap-2 text-xs font-mono">
+            <button onclick="filterCategory('ALL')" class="category-btn px-3 py-1.5 rounded-full border border-black bg-black text-white transition-all shadow-sm" data-cat="ALL">All (16)</button>
+            <button onclick="filterCategory('RIVER')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="RIVER">River</button>
+            <button onclick="filterCategory('MONSOON')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="MONSOON">Monsoon</button>
+            <button onclick="filterCategory('STREET')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="STREET">Old Town</button>
+            <button onclick="filterCategory('PORTRAIT')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="PORTRAIT">Portraits</button>
+            <button onclick="filterCategory('LANDSCAPE')" class="category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all" data-cat="LANDSCAPE">Landscape</button>
+          </div>
+
+          <!-- Carousel Arrow Navigation (< & >) -->
+          <div class="flex items-center gap-2 bg-neutral-50 border border-neutral-200 rounded-full px-3 py-1.5 shadow-sm">
+            <span id="carousel-counter" class="font-mono text-xs font-medium text-neutral-600 tracking-wider mr-1 select-none">01 / 16</span>
+            <button id="carousel-prev-btn" onclick="slideCarousel(-1)" aria-label="Previous photograph" title="Previous photo (<)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <button id="carousel-next-btn" onclick="slideCarousel(1)" aria-label="Next photograph" title="Next photo (>)" class="w-8 h-8 rounded-full border border-neutral-300 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all bg-white text-neutral-800 shadow-sm active:scale-95">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Photography Masonry Grid -->
-      <div id="photos-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Rendered dynamically by JavaScript -->
+      <!-- Carousel Track Container with Floating Left/Right Arrow Buttons -->
+      <div class="relative group">
+        <!-- Floating Left Arrow (<) Button -->
+        <button onclick="slideCarousel(-1)" aria-label="Scroll left" title="Previous (<)" class="hidden sm:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-lg items-center justify-center transition-all opacity-85 hover:opacity-100 hover:scale-105 active:scale-95">
+          <i data-lucide="chevron-left" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Carousel Track (Horizontal Scroll Slider) -->
+        <div id="photos-grid" class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory no-scrollbar pb-6 pt-2 px-1 focus:outline-none" tabindex="0">
+          <!-- Rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- Floating Right Arrow (>) Button -->
+        <button onclick="slideCarousel(1)" aria-label="Scroll right" title="Next (>)" class="hidden sm:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-black hover:text-white text-neutral-900 border border-neutral-300 shadow-lg items-center justify-center transition-all opacity-85 hover:opacity-100 hover:scale-105 active:scale-95">
+          <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Carousel Pagination Indicator Dots & Hint -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mt-2 pt-2 border-t border-neutral-100">
+        <div class="flex items-center gap-1.5 overflow-x-auto max-w-full py-1" id="carousel-dots">
+          <!-- Dots rendered by JS -->
+        </div>
+        <div class="flex items-center gap-2 text-[11px] font-mono text-neutral-400">
+          <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-neutral-400"></i>
+          <span>Use <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&lt;</kbd> and <kbd class="px-1.5 py-0.5 border border-neutral-200 rounded text-neutral-700 bg-neutral-50 font-mono text-[10px]">&gt;</kbd> arrows or swipe horizontally</span>
+        </div>
       </div>
     </section>
 
@@ -1124,20 +1169,30 @@
       }
     }
 
+    // Carousel State
+    let currentCarouselIndex = 0;
+    let carouselScrollTimeout = null;
+
     // Category Filtering
     function filterCategory(cat) {
       currentCategory = cat;
+      currentCarouselIndex = 0;
       document.querySelectorAll('.category-btn').forEach(btn => {
         if (btn.dataset.cat === cat) {
-          btn.className = "category-btn px-3 py-1.5 rounded-full border border-gallery-900 bg-gallery-900 text-white transition-all";
+          btn.className = "category-btn px-3 py-1.5 rounded-full border border-black bg-black text-white transition-all shadow-sm";
         } else {
-          btn.className = "category-btn px-3 py-1.5 rounded-full border border-gallery-300 hover:border-gallery-700 bg-white text-gallery-700 transition-all";
+          btn.className = "category-btn px-3 py-1.5 rounded-full border border-neutral-300 hover:border-black bg-white text-neutral-800 transition-all";
         }
       });
       renderPhotos();
+      
+      const track = document.getElementById('photos-grid');
+      if (track) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      }
     }
 
-    // Render Photographs Masonry Grid
+    // Render Photographs Horizontal Carousel
     function renderPhotos() {
       const container = document.getElementById('photos-grid');
       const filtered = currentCategory === 'ALL' 
@@ -1145,39 +1200,51 @@
         : photos.filter(p => p.category === currentCategory);
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="col-span-full py-12 text-center font-mono text-xs text-gallery-500">No photographs found in this series.</div>`;
+        container.innerHTML = `<div class="w-full py-16 text-center font-mono text-xs text-neutral-500">No photographs found in this series.</div>`;
+        updateCarouselUI(0, 0);
         return;
       }
 
       container.innerHTML = filtered.map((photo, idx) => {
         const isBookmarked = savedBookmarks.includes(photo.id);
         return `
-          <div class="group relative bg-white border border-gallery-200/90 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-            <div class="relative overflow-hidden cursor-pointer bg-gallery-100" onclick="openLightbox('${photo.id}')">
-              <img src="${photo.imageUrl}" alt="${photo.title}" loading="lazy" class="w-full h-72 sm:h-80 object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" />
+          <div class="photo-carousel-card w-[86vw] sm:w-[360px] md:w-[390px] lg:w-[410px] flex-shrink-0 snap-start bg-white border border-neutral-200/90 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group" data-index="${idx}">
+            <div class="relative overflow-hidden cursor-pointer bg-neutral-100 aspect-[4/3] sm:aspect-[16/11]" onclick="openLightbox('${photo.id}')">
+              <img src="${photo.imageUrl}" alt="${photo.title}" loading="lazy" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" />
               
               <!-- Category Badge -->
-              <span class="absolute top-3 left-3 px-2 py-0.5 bg-black/60 backdrop-blur-sm text-white font-mono text-[9px] uppercase tracking-wider rounded">
+              <span class="absolute top-3 left-3 px-2 py-0.5 bg-black/70 backdrop-blur-sm text-white font-mono text-[9px] uppercase tracking-wider rounded">
                 ${photo.category}
               </span>
 
+              <!-- View Indicator Pill -->
+              <span class="absolute bottom-3 left-3 px-2.5 py-1 bg-black/60 backdrop-blur-sm text-white font-mono text-[9px] uppercase tracking-wider rounded flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                <i data-lucide="eye" class="w-3 h-3 text-[#E2A860]"></i>
+                VIEW PHOTO
+              </span>
+
               <!-- Bookmark Action -->
-              <button onclick="event.stopPropagation(); toggleBookmark('${photo.id}')" class="absolute top-3 right-3 p-2 rounded-full bg-black/40 hover:bg-black/80 backdrop-blur-sm text-white transition-colors">
+              <button onclick="event.stopPropagation(); toggleBookmark('${photo.id}')" aria-label="Save bookmark" class="absolute top-3 right-3 p-2 rounded-full bg-black/50 hover:bg-black/90 backdrop-blur-sm text-white transition-colors active:scale-95">
                 <i data-lucide="bookmark" class="w-3.5 h-3.5 ${isBookmarked ? 'fill-white text-white' : ''}"></i>
               </button>
             </div>
 
             <!-- Card Editorial Details -->
-            <div class="p-4 sm:p-5">
-              <div class="flex items-baseline justify-between mb-1">
-                <h3 class="font-serif font-bold text-lg text-gallery-900 group-hover:text-accent-warm transition-colors">${photo.title}</h3>
-                <span class="font-serif text-xs text-gallery-500 italic">${photo.bengaliTitle}</span>
+            <div class="p-5 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-baseline justify-between mb-1.5">
+                  <h3 class="font-serif font-bold text-lg text-neutral-900 group-hover:text-amber-700 transition-colors">${photo.title}</h3>
+                  <span class="font-serif text-xs text-neutral-500 italic">${photo.bengaliTitle}</span>
+                </div>
+                <p class="text-xs text-neutral-600 font-serif line-clamp-2 mb-3 leading-relaxed">${photo.caption}</p>
               </div>
-              <p class="text-xs text-gallery-600 font-serif line-clamp-2 mb-3 leading-relaxed">${photo.caption}</p>
               
-              <div class="pt-3 border-t border-gallery-100 flex items-center justify-between text-[10px] font-mono text-gallery-400">
-                <span>${photo.location}</span>
-                <span>${photo.year}</span>
+              <div class="pt-3 border-t border-neutral-100 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+                <span class="flex items-center gap-1">
+                  <i data-lucide="map-pin" class="w-3 h-3 text-neutral-400"></i>
+                  ${photo.location}
+                </span>
+                <span class="font-semibold text-neutral-800">${photo.year}</span>
               </div>
             </div>
           </div>
@@ -1185,6 +1252,132 @@
       }).join('');
 
       lucide.createIcons();
+      renderCarouselDots(filtered.length);
+      updateCarouselUI(currentCarouselIndex, filtered.length);
+      setupCarouselScrollListener();
+    }
+
+    // Carousel Navigation by Direction (-1 for Left <, +1 for Right >)
+    function slideCarousel(direction) {
+      const track = document.getElementById('photos-grid');
+      if (!track) return;
+      
+      const cards = track.querySelectorAll('.photo-carousel-card');
+      if (cards.length === 0) return;
+
+      currentCarouselIndex = Math.max(0, Math.min(cards.length - 1, currentCarouselIndex + direction));
+      const targetCard = cards[currentCarouselIndex];
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+      }
+      updateCarouselUI(currentCarouselIndex, cards.length);
+    }
+
+    // Direct Slide to Specific Dot/Index
+    function goToCarouselSlide(index) {
+      const track = document.getElementById('photos-grid');
+      if (!track) return;
+      const cards = track.querySelectorAll('.photo-carousel-card');
+      if (cards[index]) {
+        currentCarouselIndex = index;
+        cards[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        updateCarouselUI(currentCarouselIndex, cards.length);
+      }
+    }
+
+    // Render Dot Navigation
+    function renderCarouselDots(count) {
+      const dotsContainer = document.getElementById('carousel-dots');
+      if (!dotsContainer) return;
+      
+      if (count <= 1) {
+        dotsContainer.innerHTML = '';
+        return;
+      }
+
+      dotsContainer.innerHTML = Array.from({ length: count }).map((_, idx) => `
+        <button onclick="goToCarouselSlide(${idx})" aria-label="Go to photo ${idx + 1}" class="carousel-dot ${idx === currentCarouselIndex ? 'h-2 w-6 bg-black' : 'h-2 w-2 bg-neutral-300 hover:bg-neutral-500'} rounded-full transition-all duration-300 cursor-pointer"></button>
+      `).join('');
+    }
+
+    // Update Counter, Dot states, and Button disabled styles
+    function updateCarouselUI(index, total) {
+      const counter = document.getElementById('carousel-counter');
+      if (counter) {
+        if (total === 0) {
+          counter.innerText = '00 / 00';
+        } else {
+          counter.innerText = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+        }
+      }
+
+      // Update dots
+      const dots = document.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, idx) => {
+        if (idx === index) {
+          dot.className = "carousel-dot h-2 w-6 bg-black rounded-full transition-all duration-300 cursor-pointer";
+        } else {
+          dot.className = "carousel-dot h-2 w-2 bg-neutral-300 hover:bg-neutral-500 rounded-full transition-all duration-300 cursor-pointer";
+        }
+      });
+
+      // Update Header Prev / Next Buttons
+      const prevBtn = document.getElementById('carousel-prev-btn');
+      const nextBtn = document.getElementById('carousel-next-btn');
+      if (prevBtn) {
+        prevBtn.disabled = index === 0;
+        prevBtn.classList.toggle('opacity-30', index === 0);
+        prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+      }
+      if (nextBtn) {
+        nextBtn.disabled = index >= total - 1;
+        nextBtn.classList.toggle('opacity-30', index >= total - 1);
+        nextBtn.classList.toggle('cursor-not-allowed', index >= total - 1);
+      }
+    }
+
+    // Scroll listener on carousel track to keep counter and dots synchronized when user swipes or scrolls
+    function setupCarouselScrollListener() {
+      const track = document.getElementById('photos-grid');
+      if (!track || track._hasScrollListener) return;
+      track._hasScrollListener = true;
+
+      track.addEventListener('scroll', () => {
+        clearTimeout(carouselScrollTimeout);
+        carouselScrollTimeout = setTimeout(() => {
+          const cards = track.querySelectorAll('.photo-carousel-card');
+          if (cards.length === 0) return;
+          
+          const trackLeft = track.getBoundingClientRect().left;
+          let closestIndex = 0;
+          let minDistance = Infinity;
+
+          cards.forEach((card, idx) => {
+            const cardLeft = card.getBoundingClientRect().left;
+            const dist = Math.abs(cardLeft - trackLeft);
+            if (dist < minDistance) {
+              minDistance = dist;
+              closestIndex = idx;
+            }
+          });
+
+          if (closestIndex !== currentCarouselIndex) {
+            currentCarouselIndex = closestIndex;
+            updateCarouselUI(currentCarouselIndex, cards.length);
+          }
+        }, 60);
+      }, { passive: true });
+
+      // Keyboard left/right arrow navigation on focus
+      track.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          slideCarousel(-1);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          slideCarousel(1);
+        }
+      });
     }
 
     // Render Project Series
