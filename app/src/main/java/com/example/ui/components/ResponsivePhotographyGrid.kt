@@ -32,15 +32,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,11 +45,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.CenterFocusStrong
-import androidx.compose.material.icons.filled.ChevronLeft
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Landscape
@@ -63,22 +59,19 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.ViewAgenda
-import androidx.compose.material.icons.filled.ViewCarousel
 import androidx.compose.material.icons.filled.ViewDay
-import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.Water
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,7 +88,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
 import com.example.data.PortfolioRepository
 import com.example.data.models.PhotoCategory
 import com.example.data.models.PhotoOrientation
@@ -111,10 +103,21 @@ import com.example.ui.viewmodel.PhotoSortOrder
  * Display modes for the responsive photographic gallery
  */
 enum class GridDisplayMode(val label: String, val icon: ImageVector) {
-    CAROUSEL("SLIDER", Icons.Default.ViewCarousel),
-    MASONRY("MASONRY", Icons.Default.GridView),
+    MASONRY("GALLERY", Icons.Default.GridView),
     BALANCED("2-COL", Icons.Default.ViewAgenda),
     CINEMATIC("CINEMATIC", Icons.Default.ViewDay)
+}
+
+/**
+ * Helper to calculate varied aspect ratios for dynamic rhythmic sizing
+ */
+fun getVariedPhotoAspectRatio(photo: Photograph, index: Int): Float {
+    return when (photo.orientation) {
+        PhotoOrientation.PORTRAIT -> if (index % 3 == 0) 0.76f else 0.84f
+        PhotoOrientation.LANDSCAPE -> if (index % 4 == 0) 1.48f else 1.34f
+        PhotoOrientation.SQUARE -> 1.0f
+        PhotoOrientation.PANORAMIC -> 1.78f
+    }
 }
 
 /**
@@ -186,20 +189,6 @@ fun ResponsivePhotographyGrid(
                 )
             } else {
                 when (displayMode) {
-                    GridDisplayMode.CAROUSEL -> {
-                        PhotographyCarouselSlider(
-                            photos = photos,
-                            favoritePhotoIds = favoritePhotoIds,
-                            onPhotoClick = onPhotoClick,
-                            onToggleFavorite = onToggleFavorite,
-                            isMonochrome = isMonochrome,
-                            showFilmGrain = showFilmGrain,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(contentPadding)
-                        )
-                    }
-
                     GridDisplayMode.MASONRY -> {
                         LazyVerticalStaggeredGrid(
                             columns = StaggeredGridCells.Fixed(masonryColumns),
@@ -207,19 +196,14 @@ fun ResponsivePhotographyGrid(
                                 .fillMaxWidth()
                                 .testTag("responsive_masonry_grid"),
                             contentPadding = contentPadding,
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalItemSpacing = 16.dp
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalItemSpacing = 12.dp
                         ) {
-                            items(
+                            itemsIndexed(
                                 items = photos,
-                                key = { it.id }
-                            ) { photo ->
-                                val cardAspect = when (photo.orientation) {
-                                    PhotoOrientation.PORTRAIT -> 0.78f
-                                    PhotoOrientation.LANDSCAPE -> 1.45f
-                                    PhotoOrientation.SQUARE -> 1.0f
-                                    PhotoOrientation.PANORAMIC -> 1.9f
-                                }
+                                key = { _, photo -> photo.id }
+                            ) { index, photo ->
+                                val cardAspect = getVariedPhotoAspectRatio(photo, index)
 
                                 PhotographyGridCard(
                                     photo = photo,
@@ -227,7 +211,6 @@ fun ResponsivePhotographyGrid(
                                     aspectRatio = cardAspect,
                                     isMonochrome = isMonochrome,
                                     showFilmGrain = showFilmGrain,
-                                    showExifPill = true,
                                     onClick = { onPhotoClick(photo) },
                                     onToggleFavorite = { onToggleFavorite(photo.id) }
                                 )
@@ -242,8 +225,8 @@ fun ResponsivePhotographyGrid(
                                 .fillMaxWidth()
                                 .testTag("responsive_balanced_grid"),
                             contentPadding = contentPadding,
-                            horizontalArrangement = Arrangement.spacedBy(14.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             items(
                                 items = photos,
@@ -252,10 +235,9 @@ fun ResponsivePhotographyGrid(
                                 PhotographyGridCard(
                                     photo = photo,
                                     isFavorite = favoritePhotoIds.contains(photo.id),
-                                    aspectRatio = 1.25f,
+                                    aspectRatio = 1.18f,
                                     isMonochrome = isMonochrome,
                                     showFilmGrain = showFilmGrain,
-                                    showExifPill = false,
                                     onClick = { onPhotoClick(photo) },
                                     onToggleFavorite = { onToggleFavorite(photo.id) }
                                 )
@@ -270,7 +252,7 @@ fun ResponsivePhotographyGrid(
                                 .fillMaxWidth()
                                 .testTag("responsive_cinematic_grid"),
                             contentPadding = contentPadding,
-                            verticalArrangement = Arrangement.spacedBy(28.dp)
+                            verticalArrangement = Arrangement.spacedBy(20.dp)
                         ) {
                             items(
                                 items = photos,
@@ -295,6 +277,10 @@ fun ResponsivePhotographyGrid(
 
 /**
  * Embeddable Responsive Section for parent LazyColumn structures (e.g. HomeScreen)
+ * Features:
+ * - 60 Photos Preview in gallery style with different sizes
+ * - Metadata in small font inside each photo
+ * - Shows 20 photos in frame with an interactive "View More" button
  */
 @Composable
 fun ResponsivePhotographyGridSection(
@@ -316,6 +302,11 @@ fun ResponsivePhotographyGridSection(
     initialMode: GridDisplayMode = GridDisplayMode.MASONRY
 ) {
     var displayMode by remember { mutableStateOf(initialMode) }
+    var visibleCount by remember(selectedCategory, sortOrder, searchQuery) { mutableStateOf(20) }
+
+    val displayedPhotos = remember(photos, visibleCount) {
+        photos.take(visibleCount)
+    }
 
     Column(
         modifier = modifier
@@ -338,7 +329,7 @@ fun ResponsivePhotographyGridSection(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
         if (photos.isEmpty()) {
@@ -356,43 +347,25 @@ fun ResponsivePhotographyGridSection(
                 label = "grid_mode_anim"
             ) { mode ->
                 when (mode) {
-                    GridDisplayMode.CAROUSEL -> {
-                        PhotographyCarouselSlider(
-                            photos = photos,
-                            favoritePhotoIds = favoritePhotoIds,
-                            onPhotoClick = onPhotoClick,
-                            onToggleFavorite = onToggleFavorite,
-                            isMonochrome = isMonochrome,
-                            showFilmGrain = showFilmGrain,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 4.dp)
-                        )
-                    }
-
                     GridDisplayMode.MASONRY, GridDisplayMode.BALANCED -> {
-                        // 2-Column Balanced / Staggered Layout for parent scroll
+                        // 2-Column Varied Gallery Layout for parent scroll
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 4.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            val chunked = photos.chunked(2)
-                            chunked.forEach { pair ->
+                            val chunked = displayedPhotos.chunked(2)
+                            chunked.forEachIndexed { rowIndex, pair ->
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
                                     val first = pair[0]
+                                    val firstIndex = rowIndex * 2
                                     val aspectFirst = if (mode == GridDisplayMode.MASONRY) {
-                                        when (first.orientation) {
-                                            PhotoOrientation.PORTRAIT -> 0.82f
-                                            PhotoOrientation.LANDSCAPE -> 1.35f
-                                            PhotoOrientation.SQUARE -> 1.0f
-                                            PhotoOrientation.PANORAMIC -> 1.8f
-                                        }
-                                    } else 1.25f
+                                        getVariedPhotoAspectRatio(first, firstIndex)
+                                    } else 1.18f
 
                                     PhotographyGridCard(
                                         photo = first,
@@ -400,7 +373,6 @@ fun ResponsivePhotographyGridSection(
                                         aspectRatio = aspectFirst,
                                         isMonochrome = isMonochrome,
                                         showFilmGrain = showFilmGrain,
-                                        showExifPill = true,
                                         modifier = Modifier.weight(1f),
                                         onClick = { onPhotoClick(first) },
                                         onToggleFavorite = { onToggleFavorite(first.id) }
@@ -408,14 +380,10 @@ fun ResponsivePhotographyGridSection(
 
                                     if (pair.size > 1) {
                                         val second = pair[1]
+                                        val secondIndex = firstIndex + 1
                                         val aspectSecond = if (mode == GridDisplayMode.MASONRY) {
-                                            when (second.orientation) {
-                                                PhotoOrientation.PORTRAIT -> 0.82f
-                                                PhotoOrientation.LANDSCAPE -> 1.35f
-                                                PhotoOrientation.SQUARE -> 1.0f
-                                                PhotoOrientation.PANORAMIC -> 1.8f
-                                            }
-                                        } else 1.25f
+                                            getVariedPhotoAspectRatio(second, secondIndex)
+                                        } else 1.18f
 
                                         PhotographyGridCard(
                                             photo = second,
@@ -423,7 +391,6 @@ fun ResponsivePhotographyGridSection(
                                             aspectRatio = aspectSecond,
                                             isMonochrome = isMonochrome,
                                             showFilmGrain = showFilmGrain,
-                                            showExifPill = true,
                                             modifier = Modifier.weight(1f),
                                             onClick = { onPhotoClick(second) },
                                             onToggleFavorite = { onToggleFavorite(second.id) }
@@ -441,9 +408,9 @@ fun ResponsivePhotographyGridSection(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 4.dp),
-                            verticalArrangement = Arrangement.spacedBy(24.dp)
+                            verticalArrangement = Arrangement.spacedBy(18.dp)
                         ) {
-                            photos.forEach { photo ->
+                            displayedPhotos.forEach { photo ->
                                 CinematicFullBleedCard(
                                     photo = photo,
                                     isFavorite = favoritePhotoIds.contains(photo.id),
@@ -453,6 +420,197 @@ fun ResponsivePhotographyGridSection(
                                     onToggleFavorite = { onToggleFavorite(photo.id) }
                                 )
                             }
+                        }
+                    }
+                }
+            }
+
+            // View More Button & Archival Counter Section
+            if (photos.size > 20) {
+                Spacer(modifier = Modifier.height(16.dp))
+                ViewMorePhotosBar(
+                    visibleCount = displayedPhotos.size,
+                    totalCount = photos.size,
+                    onLoadMore = {
+                        visibleCount = (visibleCount + 20).coerceAtMost(photos.size)
+                    },
+                    onShowAll = {
+                        visibleCount = photos.size
+                    },
+                    onShowLess = {
+                        visibleCount = 20
+                    }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Interactive View More Control Bar with Progress and Archival Frame Counts
+ */
+@Composable
+private fun ViewMorePhotosBar(
+    visibleCount: Int,
+    totalCount: Int,
+    onLoadMore: () -> Unit,
+    onShowAll: () -> Unit,
+    onShowLess: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val progress = remember(visibleCount, totalCount) {
+        (visibleCount.toFloat() / totalCount.toFloat()).coerceIn(0f, 1f)
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(8.dp))
+            .background(Color(0xFFFAFAFA))
+            .padding(14.dp)
+            .testTag("view_more_photos_section")
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.GridView,
+                        contentDescription = null,
+                        tint = GoblinAccentWarm,
+                        modifier = Modifier.size(13.dp)
+                    )
+                    Text(
+                        text = "GALLERY ARCHIVE",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 9.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp,
+                        color = GoblinAccentWarm
+                    )
+                }
+
+                Text(
+                    text = "SHOWING $visibleCount OF $totalCount PHOTOS",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.sp,
+                    color = GoblinTextSecondary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Progress bar
+            LinearProgressIndicator(
+                progress = { progress },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(3.dp)
+                    .clip(RoundedCornerShape(2.dp)),
+                color = GoblinAccentWarm,
+                trackColor = Color(0x20000000)
+            )
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (visibleCount < totalCount) {
+                    // Primary Load More (+20) Button
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Color(0xFF181818))
+                            .clickable { onLoadMore() }
+                            .padding(vertical = 11.dp)
+                            .testTag("view_more_load_20_button"),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.ExpandMore,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "VIEW MORE (+20 IN FRAME)",
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 10.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 1.2.sp,
+                                color = Color.White
+                            )
+                        }
+                    }
+
+                    // View All Button
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
+                            .background(Color.White)
+                            .clickable { onShowAll() }
+                            .padding(horizontal = 14.dp, vertical = 11.dp)
+                            .testTag("view_all_photos_button"),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "ALL ($totalCount)",
+                            fontFamily = FontFamily.SansSerif,
+                            fontSize = 10.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = 1.sp,
+                            color = GoblinTextPrimary
+                        )
+                    }
+                } else {
+                    // When all are displayed, show Collapse button
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(6.dp))
+                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
+                            .background(Color.White)
+                            .clickable { onShowLess() }
+                            .padding(vertical = 10.dp)
+                            .testTag("collapse_to_20_button"),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.ExpandLess,
+                                contentDescription = null,
+                                tint = GoblinTextPrimary,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "SHOW LESS (INITIAL 20 PHOTOS)",
+                                fontFamily = FontFamily.SansSerif,
+                                fontSize = 10.5.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                letterSpacing = 1.2.sp,
+                                color = GoblinTextPrimary
+                            )
                         }
                     }
                 }
@@ -712,7 +870,7 @@ fun PhotographyFilteringSystem(
                 }
             }
 
-            // Right: Display Mode Switcher
+            // Right: Display Mode Switcher (Masonry, 2-Col, Cinematic)
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(18.dp))
@@ -907,7 +1065,7 @@ private fun getCategoryIcon(category: PhotoCategory): ImageVector {
 }
 
 /**
- * Rich Photography Card for Masonry & Balanced Grids
+ * Rich Photography Card with ALL metadata rendered inside the photo frame in small font
  */
 @Composable
 fun PhotographyGridCard(
@@ -918,187 +1076,168 @@ fun PhotographyGridCard(
     showFilmGrain: Boolean,
     onClick: () -> Unit,
     onToggleFavorite: () -> Unit,
-    modifier: Modifier = Modifier,
-    showExifPill: Boolean = true
+    modifier: Modifier = Modifier
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scaleAnim by animateFloatAsState(
-        targetValue = if (isPressed) 0.985f else 1.0f,
+        targetValue = if (isPressed) 0.982f else 1.0f,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow),
         label = "press_scale"
     )
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxWidth()
+            .aspectRatio(aspectRatio)
             .scale(scaleAnim)
-            .clip(RoundedCornerShape(4.dp))
+            .clip(RoundedCornerShape(6.dp))
+            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(6.dp))
+            .background(Color(0xFF161616))
             .clickable(
                 interactionSource = interactionSource,
                 indication = null
             ) { onClick() }
             .testTag("photography_card_${photo.id}")
     ) {
-        // Photographic Artwork Viewport
+        // 1. Photographic Artwork Canvas
+        PhotographicArtwork(
+            photograph = photo,
+            isMonochrome = isMonochrome,
+            showFilmGrain = showFilmGrain,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // 2. High-legibility Multi-stop Gradient Scrim
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(aspectRatio)
-                .clip(RoundedCornerShape(4.dp))
-                .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-        ) {
-            PhotographicArtwork(
-                photograph = photo,
-                isMonochrome = isMonochrome,
-                showFilmGrain = showFilmGrain,
-                modifier = Modifier.fillMaxSize()
-            )
-
-            // Multi-stop subtle gradient protection for overlays
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colorStops = arrayOf(
-                                0.0f to Color(0x66000000),
-                                0.35f to Color.Transparent,
-                                0.65f to Color.Transparent,
-                                1.0f to Color(0x88000000)
-                            )
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0.0f to Color(0x77000000),
+                            0.22f to Color(0x20000000),
+                            0.45f to Color.Transparent,
+                            0.65f to Color(0x55000000),
+                            0.82f to Color(0xAA000000),
+                            1.0f to Color(0xFA000000)
                         )
                     )
-            )
+                )
+        )
 
-            // Top Row: EXIF Technical Pill + Bookmark Button
-            Row(
+        // 3. Top Inside Row: Category/Year Pill Badge + Bookmark Button
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(6.dp)
+                .align(Alignment.TopCenter),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Category & Year Pill
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(Color(0xCC141414))
+                    .border(0.5.dp, Color(0x33FFFFFF), RoundedCornerShape(10.dp))
+                    .padding(horizontal = 6.dp, vertical = 2.5.dp)
             ) {
-                if (showExifPill) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0x99000000))
-                            .border(0.5.dp, Color(0x33FFFFFF), RoundedCornerShape(12.dp))
-                            .padding(horizontal = 7.dp, vertical = 3.dp)
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = Icons.Default.CenterFocusStrong,
-                                contentDescription = null,
-                                tint = Color(0xFFE2A860),
-                                modifier = Modifier.size(9.dp)
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(
-                                text = "${photo.exif.focalLength} • ${photo.exif.aperture}",
-                                fontFamily = FontFamily.Monospace,
-                                fontSize = 8.sp,
-                                letterSpacing = 1.sp,
-                                color = Color.White
-                            )
-                        }
-                    }
-                } else {
-                    Spacer(modifier = Modifier.size(1.dp))
-                }
-
-                // Bookmark Icon Button
-                IconButton(
-                    onClick = onToggleFavorite,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xAA000000))
-                        .border(0.5.dp, Color(0x33FFFFFF), CircleShape)
-                        .testTag("card_bookmark_${photo.id}")
-                ) {
-                    Icon(
-                        imageVector = if (isFavorite) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                        contentDescription = "Bookmark photograph",
-                        tint = if (isFavorite) Color(0xFFE2A860) else Color.White,
-                        modifier = Modifier.size(15.dp)
-                    )
-                }
+                Text(
+                    text = "${photo.category.label} • ${photo.year}",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 7.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp,
+                    color = Color(0xFFE2A860)
+                )
             }
 
-            // Bottom-left View badge
-            Row(
+            // Bookmark Icon Button
+            IconButton(
+                onClick = onToggleFavorite,
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(3.dp))
-                    .background(Color(0x99000000))
-                    .padding(horizontal = 6.dp, vertical = 3.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xAA000000))
+                    .border(0.5.dp, Color(0x33FFFFFF), CircleShape)
+                    .testTag("card_bookmark_${photo.id}")
             ) {
                 Icon(
-                    imageVector = Icons.Default.Visibility,
-                    contentDescription = null,
-                    tint = Color(0xFFE2A860),
-                    modifier = Modifier.size(10.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "VIEW",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 8.sp,
-                    letterSpacing = 1.2.sp,
-                    color = Color.White
+                    imageVector = if (isFavorite) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
+                    contentDescription = "Bookmark photograph",
+                    tint = if (isFavorite) Color(0xFFE2A860) else Color.White,
+                    modifier = Modifier.size(13.5.dp)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(7.dp))
-
-        // Editorial Metadata Labels
-        Text(
-            text = photo.title.uppercase(),
-            fontFamily = FontFamily.Serif,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Medium,
-            letterSpacing = 1.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            color = GoblinTextPrimary
-        )
-
-        Spacer(modifier = Modifier.height(2.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        // 4. Bottom Inside Overlay: Metadata in small, crisp font
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .fillMaxWidth()
+                .padding(horizontal = 7.dp, vertical = 6.dp)
         ) {
-            Text(
-                text = "${photo.location} • ${photo.year}",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 9.5.sp,
-                letterSpacing = 0.8.sp,
-                color = GoblinTextSecondary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f)
-            )
+            if (photo.bengaliTitle.isNotBlank()) {
+                Text(
+                    text = photo.bengaliTitle,
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 9.sp,
+                    letterSpacing = 0.5.sp,
+                    color = Color(0xFFE2A860),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
 
             Text(
-                text = photo.category.label,
-                fontFamily = FontFamily.Monospace,
-                fontSize = 8.sp,
-                letterSpacing = 1.sp,
-                color = GoblinAccentWarm
+                text = photo.title.uppercase(),
+                fontFamily = FontFamily.Serif,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                letterSpacing = 0.8.sp,
+                color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = photo.location,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 8.sp,
+                    letterSpacing = 0.5.sp,
+                    color = Color(0xDDFFFFFF),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f, fill = false)
+                )
+
+                if (photo.exif.camera.isNotBlank()) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "${photo.exif.focalLength} ${photo.exif.aperture}",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 7.sp,
+                        letterSpacing = 0.5.sp,
+                        color = Color(0xBBFFFFFF),
+                        maxLines = 1
+                    )
+                }
+            }
         }
     }
 }
 
 /**
- * Large Immersive Full-Bleed Cinematic Card
+ * Large Immersive Full-Bleed Cinematic Card with internal metadata
  */
 @Composable
 fun CinematicFullBleedCard(
@@ -1110,92 +1249,114 @@ fun CinematicFullBleedCard(
     onToggleFavorite: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-            .background(Color(0xFFFAFAFA))
+            .aspectRatio(1.52f)
+            .clip(RoundedCornerShape(8.dp))
+            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(8.dp))
+            .background(Color(0xFF141414))
             .clickable { onClick() }
             .testTag("cinematic_card_${photo.id}")
     ) {
+        PhotographicArtwork(
+            photograph = photo,
+            isMonochrome = isMonochrome,
+            showFilmGrain = showFilmGrain,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Gradient Scrim
         Box(
             modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0x77000000),
+                            Color.Transparent,
+                            Color(0x66000000),
+                            Color(0xF0000000)
+                        )
+                    )
+                )
+        )
+
+        // Top Badges
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1.65f)
+                .padding(10.dp)
+                .align(Alignment.TopCenter),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            PhotographicArtwork(
-                photograph = photo,
-                isMonochrome = isMonochrome,
-                showFilmGrain = showFilmGrain,
-                modifier = Modifier.fillMaxSize()
-            )
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xCC000000))
+                    .border(0.5.dp, Color(0x33FFFFFF), RoundedCornerShape(12.dp))
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = "${photo.category.label} • ${photo.year}",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 8.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.2.sp,
+                    color = Color(0xFFE2A860)
+                )
+            }
 
             IconButton(
                 onClick = onToggleFavorite,
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(12.dp)
-                    .size(36.dp)
+                    .size(32.dp)
                     .clip(CircleShape)
-                    .background(Color(0xAA000000))
-                    .border(0.5.dp, Color(0x44FFFFFF), CircleShape)
+                    .background(Color(0x99000000))
+                    .border(0.5.dp, Color(0x33FFFFFF), CircleShape)
             ) {
                 Icon(
                     imageVector = if (isFavorite) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
                     contentDescription = "Bookmark",
                     tint = if (isFavorite) Color(0xFFE2A860) else Color.White,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(16.dp)
                 )
             }
         }
 
+        // Bottom Metadata
         Column(
             modifier = Modifier
+                .align(Alignment.BottomStart)
                 .fillMaxWidth()
-                .padding(18.dp)
+                .padding(12.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            if (photo.bengaliTitle.isNotBlank()) {
                 Text(
-                    text = "${photo.location.uppercase()} • ${photo.year}",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 9.sp,
-                    letterSpacing = 1.8.sp,
-                    color = GoblinAccentWarm
-                )
-
-                Text(
-                    text = "${photo.exif.camera} • ${photo.exif.lens}",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 8.5.sp,
-                    letterSpacing = 1.sp,
-                    color = GoblinTextTertiary
+                    text = photo.bengaliTitle,
+                    fontFamily = FontFamily.Serif,
+                    fontSize = 11.sp,
+                    color = Color(0xFFE2A860)
                 )
             }
-
-            Spacer(modifier = Modifier.height(6.dp))
 
             Text(
                 text = photo.title,
                 fontFamily = FontFamily.Serif,
-                fontSize = 18.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 letterSpacing = 1.sp,
-                color = GoblinTextPrimary
+                color = Color.White
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(3.dp))
 
             Text(
-                text = photo.caption,
+                text = "${photo.location} • ${photo.exif.camera} • ${photo.exif.lens}",
                 fontFamily = FontFamily.SansSerif,
-                fontSize = 12.5.sp,
-                lineHeight = 18.sp,
-                color = GoblinTextSecondary
+                fontSize = 9.sp,
+                color = Color(0xDDFFFFFF)
             )
         }
     }
@@ -1252,267 +1413,6 @@ private fun EmptyGalleryState(
                     color = GoblinAccentWarm
                 )
             }
-        }
-    }
-}
-
-/**
- * Interactive Horizontal Carousel & Image Slider with Left (<) and Right (>) Arrow Controls
- */
-@Composable
-fun PhotographyCarouselSlider(
-    photos: List<Photograph>,
-    favoritePhotoIds: Set<String>,
-    onPhotoClick: (Photograph) -> Unit,
-    onToggleFavorite: (String) -> Unit,
-    isMonochrome: Boolean,
-    showFilmGrain: Boolean,
-    modifier: Modifier = Modifier
-) {
-    if (photos.isEmpty()) return
-
-    val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-
-    val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-    val canScrollBackward by remember { derivedStateOf { listState.canScrollBackward } }
-    val canScrollForward by remember { derivedStateOf { listState.canScrollForward } }
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .testTag("photography_carousel_slider")
-    ) {
-        // Carousel Header with Item Index Counter and Left/Right (< / >) Arrow Buttons
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 6.dp, vertical = 6.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ViewCarousel,
-                    contentDescription = null,
-                    tint = GoblinAccentWarm,
-                    modifier = Modifier.size(16.dp)
-                )
-                Text(
-                    text = "CAROUSEL SLIDER",
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.8.sp,
-                    color = GoblinTextPrimary
-                )
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(Color(0x15000000))
-                        .padding(horizontal = 6.dp, vertical = 2.dp)
-                ) {
-                    Text(
-                        text = "${firstVisibleIndex + 1} / ${photos.size}",
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 9.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = GoblinTextSecondary
-                    )
-                }
-            }
-
-            // Left (<) and Right (>) Navigation Arrows
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val targetIndex = (firstVisibleIndex - 1).coerceAtLeast(0)
-                            listState.animateScrollToItem(targetIndex)
-                        }
-                    },
-                    enabled = canScrollBackward,
-                    modifier = Modifier
-                        .size(34.dp)
-                        .clip(CircleShape)
-                        .background(if (canScrollBackward) Color.Black else Color(0x10000000))
-                        .border(0.5.dp, if (canScrollBackward) Color.Black else Color(0x20000000), CircleShape)
-                        .testTag("carousel_prev_button")
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ChevronLeft,
-                        contentDescription = "Previous photograph",
-                        tint = if (canScrollBackward) Color.White else Color(0x40000000),
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val targetIndex = (firstVisibleIndex + 1).coerceAtMost(photos.size - 1)
-                            listState.animateScrollToItem(targetIndex)
-                        }
-                    },
-                    enabled = canScrollForward,
-                    modifier = Modifier
-                        .size(34.dp)
-                        .clip(CircleShape)
-                        .background(if (canScrollForward) Color.Black else Color(0x10000000))
-                        .border(0.5.dp, if (canScrollForward) Color.Black else Color(0x20000000), CircleShape)
-                        .testTag("carousel_next_button")
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = "Next photograph",
-                        tint = if (canScrollForward) Color.White else Color(0x40000000),
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Horizontal LazyRow Carousel
-        LazyRow(
-            state = listState,
-            contentPadding = PaddingValues(horizontal = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            itemsIndexed(
-                items = photos,
-                key = { _, photo -> photo.id }
-            ) { _, photo ->
-                CarouselPhotoCard(
-                    photo = photo,
-                    isFavorite = favoritePhotoIds.contains(photo.id),
-                    isMonochrome = isMonochrome,
-                    showFilmGrain = showFilmGrain,
-                    onClick = { onPhotoClick(photo) },
-                    onToggleFavorite = { onToggleFavorite(photo.id) },
-                    modifier = Modifier.width(280.dp)
-                )
-            }
-        }
-    }
-}
-
-/**
- * Clean photographic card designed for carousel / slider presentation
- */
-@Composable
-fun CarouselPhotoCard(
-    photo: Photograph,
-    isFavorite: Boolean,
-    isMonochrome: Boolean,
-    showFilmGrain: Boolean,
-    onClick: () -> Unit,
-    onToggleFavorite: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(8.dp))
-            .background(Color.White)
-            .clickable { onClick() }
-            .testTag("carousel_card_${photo.id}")
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.25f)
-        ) {
-            PhotographicArtwork(
-                photograph = photo,
-                isMonochrome = isMonochrome,
-                showFilmGrain = showFilmGrain,
-                modifier = Modifier.fillMaxSize()
-            )
-
-            // Bookmark button
-            IconButton(
-                onClick = onToggleFavorite,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(Color(0x99000000))
-                    .border(0.5.dp, Color(0x33FFFFFF), CircleShape)
-            ) {
-                Icon(
-                    imageVector = if (isFavorite) Icons.Filled.Bookmark else Icons.Outlined.BookmarkBorder,
-                    contentDescription = "Bookmark",
-                    tint = if (isFavorite) Color(0xFFE2A860) else Color.White,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-
-            // Category Pill
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(Color(0xCC000000))
-                    .padding(horizontal = 6.dp, vertical = 2.dp)
-            ) {
-                Text(
-                    text = photo.category.label,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 8.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp,
-                    color = GoblinAccentWarm
-                )
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp)
-        ) {
-            Text(
-                text = "${photo.location} • ${photo.year}",
-                fontFamily = FontFamily.Monospace,
-                fontSize = 8.5.sp,
-                letterSpacing = 1.2.sp,
-                color = GoblinTextTertiary
-            )
-
-            Spacer(modifier = Modifier.height(3.dp))
-
-            Text(
-                text = photo.title,
-                fontFamily = FontFamily.Serif,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = GoblinTextPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = photo.caption,
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 11.sp,
-                lineHeight = 15.sp,
-                color = GoblinTextSecondary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
         }
     }
 }
