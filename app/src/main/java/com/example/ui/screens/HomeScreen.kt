@@ -9,7 +9,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,6 +26,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -32,6 +36,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Layers
+import androidx.compose.material.icons.filled.ViewCarousel
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material3.HorizontalDivider
@@ -39,6 +47,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -51,6 +61,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.PortfolioRepository
@@ -68,10 +79,9 @@ import com.example.ui.theme.GoblinTextPrimary
 import com.example.ui.theme.GoblinTextSecondary
 import com.example.ui.theme.GoblinTextTertiary
 import com.example.ui.viewmodel.NavigationSection
+import com.example.ui.viewmodel.PhotoSortOrder
 import com.example.ui.viewmodel.PortfolioUiState
 import kotlinx.coroutines.launch
-
-import com.example.ui.viewmodel.PhotoSortOrder
 
 @Composable
 fun HomeScreen(
@@ -142,12 +152,23 @@ fun HomeScreen(
             )
         }
 
-        // 2. EDITORIAL INTRO STATEMENT SECTION
+        // 2. FEATURED ALBUMS SLIDER (Placed directly below hero section, showing 3 small cards in a frame)
+        item(key = "featured_albums_slider") {
+            FeaturedAlbumsSliderSection(
+                projects = PortfolioRepository.projects,
+                isMonochrome = uiState.isMonochromeMode,
+                showFilmGrain = uiState.isFilmGrainEnabled,
+                onProjectClick = onProjectClick,
+                onViewAllAlbums = { onNavigate(NavigationSection.ALBUMS) }
+            )
+        }
+
+        // 3. EDITORIAL INTRO STATEMENT SECTION
         item(key = "intro_statement") {
             IntroStatementSection()
         }
 
-        // 3. RESPONSIVE CURATED PHOTOGRAPHY GRID WITH THEMATIC FILTERS & SORTING
+        // 4. RESPONSIVE CURATED PHOTOGRAPHY GRID WITH THEMATIC FILTERS & SORTING
         item(key = "responsive_gallery_grid") {
             ResponsivePhotographyGridSection(
                 photos = filteredPhotos,
@@ -166,23 +187,12 @@ fun HomeScreen(
             )
         }
 
-        // 4. PHILOSOPHY QUOTE BREAK
+        // 5. PHILOSOPHY QUOTE BREAK
         item(key = "philosophy_quote") {
             PhilosophyQuoteSection()
         }
 
-        // 6. FEATURED ALBUMS PREVIEW SECTION
-        item(key = "featured_projects") {
-            FeaturedProjectsPreview(
-                projects = PortfolioRepository.projects.take(4),
-                isMonochrome = uiState.isMonochromeMode,
-                showFilmGrain = uiState.isFilmGrainEnabled,
-                onProjectClick = onProjectClick,
-                onViewAllProjects = { onNavigate(NavigationSection.ALBUMS) }
-            )
-        }
-
-        // 7. FOOTER SECTION
+        // 6. FOOTER SECTION
         item(key = "footer_section") {
             FooterSection(
                 onBackToTop = {
@@ -483,115 +493,285 @@ private fun PhilosophyQuoteSection() {
 }
 
 @Composable
-private fun FeaturedProjectsPreview(
+private fun FeaturedAlbumsSliderSection(
     projects: List<Project>,
     isMonochrome: Boolean,
     showFilmGrain: Boolean,
     onProjectClick: (Project) -> Unit,
-    onViewAllProjects: () -> Unit
+    onViewAllAlbums: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val sliderState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    val currentIdx by remember { derivedStateOf { sliderState.firstVisibleItemIndex } }
+    val canScrollBack by remember { derivedStateOf { sliderState.canScrollBackward } }
+    val canScrollForward by remember { derivedStateOf { sliderState.canScrollForward } }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 20.dp)
+            .padding(vertical = 12.dp)
+            .testTag("featured_albums_slider_section")
     ) {
+        // Section Header Row
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 6.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ViewCarousel,
+                        contentDescription = null,
+                        tint = GoblinAccentWarm,
+                        modifier = Modifier.size(15.dp)
+                    )
+                    Text(
+                        text = "FEATURED ALBUMS",
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp,
+                        color = GoblinTextPrimary
+                    )
+                }
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "ALBUMS",
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    letterSpacing = 1.5.sp,
-                    color = GoblinTextPrimary
-                )
-                Text(
-                    text = "CURATED PHOTOGRAPHIC ESSAYS",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 9.sp,
-                    letterSpacing = 1.5.sp,
+                    text = "0${currentIdx + 1} / 0${projects.size} • 3 in a frame",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 8.5.sp,
                     color = GoblinTextTertiary
                 )
             }
 
-            Text(
-                text = "VIEW ALL →",
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 10.5.sp,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.5.sp,
-                color = GoblinAccentWarm,
-                modifier = Modifier
-                    .clickable { onViewAllProjects() }
-                    .padding(8.dp)
-                    .testTag("view_all_projects_btn")
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                // Prev Arrow Button
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            val target = (currentIdx - 1).coerceAtLeast(0)
+                            sliderState.animateScrollToItem(target)
+                        }
+                    },
+                    enabled = canScrollBack,
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(CircleShape)
+                        .background(if (canScrollBack) Color.Black else Color(0x10000000))
+                        .testTag("slider_prev_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ChevronLeft,
+                        contentDescription = "Previous Album",
+                        tint = if (canScrollBack) Color.White else Color(0x40000000),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                // Next Arrow Button
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            val target = (currentIdx + 1).coerceAtMost(projects.size - 1)
+                            sliderState.animateScrollToItem(target)
+                        }
+                    },
+                    enabled = canScrollForward,
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(CircleShape)
+                        .background(if (canScrollForward) Color.Black else Color(0x10000000))
+                        .testTag("slider_next_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = "Next Album",
+                        tint = if (canScrollForward) Color.White else Color(0x40000000),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                Text(
+                    text = "ALL →",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.2.sp,
+                    color = GoblinAccentWarm,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .clickable { onViewAllAlbums() }
+                        .padding(horizontal = 6.dp, vertical = 4.dp)
+                        .testTag("slider_view_all_button")
+                )
+            }
         }
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            projects.forEach { project ->
-                val cover = PortfolioRepository.getPhotoById(project.coverPhotoId) ?: PortfolioRepository.photographs.first()
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(4.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-                        .background(Color(0xFFFAFAFA))
-                        .clickable { onProjectClick(project) }
-                        .padding(12.dp)
-                        .testTag("project_card_${project.id}"),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .clip(RoundedCornerShape(2.dp))
-                            .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(2.dp))
-                    ) {
-                        PhotographicArtwork(
-                            photograph = cover,
-                            isMonochrome = isMonochrome,
-                            showFilmGrain = showFilmGrain,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
+        // Small Photo Cards showing 3 cards in a frame
+        BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+            val totalWidth = maxWidth
+            val horizontalPadding = 6.dp
+            val spacing = 8.dp
+            // Calculate cardWidth so exactly 3 cards fit in a frame with paddings and spacings
+            val computedWidth = (totalWidth - (horizontalPadding * 2) - (spacing * 2)) / 3
+            val cardWidth = computedWidth.coerceAtLeast(100.dp)
 
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Column(modifier = Modifier.weight(1f)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "${project.number} — ${project.title}",
-                                fontFamily = FontFamily.SansSerif,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 14.sp,
-                                letterSpacing = 0.5.sp,
-                                color = GoblinTextPrimary
-                            )
-                        }
-                        Text(
-                            text = project.subtitle,
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 11.sp,
-                            color = GoblinTextSecondary
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "${project.location} • ${project.photoCount} PHOTOGRAPHS",
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 9.sp,
-                            letterSpacing = 1.2.sp,
-                            color = GoblinAccentWarm
-                        )
-                    }
+            LazyRow(
+                state = sliderState,
+                contentPadding = PaddingValues(horizontal = horizontalPadding),
+                horizontalArrangement = Arrangement.spacedBy(spacing),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                itemsIndexed(projects, key = { _, proj -> "slider_${proj.id}" }) { _, project ->
+                    SmallAlbumSliderCard(
+                        project = project,
+                        cardWidth = cardWidth,
+                        isMonochrome = isMonochrome,
+                        showFilmGrain = showFilmGrain,
+                        onClick = { onProjectClick(project) }
+                    )
                 }
             }
+        }
+    }
+}
+
+/**
+ * Compact, small photographic card for the 3-in-a-frame Featured Albums slider
+ */
+@Composable
+private fun SmallAlbumSliderCard(
+    project: Project,
+    cardWidth: androidx.compose.ui.unit.Dp,
+    isMonochrome: Boolean,
+    showFilmGrain: Boolean,
+    onClick: () -> Unit
+) {
+    val cover = remember(project) {
+        PortfolioRepository.getPhotoById(project.coverPhotoId) ?: PortfolioRepository.photographs.first()
+    }
+
+    Box(
+        modifier = Modifier
+            .width(cardWidth)
+            .aspectRatio(0.82f)
+            .clip(RoundedCornerShape(8.dp))
+            .border(0.5.dp, Color(0x33000000), RoundedCornerShape(8.dp))
+            .background(Color(0xFF141414))
+            .clickable { onClick() }
+            .testTag("small_album_card_${project.id}")
+    ) {
+        // Full Bleed Photograph
+        PhotographicArtwork(
+            photograph = cover,
+            isMonochrome = isMonochrome,
+            showFilmGrain = showFilmGrain,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Subtle gradient overlay for readability
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color(0x60000000),
+                            Color.Transparent,
+                            Color(0x80000000),
+                            Color(0xF0000000)
+                        )
+                    )
+                )
+        )
+
+        // Top Badges (Pill for frames count & view count)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 5.dp, vertical = 5.dp)
+                .align(Alignment.TopCenter),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Frame Count Badge
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(3.dp))
+                    .background(Color(0xDD18181B))
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+            ) {
+                Text(
+                    text = "${project.photoCount}F",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 7.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+            // Views Badge
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(3.dp))
+                    .background(Color(0xDD18181B))
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Visibility,
+                    contentDescription = null,
+                    tint = GoblinAccentWarm,
+                    modifier = Modifier.size(8.dp)
+                )
+                Text(
+                    text = "${project.viewCount}",
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 7.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
+
+        // Bottom Text Overlay
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart)
+                .padding(horizontal = 6.dp, vertical = 6.dp)
+        ) {
+            Text(
+                text = project.title,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.Bold,
+                fontSize = 10.5.sp,
+                letterSpacing = 0.2.sp,
+                color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            Text(
+                text = "${project.location} • ${project.year}",
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 7.5.sp,
+                color = Color(0xCCFFFFFF),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }

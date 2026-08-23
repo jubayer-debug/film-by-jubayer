@@ -72,12 +72,6 @@ fun ProjectsScreen(
     modifier: Modifier = Modifier
 ) {
     val projects = remember(uiState.contentUpdateVersion) { PortfolioRepository.projects }
-    val carouselListState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-
-    val currentVisibleIdx by remember { derivedStateOf { carouselListState.firstVisibleItemIndex } }
-    val canScrollBack by remember { derivedStateOf { carouselListState.canScrollBackward } }
-    val canScrollForward by remember { derivedStateOf { carouselListState.canScrollForward } }
 
     LazyColumn(
         modifier = modifier
@@ -121,170 +115,21 @@ fun ProjectsScreen(
             }
         }
 
-        // Section 1: Interactive Horizontal Carousel / Image Slider
+        // Detailed Curated Folio List
         item {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 24.dp)
-            ) {
-                // Carousel Header with Arrow Buttons and Series Counter
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 6.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ViewCarousel,
-                            contentDescription = null,
-                            tint = GoblinAccentWarm,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            text = "IMAGE SLIDER",
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 2.sp,
-                            color = GoblinTextPrimary
-                        )
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(Color(0x15000000))
-                                .padding(horizontal = 7.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = "0${currentVisibleIdx + 1} / 0${projects.size}",
-                                fontFamily = FontFamily.Monospace,
-                                fontSize = 9.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = GoblinTextSecondary
-                            )
-                        }
-                    }
-
-                    // Left (<) and Right (>) Navigation Arrows
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    val targetIdx = (currentVisibleIdx - 1).coerceAtLeast(0)
-                                    carouselListState.animateScrollToItem(targetIdx)
-                                }
-                            },
-                            enabled = canScrollBack,
-                            modifier = Modifier
-                                .size(34.dp)
-                                .clip(CircleShape)
-                                .background(if (canScrollBack) Color.Black else Color(0x10000000))
-                                .border(0.5.dp, if (canScrollBack) Color.Black else Color(0x20000000), CircleShape)
-                                .testTag("projects_carousel_prev_btn")
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ChevronLeft,
-                                contentDescription = "Previous series",
-                                tint = if (canScrollBack) Color.White else Color(0x40000000),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-
-                        IconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    val targetIdx = (currentVisibleIdx + 1).coerceAtMost(projects.size - 1)
-                                    carouselListState.animateScrollToItem(targetIdx)
-                                }
-                            },
-                            enabled = canScrollForward,
-                            modifier = Modifier
-                                .size(34.dp)
-                                .clip(CircleShape)
-                                .background(if (canScrollForward) Color.Black else Color(0x10000000))
-                                .border(0.5.dp, if (canScrollForward) Color.Black else Color(0x20000000), CircleShape)
-                                .testTag("projects_carousel_next_btn")
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ChevronRight,
-                                contentDescription = "Next series",
-                                tint = if (canScrollForward) Color.White else Color(0x40000000),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Horizontal Carousel LazyRow with exact card design
-                LazyRow(
-                    state = carouselListState,
-                    contentPadding = PaddingValues(horizontal = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    itemsIndexed(projects, key = { _, proj -> proj.id }) { _, project ->
-                        CuratedProjectPhotoCard(
-                            project = project,
-                            isMonochrome = uiState.isMonochromeMode,
-                            showFilmGrain = uiState.isFilmGrainEnabled,
-                            onClick = { onProjectClick(project) },
-                            modifier = Modifier.width(320.dp)
-                        )
-                    }
-                }
-
-                // Carousel Dots Indicator
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp, start = 8.dp, end = 8.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    projects.forEachIndexed { index, _ ->
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 3.dp)
-                                .height(4.dp)
-                                .width(if (index == currentVisibleIdx) 24.dp else 6.dp)
-                                .clip(RoundedCornerShape(2.dp))
-                                .background(if (index == currentVisibleIdx) Color.Black else Color(0x30000000))
-                                .clickable {
-                                    coroutineScope.launch {
-                                        carouselListState.animateScrollToItem(index)
-                                    }
-                                }
-                        )
-                    }
-                }
-            }
-        }
-
-        // Section 2: Detailed Curated Folio List
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 6.dp, vertical = 12.dp)
+                    .padding(horizontal = 6.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = "ALL ARCHIVED MONOGRAPHS",
+                    text = "ALL ARCHIVED MONOGRAPHS (${projects.size} ALBUMS)",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 9.5.sp,
                     letterSpacing = 2.sp,
                     color = GoblinTextTertiary
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
 
