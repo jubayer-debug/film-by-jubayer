@@ -112,12 +112,21 @@ fun HomeScreen(
             val q = uiState.searchQuery.trim().lowercase()
             list = list.filter {
                 it.title.lowercase().contains(q) ||
-                it.bengaliTitle.contains(q) ||
+                it.bengaliTitle.lowercase().contains(q) ||
                 it.location.lowercase().contains(q) ||
                 it.caption.lowercase().contains(q) ||
+                it.story.lowercase().contains(q) ||
+                it.year.lowercase().contains(q) ||
                 it.category.label.lowercase().contains(q) ||
+                it.category.name.lowercase().contains(q) ||
+                it.mood.name.lowercase().contains(q) ||
                 it.exif.camera.lowercase().contains(q) ||
-                it.exif.lens.lowercase().contains(q)
+                it.exif.lens.lowercase().contains(q) ||
+                it.exif.aperture.lowercase().contains(q) ||
+                it.exif.shutter.lowercase().contains(q) ||
+                it.exif.iso.lowercase().contains(q) ||
+                it.exif.focalLength.lowercase().contains(q) ||
+                it.exif.format.lowercase().contains(q)
             }
         }
         when (uiState.sortOrder) {
@@ -171,7 +180,7 @@ fun HomeScreen(
             IntroStatementSection()
         }
 
-        // 4. RESPONSIVE CURATED PHOTOGRAPHY GRID WITH THEMATIC FILTERS & SORTING
+        // 3. RESPONSIVE CURATED PHOTOGRAPHY GRID WITH THEMATIC FILTERS & SORTING
         item(key = "responsive_gallery_grid") {
             ResponsivePhotographyGridSection(
                 photos = filteredPhotos,
@@ -190,12 +199,12 @@ fun HomeScreen(
             )
         }
 
-        // 5. PHILOSOPHY QUOTE BREAK
+        // 4. PHILOSOPHY QUOTE BREAK
         item(key = "philosophy_quote") {
             PhilosophyQuoteSection()
         }
 
-        // 6. FOOTER SECTION
+        // 5. FOOTER SECTION
         item(key = "footer_section") {
             FooterSection(
                 onBackToTop = {
@@ -291,6 +300,189 @@ private fun PhilosophyQuoteSection() {
                 color = GoblinTextTertiary
             )
         }
+    }
+}
+
+@Composable
+fun FooterSection(
+    onBackToTop: () -> Unit,
+    onNavigate: (NavigationSection) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF7F7F6))
+            .padding(horizontal = 6.dp, vertical = 36.dp)
+            .navigationBarsPadding()
+    ) {
+        // Top Monogram & Name Row + Back To Top
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Monogram Box and "Jubayer Ahmed" beside it with low opacity
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.testTag("footer_monogram_row")
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
+                        .background(Color(0xFF141414)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "K",
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = Color.White
+                    )
+                }
+
+                Text(
+                    text = "Jubayer Ahmed",
+                    fontFamily = FontFamily.SansSerif,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    letterSpacing = 1.2.sp,
+                    color = GoblinTextPrimary.copy(alpha = 0.45f)
+                )
+            }
+
+            // Back to top button
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(16.dp))
+                    .background(Color.White)
+                    .clickable { onBackToTop() }
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                    .testTag("back_to_top_button"),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowUpward,
+                    contentDescription = null,
+                    tint = GoblinAccentWarm,
+                    modifier = Modifier.size(12.dp)
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "BACK TO TOP",
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 9.sp,
+                    letterSpacing = 1.5.sp,
+                    color = GoblinTextPrimary
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Text Under Monogram:
+        // "Jubayer Ahmed (in normal colour) and is a photographer from Dhaka, Bangladesh, driven by curiosity and a fascination with how ordinary moments take shape through light, perspective, and time. Exploring people, streets, architecture, and the quiet details of everyday life." (in low opacity)
+        val bioAnnotatedString = remember {
+            buildAnnotatedString {
+                withStyle(
+                    SpanStyle(
+                        color = GoblinTextPrimary,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                ) {
+                    append("Jubayer Ahmed")
+                }
+                withStyle(
+                    SpanStyle(
+                        color = GoblinTextPrimary.copy(alpha = 0.50f),
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                ) {
+                    append(" and is a photographer from Dhaka, Bangladesh, driven by curiosity and a fascination with how ordinary moments take shape through light, perspective, and time. Exploring people, streets, architecture, and the quiet details of everyday life.")
+                }
+            }
+        }
+
+        Text(
+            text = bioAnnotatedString,
+            fontSize = 12.sp,
+            lineHeight = 19.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag("footer_bio_text")
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Total collection stats in low opacity:
+        // "Total collection of 163 frames and 4 albums . 1.5k total views"
+        Text(
+            text = "Total collection of 163 frames and 4 albums . 1.5k total views",
+            fontFamily = FontFamily.SansSerif,
+            fontSize = 11.sp,
+            lineHeight = 16.sp,
+            color = GoblinTextPrimary.copy(alpha = 0.45f),
+            modifier = Modifier.testTag("footer_collection_stats")
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Navigation Links with responsive scroll & 44dp touch targets
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val footerNavs = listOf(
+                NavigationSection.WORK to "PHOTOS",
+                NavigationSection.ALBUMS to "ALBUMS",
+                NavigationSection.JOURNAL to "JOURNAL",
+                NavigationSection.ABOUT to "ABOUT",
+                NavigationSection.CONTACT to "CONTACT",
+                NavigationSection.ADMIN to "ADMIN CMS"
+            )
+
+            footerNavs.forEach { (section, label) ->
+                Box(
+                    modifier = Modifier
+                        .heightIn(min = 44.dp)
+                        .clickable { onNavigate(section) }
+                        .padding(vertical = 12.dp, horizontal = 4.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = label,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 10.5.sp,
+                        letterSpacing = 1.6.sp,
+                        fontWeight = if (section == NavigationSection.ADMIN) FontWeight.Bold else FontWeight.Normal,
+                        color = if (section == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextSecondary
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(18.dp))
+
+        HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text(
+            text = "© 2026 KHONCHITRO (ক্ষণচিত্র). ALL PHOTOGRAPHS ARCHIVED UNDER INTERNATIONAL COPYRIGHT.",
+            fontFamily = FontFamily.SansSerif,
+            fontSize = 8.5.sp,
+            letterSpacing = 1.2.sp,
+            color = GoblinTextTertiary
+        )
     }
 }
 
@@ -575,188 +767,5 @@ private fun SmallAlbumSliderCard(
                 overflow = TextOverflow.Ellipsis
             )
         }
-    }
-}
-
-@Composable
-fun FooterSection(
-    onBackToTop: () -> Unit,
-    onNavigate: (NavigationSection) -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFF7F7F6))
-            .padding(horizontal = 6.dp, vertical = 36.dp)
-            .navigationBarsPadding()
-    ) {
-        // Top Monogram & Name Row + Back To Top
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Monogram Box and "Jubayer Ahmed" beside it with low opacity
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.testTag("footer_monogram_row")
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(4.dp))
-                        .background(Color(0xFF141414)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "K",
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        color = Color.White
-                    )
-                }
-
-                Text(
-                    text = "Jubayer Ahmed",
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
-                    letterSpacing = 1.2.sp,
-                    color = GoblinTextPrimary.copy(alpha = 0.45f)
-                )
-            }
-
-            // Back to top button
-            Row(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(0.5.dp, GoblinBorderSubtle, RoundedCornerShape(16.dp))
-                    .background(Color.White)
-                    .clickable { onBackToTop() }
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-                    .testTag("back_to_top_button"),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowUpward,
-                    contentDescription = null,
-                    tint = GoblinAccentWarm,
-                    modifier = Modifier.size(12.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "BACK TO TOP",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 9.sp,
-                    letterSpacing = 1.5.sp,
-                    color = GoblinTextPrimary
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Text Under Monogram:
-        // "Jubayer Ahmed (in normal colour) and is a photographer from Dhaka, Bangladesh, driven by curiosity and a fascination with how ordinary moments take shape through light, perspective, and time. Exploring people, streets, architecture, and the quiet details of everyday life." (in low opacity)
-        val bioAnnotatedString = remember {
-            buildAnnotatedString {
-                withStyle(
-                    SpanStyle(
-                        color = GoblinTextPrimary,
-                        fontWeight = FontWeight.SemiBold,
-                        fontFamily = FontFamily.SansSerif
-                    )
-                ) {
-                    append("Jubayer Ahmed")
-                }
-                withStyle(
-                    SpanStyle(
-                        color = GoblinTextPrimary.copy(alpha = 0.50f),
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = FontFamily.SansSerif
-                    )
-                ) {
-                    append(" and is a photographer from Dhaka, Bangladesh, driven by curiosity and a fascination with how ordinary moments take shape through light, perspective, and time. Exploring people, streets, architecture, and the quiet details of everyday life.")
-                }
-            }
-        }
-
-        Text(
-            text = bioAnnotatedString,
-            fontSize = 12.sp,
-            lineHeight = 19.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("footer_bio_text")
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // Total collection stats in low opacity:
-        // "Total collection of 163 frames and 4 albums . 1.5k total views"
-        Text(
-            text = "Total collection of 163 frames and 4 albums . 1.5k total views",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 11.sp,
-            lineHeight = 16.sp,
-            color = GoblinTextPrimary.copy(alpha = 0.45f),
-            modifier = Modifier.testTag("footer_collection_stats")
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Navigation Links with responsive scroll & 44dp touch targets
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val footerNavs = listOf(
-                NavigationSection.WORK to "PHOTOS",
-                NavigationSection.ALBUMS to "ALBUMS",
-                NavigationSection.JOURNAL to "JOURNAL",
-                NavigationSection.ABOUT to "ABOUT",
-                NavigationSection.CONTACT to "CONTACT",
-                NavigationSection.ADMIN to "ADMIN CMS"
-            )
-
-            footerNavs.forEach { (section, label) ->
-                Box(
-                    modifier = Modifier
-                        .heightIn(min = 44.dp)
-                        .clickable { onNavigate(section) }
-                        .padding(vertical = 12.dp, horizontal = 4.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = label,
-                        fontFamily = FontFamily.SansSerif,
-                        fontSize = 10.5.sp,
-                        letterSpacing = 1.6.sp,
-                        fontWeight = if (section == NavigationSection.ADMIN) FontWeight.Bold else FontWeight.Normal,
-                        color = if (section == NavigationSection.ADMIN) GoblinAccentWarm else GoblinTextSecondary
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        HorizontalDivider(color = GoblinBorderSubtle, thickness = 0.5.dp)
-
-        Spacer(modifier = Modifier.height(14.dp))
-
-        Text(
-            text = "© 2026 KHONCHITRO (ক্ষণচিত্র). ALL PHOTOGRAPHS ARCHIVED UNDER INTERNATIONAL COPYRIGHT.",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 8.5.sp,
-            letterSpacing = 1.2.sp,
-            color = GoblinTextTertiary
-        )
     }
 }
